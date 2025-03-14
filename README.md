@@ -1,4 +1,6 @@
-Bable: A Blogging Website
+Bable: A Blogging Website 
+
+This repository contains the frontend side of the project
 
 Created with React JS and Node.Js backend
 
