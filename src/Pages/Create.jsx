@@ -1,12 +1,22 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 export default function Create() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     heading: "",
     author: "",
     content: "",
     imageUrl: "",
   });
+
+  useEffect(() => {
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("token="));
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,7 +37,7 @@ export default function Create() {
           img_url: formData.imageUrl,
         }),
       });
-      
+
       const data = await response.json();
       if (response.ok) {
         console.log("Blog Submitted Successfully:", data);
@@ -42,7 +52,9 @@ export default function Create() {
   return (
     <div className="flex justify-center items-center min-h-screen p-4 font-poppins">
       <div className="p-6 w-full max-w-2xl">
-        <h2 className="text-2xl font-bold mb-4 text-zinc-950">Create a Blog Post</h2>
+        <h2 className="text-2xl font-bold mb-4 text-zinc-950">
+          Create a Blog Post
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             name="heading"

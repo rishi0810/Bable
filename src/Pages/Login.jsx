@@ -16,26 +16,22 @@ export default function Login() {
     try {
       const response = await fetch("/api/user/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email : formData.email, password : formData.password }),
       });
 
       const data = await response.json();
       if (response.ok) {
         console.log("Logged in");
         navigate("/");
+        window.location.reload();
       } else {
         console.error("Error:", data.error);
       }
     } catch (error) {
       console.error("Error loggin in:", error);
     }
-  
   };
 
   return (
