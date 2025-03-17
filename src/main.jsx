@@ -1,4 +1,4 @@
-import { StrictMode,useState } from "react";
+import { StrictMode} from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
@@ -6,6 +6,10 @@ import Home from "./Pages/Home.jsx";
 import Create from "./Pages/Create.jsx";
 import Signup from "./Pages/Signup.jsx";
 import Login from "./Pages/Login.jsx";
+import Blogs from "./Pages/Blogs.jsx";
+import Profile from "./Pages/Profile.jsx";
+import About from "./Pages/About.jsx";
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -23,6 +27,9 @@ const Root = ()=>{
         <Route path = "create" element={<Create/>}/>
         <Route path = "signup" element={<Signup/>}/>
         <Route path = "login" element={<Login/>}/>
+        <Route path ="blogs" element = {<Blogs/>} />
+        <Route path="profile" element={<Profile/>}/>
+        <Route path="about" element={<About/>}/>
       </Route>
     )
   );

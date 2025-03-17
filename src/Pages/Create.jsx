@@ -1,22 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router";
 export default function Create() {
   const navigate = useNavigate();
+  const [isloggedin, setisloggedin] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
   const [formData, setFormData] = useState({
     heading: "",
-    author: "",
     content: "",
     imageUrl: "",
   });
 
+  const checkAuth = useCallback(async () => {
+    try {
+      const response = await fetch("/api/user/authcheck", {
+        method: "GET",
+        credentials: "include",
+      });
+      const data = await response.json();
+      setisloggedin(data.Authenticated);
+    } finally {
+      setIsChecking(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="));
-    if (!token) {
+    checkAuth();
+  }, [checkAuth]);
+
+  useEffect(() => {
+    if (!isChecking && !isloggedin) {
       navigate("/login");
     }
-  }, [navigate]);
+  }, [isChecking, isloggedin, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,14 +40,14 @@ export default function Create() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/todos/new", {
+      const response = await fetch("/api/blog/create", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           heading: formData.heading,
-          author: formData.author,
           content: formData.content,
           img_url: formData.imageUrl,
         }),
@@ -41,6 +56,7 @@ export default function Create() {
       const data = await response.json();
       if (response.ok) {
         console.log("Blog Submitted Successfully:", data);
+        navigate('/blogs');
       } else {
         console.error("Error:", data.error);
       }
@@ -61,14 +77,6 @@ export default function Create() {
             value={formData.heading}
             onChange={handleChange}
             placeholder="Blog Heading"
-            className="w-full p-2 border rounded-lg"
-            required
-          />
-          <input
-            name="author"
-            value={formData.author}
-            onChange={handleChange}
-            placeholder="Author Name"
             className="w-full p-2 border rounded-lg"
             required
           />
