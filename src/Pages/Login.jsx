@@ -29,7 +29,6 @@ export default function Login() {
       if (response.ok) {
         console.log("Logged in");
         navigate("/");
-        window.location.reload();
       } else {
         console.error("Error:", data.error);
       }
