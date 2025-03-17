@@ -8,7 +8,6 @@ const Profile = () => {
     storedBlogs: [],
     writtenBlogs: [],
   });
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -26,13 +25,11 @@ const Profile = () => {
         setUser(data);
       } catch (error) {
         console.error("Error fetching user:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [user]);
 
   const handledeletefromwritten = async (blogid) => {
     try {
@@ -41,7 +38,7 @@ const Profile = () => {
         credentials: "include",
       });
 
-      if (!response.ok) throw new Error("Failed to delete");
+      if (!response.ok) throw new error("Failed to delete");
 
       setUser((prev) => ({
         ...prev,
@@ -49,10 +46,9 @@ const Profile = () => {
       }));
       alert("Blog Deleted!");
     } catch (err) {
-      console.error("An error occurred");
+      console.error("An error occured");
     }
   };
-  
   const handledeletefromsaved = async (blogid) => {
     try {
       const response = await fetch(`https://bable-backend.onrender.com/blog/remove/${blogid}`, {
@@ -60,7 +56,7 @@ const Profile = () => {
         credentials: "include",
       });
 
-      if (!response.ok) throw new Error("Failed to delete");
+      if (!response.ok) throw new error("Failed to delete");
 
       setUser((prev) => ({
         ...prev,
@@ -68,13 +64,9 @@ const Profile = () => {
       }));
       alert("Blog Deleted!");
     } catch (err) {
-      console.error("An error occurred");
+      console.error("An error occured");
     }
   };
-
-  if (loading) {
-    return <div className="w-11/12 mx-auto p-6 bg-white min-h-screen font-poppins text-center">Loading...</div>;
-  }
 
   return (
     <div className="w-11/12 mx-auto p-6 bg-white min-h-screen font-poppins">
