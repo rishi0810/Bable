@@ -12,7 +12,7 @@ export default function Create() {
 
   const checkAuth = useCallback(async () => {
     try {
-      const response = await fetch("/api/user/authcheck", {
+      const response = await fetch("https://bable-backend.onrender.com/user/authcheck", {
         method: "GET",
         credentials: "include",
       });
@@ -40,7 +40,7 @@ export default function Create() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/blog/create", {
+      const response = await fetch("https://bable-backend.onrender.com/blog/create", {
         method: "POST",
         credentials: "include",
         headers: {

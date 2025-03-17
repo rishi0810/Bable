@@ -8,7 +8,7 @@ const Blog = () => {
   const [isloggedin, setisloggedin] = useState(false);
 
   const checkAuth = async () => {
-    const response = await fetch("/api/user/authcheck", {
+    const response = await fetch("https://bable-backend.onrender.com/user/authcheck", {
       method: "GET",
       credentials: "include",
     });
@@ -28,7 +28,7 @@ const Blog = () => {
   const fetching = async () => {
     if (blogid) {
       try {
-        const response = await fetch(`/api/blog/${blogid}`);
+        const response = await fetch(`https://bable-backend.onrender.com/blog/${blogid}`);
         const data = await response.json();
         if (data) setblog(data);
       } catch (error) {
@@ -41,7 +41,7 @@ const Blog = () => {
 
   const saveblog = async (blogid) => {
     try {
-      const response = await fetch(`/api/blog/save/${blogid}`, {
+      const response = await fetch(`https://bable-backend.onrender.com/blog/save/${blogid}`, {
         method: "POST",
         credentials: "include",
       });

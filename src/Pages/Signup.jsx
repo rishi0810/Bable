@@ -15,7 +15,7 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/user/signup", {
+      const response = await fetch("https://bable-backend.onrender.com/user/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

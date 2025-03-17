@@ -6,7 +6,7 @@ const Blogs = () => {
   const [results, setresults] = useState([]);
   useEffect(() => {
     const fetching = async () => {
-      const response = await fetch("/api/blog/");
+      const response = await fetch("https://bable-backend.onrender.com/blog/");
       const data = await response.json();
       if (data) setresults(data);
       else console.error("Unable to fetch");

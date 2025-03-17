@@ -12,7 +12,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("/api/user/details", {
+        const response = await fetch("https://bable-backend.onrender.com/user/details", {
           method: "GET",
           credentials: "include",
         });
@@ -33,7 +33,7 @@ const Profile = () => {
 
   const handledeletefromwritten = async (blogid) => {
     try {
-      const response = await fetch(`/api/blog/delete/${blogid}`, {
+      const response = await fetch(`https://bable-backend.onrender.com/blog/delete/${blogid}`, {
         method: "POST",
         credentials: "include",
       });
@@ -51,7 +51,7 @@ const Profile = () => {
   };
   const handledeletefromsaved = async (blogid) => {
     try {
-      const response = await fetch(`/api/blog/remove/${blogid}`, {
+      const response = await fetch(`https://bable-backend.onrender.com/blog/remove/${blogid}`, {
         method: "POST",
         credentials: "include",
       });
