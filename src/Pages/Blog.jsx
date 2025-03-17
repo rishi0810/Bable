@@ -39,19 +39,18 @@ const Blog = () => {
     }
   };
 
-  const saveblog = async(blogid)=>{
-    try{
+  const saveblog = async (blogid) => {
+    try {
       const response = await fetch(`/api/blog/save/${blogid}`, {
-        method : "POST",
-        credentials : "include"
-      })
+        method: "POST",
+        credentials: "include",
+      });
       const data = await response.json();
-      alert (data.message);
-    }
-    catch(error){
+      alert(data.message);
+    } catch (error) {
       console.error("Error occured : " + error);
     }
-  }
+  };
   useEffect(() => {
     fetching();
   }, [blogid]);
@@ -75,10 +74,16 @@ const Blog = () => {
             <p className="text-lg text-justify font-poppins text-zinc-700">
               {blog.content}
             </p>
-            {isloggedin && <button onClick={()=>saveblog(blog._id)} className="bg-zinc-500 cursor-pointer rounded-md shadow-md">Save</button>}
+            {isloggedin && (
+              <button
+                onClick={() => saveblog(blog._id)}
+                className="bg-zinc-500 cursor-pointer rounded-md shadow-md"
+              >
+                Save
+              </button>
+            )}
           </div>
         </div>
-        
       ) : (
         <div className="min-h-screen flex justify-center items-center text-xl">
           Loading...

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
-import image from "../assets/logo.png"
+import image from "../assets/logo.png";
 const Navbar = () => {
   const navigate = useNavigate();
   const [isloggedin, setisloggedin] = useState(false);
@@ -37,8 +37,8 @@ const Navbar = () => {
     <header className="sticky top-0 flex justify-between items-center w-full py-2 px-8 bg-white z-50 shadow-md">
       <nav className="flex items-center w-full">
         <div className="flex items-center gap-2 ">
-            <img src={image} alt="" className="size-8 rounded-full" />
-            <h3 className="font-bold text-2xl">Bable</h3>
+          <img src={image} alt="" className="size-8 rounded-full" />
+          <h3 className="font-bold text-2xl">Bable</h3>
         </div>
 
         <div className="flex items-center gap-x-7 mx-auto">
@@ -64,17 +64,21 @@ const Navbar = () => {
             Blog
           </NavLink>
 
-          {isloggedin ? <NavLink
-            to="/profile"
-            className={({ isActive }) =>
-              `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-lime-400" : "hover:text-gray-600"
-              }`
-            }
-          >
-            Profile
-          </NavLink> : null }
-          
+          {isloggedin ? (
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                `relative inline-block text-black px-3 py-2 ${
+                  isActive
+                    ? "border-b-2 border-lime-400"
+                    : "hover:text-gray-600"
+                }`
+              }
+            >
+              Profile
+            </NavLink>
+          ) : null}
+
           <NavLink
             to="/about"
             className={({ isActive }) =>

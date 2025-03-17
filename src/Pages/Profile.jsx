@@ -8,7 +8,7 @@ const Profile = () => {
     storedBlogs: [],
     writtenBlogs: [],
   });
-  
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -68,8 +68,6 @@ const Profile = () => {
     }
   };
 
-
-
   return (
     <div className="w-11/12 mx-auto p-6 bg-white min-h-screen font-poppins">
       <div className="mb-6">
@@ -85,7 +83,10 @@ const Profile = () => {
         <ul className="list-disc pl-5 space-y-2">
           {user.storedBlogs.length > 0 ? (
             user.storedBlogs.map((blog) => (
-              <li key={blog._id} className="flex w-full justify-between items-center">
+              <li
+                key={blog._id}
+                className="flex w-full justify-between items-center"
+              >
                 <Link
                   to={"/blog"}
                   state={{ blogid: blog._id }}

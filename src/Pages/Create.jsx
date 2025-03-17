@@ -56,7 +56,7 @@ export default function Create() {
       const data = await response.json();
       if (response.ok) {
         console.log("Blog Submitted Successfully:", data);
-        navigate('/blogs');
+        navigate("/blogs");
       } else {
         console.error("Error:", data.error);
       }

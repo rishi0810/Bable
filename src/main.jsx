@@ -1,4 +1,4 @@
-import { StrictMode} from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
@@ -18,28 +18,27 @@ import {
 } from "react-router-dom";
 import Blog from "./Pages/Blog.jsx";
 
-const Root = ()=>{
+const Root = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="" element={<App />}>
-        <Route path="" element={<Home/>} />
-        <Route path="blog" element={<Blog/>} />
-        <Route path = "create" element={<Create/>}/>
-        <Route path = "signup" element={<Signup/>}/>
-        <Route path = "login" element={<Login/>}/>
-        <Route path ="blogs" element = {<Blogs/>} />
-        <Route path="profile" element={<Profile/>}/>
-        <Route path="about" element={<About/>}/>
+        <Route path="" element={<Home />} />
+        <Route path="blog" element={<Blog />} />
+        <Route path="create" element={<Create />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="login" element={<Login />} />
+        <Route path="blogs" element={<Blogs />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="about" element={<About />} />
       </Route>
     )
   );
 
   return <RouterProvider router={router} />;
-}
-
+};
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-      <Root />
+    <Root />
   </StrictMode>
 );

@@ -15,7 +15,9 @@ const About = () => {
           </div>
 
           <div className="grow">
-            <h1 className="text-[24px] font-semibold text-zinc-800">Rishi Raj</h1>
+            <h1 className="text-[24px] font-semibold text-zinc-800">
+              Rishi Raj
+            </h1>
             <p className="text-[20px] text-zinc-600">
               Web Developer & College Student
             </p>

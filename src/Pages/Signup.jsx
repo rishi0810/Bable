@@ -1,12 +1,12 @@
 import { useState } from "react";
-import {useNavigate} from 'react-router'
+import { useNavigate } from "react-router";
 export default function Signup() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    });
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,7 +26,7 @@ export default function Signup() {
           password: formData.password,
         }),
       });
-      
+
       const data = await response.json();
       if (response.ok) {
         console.log("Blog Submitted Successfully:", data);
@@ -37,14 +37,14 @@ export default function Signup() {
     } catch (error) {
       console.error("Error submitting blog:", error);
     }
-    
-    
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen p-4 font-poppins">
       <div className="p-6 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-zinc-950 text-center">Signup</h2>
+        <h2 className="text-2xl font-bold mb-4 text-zinc-950 text-center">
+          Signup
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             name="name"

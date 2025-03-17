@@ -1,7 +1,7 @@
 import React from "react";
 import TopResults from "../components/TopResults";
 import Search from "../components/Search";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 const Blogs = () => {
   const [results, setresults] = useState([]);
   useEffect(() => {
@@ -16,10 +16,10 @@ const Blogs = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-5">
       <section className="p-10 w-5/6 flex justify-center border-b border-zinc-600 mb-10">
-        <Search results={results}/>
+        <Search results={results} />
       </section>
       <section className="p-10 w-5/6 flex justify-center border-b border-zinc-600 mb-10">
-        <TopResults results={results}/>
+        <TopResults results={results} />
       </section>
     </div>
   );

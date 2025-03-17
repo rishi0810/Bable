@@ -5,8 +5,7 @@ const TopResults = ({ results }) => {
 
   useEffect(() => {
     const sorting = () => {
-      const newArray = [...results]
-        .slice(0, 5);
+      const newArray = [...results].slice(0, 5);
       if (newArray) setsortedlist(newArray);
       else console.error("Unable to fetch");
     };
@@ -19,7 +18,11 @@ const TopResults = ({ results }) => {
         <div className="flex w-full mx-auto gap-5 mb-10">
           {sortedlist.map((item) => {
             return (
-              <Link to={"/blog"} state={{ blogid: item._id }} className="w-full ">
+              <Link
+                to={"/blog"}
+                state={{ blogid: item._id }}
+                className="w-full "
+              >
                 <div
                   key={item._id}
                   className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:scale-105 transition duration-150 ease-in cursor-pointer min-h-2/3"
