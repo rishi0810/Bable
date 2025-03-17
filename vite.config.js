@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": { // Fix: Add leading slash
-        target: "http://localhost:3000",
+        target: "https://bable-backend.onrender.com",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ""), // Ensure correct forwarding
