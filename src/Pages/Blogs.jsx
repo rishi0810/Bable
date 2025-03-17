@@ -1,6 +1,6 @@
 import React from "react";
-import TopResults from "../components/TopResults";
-import Search from "../components/Search";
+import TopResults from "../components/TopResults.jsx";
+import Search from "../components/Search.jsx";
 import { useState, useEffect } from "react";
 const Blogs = () => {
   const [results, setresults] = useState([]);
