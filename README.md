@@ -1,12 +1,22 @@
-# React + Vite
+Bable: A Blogging Website 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the frontend side of the project
 
-Currently, two official plugins are available:
+Created with React JS and Node.Js backend
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Used JWT for auth, HTTPOnly cookies, Argon2 for hashing and MongoDB for database management
 
-## Expanding the ESLint configuration
+Functionalities currently present :
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1) Loggin in
+2) Loggin out
+3) Signing up
+4) Creating new blog + saving it into blogs
+5) Saving blogs in personal array of blogs
+
+Functionalities to be added further : 
+
+1) Comment Section
+2) Upvotes and Downvotes
+3) Sorting based on popularity
+4) Profile Picture Capability
