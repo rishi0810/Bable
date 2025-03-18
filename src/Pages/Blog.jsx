@@ -85,7 +85,7 @@ const Blog = () => {
             {isloggedin && (
               <button
                 onClick={() => saveblog(blog._id)}
-                className="bg-zinc-200 hover:bg-zinc-300 cursor-pointer rounded-md shadow-md p-3 "
+                className="bg-zinc-200 hover:bg-zinc-300 cursor-pointer rounded-md shadow-md p-3 flex gap-1"
               >
                 <Save className="size-6" />
                 Save
