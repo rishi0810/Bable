@@ -21,7 +21,7 @@ const TopResults = ({ results }) => {
               <Link
                 to={"/blog"}
                 state={{ blogid: item._id }}
-                className="w-full "
+                className="max-w-1/5 "
               >
                 <div
                   key={item._id}
