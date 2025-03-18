@@ -29,7 +29,7 @@ const Profile = () => {
     };
 
     fetchUser();
-  }, [user]);
+  }, []);
 
   const handledeletefromwritten = async (blogid) => {
     try {
