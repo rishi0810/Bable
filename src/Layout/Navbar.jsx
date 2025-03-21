@@ -46,7 +46,7 @@ const Navbar = () => {
             to="/"
             className={({ isActive }) =>
               `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-lime-400" : "hover:text-gray-600"
+                isActive ? "border-b-2 border-lime-400" : "hover:text-zinc-600"
               }`
             }
             end
@@ -54,15 +54,26 @@ const Navbar = () => {
             Home
           </NavLink>
           <NavLink
-            to="/blogs"
+            to="/create"
             className={({ isActive }) =>
               `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-lime-400" : "hover:text-gray-600"
+                isActive ? "border-b-2 border-lime-400" : "hover:text-zinc-600"
               }`
             }
           >
             Blog
           </NavLink>
+          <NavLink
+            to="/blogs"
+            className={({ isActive }) =>
+              `relative inline-block text-black px-3 py-2 ${
+                isActive ? "border-b-2 border-lime-400" : "hover:text-zinc-600"
+              }`
+            }
+          >
+            Blog
+          </NavLink>
+       
 
           {isloggedin ? (
             <NavLink
@@ -71,7 +82,7 @@ const Navbar = () => {
                 `relative inline-block text-black px-3 py-2 ${
                   isActive
                     ? "border-b-2 border-lime-400"
-                    : "hover:text-gray-600"
+                    : "hover:text-zinc-600"
                 }`
               }
             >
@@ -83,7 +94,7 @@ const Navbar = () => {
             to="/about"
             className={({ isActive }) =>
               `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-lime-400" : "hover:text-gray-600"
+                isActive ? "border-b-2 border-lime-400" : "hover:text-zinc-600"
               }`
             }
           >
@@ -105,7 +116,7 @@ const Navbar = () => {
             <Link to={"/signup"}>
               <button
                 type="button"
-                className="py-2 px-3 text-sm font-medium rounded-md bg-white shadow-md text-black hover:bg-gray-100 focus:outline-none cursor-pointer"
+                className="py-2 px-3 text-sm font-medium rounded-md bg-white shadow-md text-black hover:bg-zinc-100 focus:outline-none cursor-pointer"
               >
                 Sign up
               </button>
