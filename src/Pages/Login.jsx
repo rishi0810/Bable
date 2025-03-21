@@ -36,6 +36,7 @@ export default function Login() {
         console.log("Logged in");
         setTimeout(() => {
           navigate("/");
+          window.location.reload();
         }, 500);
       } else {
         console.error("Error:", data.error);
