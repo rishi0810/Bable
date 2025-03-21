@@ -66,7 +66,7 @@ const Blog = () => {
   return (
     <div className="min-h-screen m-0 py-15 px-10 flex gap-20 justify-center font-poppins">
       {blog && Object.keys(blog).length > 0 ? (
-        <div className="flex flex-col gap-8 w-3/5" key={blog._id}>
+        <div className="flex flex-col gap-8 w-1/2" key={blog._id}>
           <h1 className="text-zinc-800 text-4xl font-poppins font-bold">
             {blog.heading}
           </h1>
