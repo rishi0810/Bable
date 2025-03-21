@@ -9,7 +9,7 @@ const Blog = () => {
 
   const checkAuth = async () => {
     const response = await fetch(
-      "https://bable-backend.onrender.com/user/authcheck",
+      "https://bable-backend.vercel.app/user/authcheck",
       {
         method: "GET",
         credentials: "include",
@@ -32,7 +32,7 @@ const Blog = () => {
     if (blogid) {
       try {
         const response = await fetch(
-          `https://bable-backend.onrender.com/blog/${blogid}`
+          `https://bable-backend.vercel.app/blog/${blogid}`
         );
         const data = await response.json();
         if (data) setblog(data);
@@ -47,7 +47,7 @@ const Blog = () => {
   const saveblog = async (blogid) => {
     try {
       const response = await fetch(
-        `https://bable-backend.onrender.com/blog/save/${blogid}`,
+        `https://bable-backend.vercel.app/blog/save/${blogid}`,
         {
           method: "POST",
           credentials: "include",

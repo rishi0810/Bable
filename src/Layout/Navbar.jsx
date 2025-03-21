@@ -6,7 +6,7 @@ const Navbar = () => {
   const [isloggedin, setisloggedin] = useState(false);
 
   const checkAuth = async () => {
-    const response = await fetch("https://bable-backend.onrender.com/user/authcheck", {
+    const response = await fetch("https://bable-backend.vercel.app/user/authcheck", {
       method: "GET",
       credentials: "include",
     });
@@ -24,7 +24,7 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = async () => {
-    await fetch("https://bable-backend.onrender.com/user/logout", {
+    await fetch("https://bable-backend.vercel.app/user/logout", {
       method: "POST",
       credentials: "include",
     });
