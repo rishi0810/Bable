@@ -54,7 +54,7 @@ const Navbar = () => {
             Home
           </NavLink>
           <NavLink
-            to="/create"
+            to= {isloggedin ? "/create" : "/login"}
             className={({ isActive }) =>
               `relative inline-block text-black px-3 py-2 ${
                 isActive ? "border-b-2 border-lime-400" : "hover:text-zinc-600"
