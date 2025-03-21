@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+
 export default function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -13,27 +15,35 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // 🔥 Show loader
     try {
-      const response = await fetch("https://bable-backend.vercel.app/user/login", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
+      const response = await fetch(
+        "https://bable-backend.vercel.app/user/login",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
+        }
+      );
 
       const data = await response.json();
       console.log(data);
       if (response.ok) {
         console.log("Logged in");
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+        }, 500);
       } else {
         console.error("Error:", data.error);
       }
     } catch (error) {
-      console.error("Error loggin in:", error);
+      console.error("Error logging in:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -48,7 +58,7 @@ export default function Login() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="enter email...."
+            placeholder="Enter email..."
             className="w-full p-2 border rounded-sm"
             required
           />
@@ -57,16 +67,21 @@ export default function Login() {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="enter password...."
+            placeholder="Enter password..."
             className="w-full p-2 border rounded-sm"
             required
             minLength={6}
           />
           <button
             type="submit"
-            className="w-full bg-zinc-900 text-white p-2 rounded-sm cursor-pointer hover:bg-zinc-700"
+            className={`w-full p-2 rounded-sm cursor-pointer ${
+              isLoading
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-zinc-900 hover:bg-zinc-700 text-white"
+            }`}
+            disabled={isLoading} // 🔥 Prevent multiple clicks
           >
-            Submit
+            {isLoading ? "Logging in..." : "Submit"} 
           </button>
         </form>
       </div>
