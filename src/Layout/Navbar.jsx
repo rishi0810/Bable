@@ -61,7 +61,7 @@ const Navbar = () => {
               }`
             }
           >
-            Blog
+            Create
           </NavLink>
           <NavLink
             to="/blogs"
