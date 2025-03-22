@@ -31,7 +31,7 @@ const Search = ({ results }) => {
       <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="relative mx-auto max-w-4xl grid space-y-5 sm:space-y-10">
           <div className="text-center">
-            <h1 className="text-2xl text-gray-800 font-bold sm:text-5xl lg:text-6xl lg:leading-tight">
+            <h1 className="text-2xl text-gray-800 font-bold sm:text-3xl lg:text-4xl lg:leading-tight">
               Search for a <span className="text-zinc-600">variety</span> of
               topics
             </h1>
