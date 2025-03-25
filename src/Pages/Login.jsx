@@ -15,7 +15,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // 🔥 Show loader
+    setIsLoading(true); 
     try {
       const response = await fetch(
         "https://bable-backend.vercel.app/user/login",
