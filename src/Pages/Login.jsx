@@ -80,7 +80,7 @@ export default function Login() {
                 ? "bg-gray-500 cursor-not-allowed"
                 : "bg-zinc-900 hover:bg-zinc-700 text-white"
             }`}
-            disabled={isLoading} // 🔥 Prevent multiple clicks
+            disabled={isLoading} 
           >
             {isLoading ? "Logging in..." : "Submit"} 
           </button>
