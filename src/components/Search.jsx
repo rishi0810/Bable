@@ -42,23 +42,24 @@ const Search = ({ results }) => {
               <div className="w-full pb-2 sm:pb-0">
                 <input
                   type="search"
-                  className="py-2.5 sm:py-3 px-4 block w-full border-transparent rounded-lg rounded-b-none sm:text-sm focus:border-zinc-500 focus:ring-zinc-500"
+                  className="py-2.5 sm:py-3 px-4 block w-full border-transparent rounded-lg sm:text-sm focus:border-zinc-500 focus:ring-zinc-500"
                   placeholder="search for any topic...."
                   value={query}
                   onChange={handleevent}
                 />
               </div>
               {filtereddata.length > 0 && (
-                <ul className="absolute left-20 right-23 border top-42 border-zinc-300 shadow-lg mt-1 rounded rounded-t-none max-h-60 overflow-y-auto bg-zinc-50">
+                <ul className="absolute left-0 right-0 border top-full border-zinc-300 shadow-lg mt-1 rounded rounded-t-none max-h-60 min-w-1/6 overflow-x-auto bg-zinc-50">
                   {filtereddata.map((result, index) => (
-                    <Link to={"/blog"} state={{ blogid: result._id }}>
-                      <li
-                        key={index}
-                        className="p-2 hover:bg-zinc-100 cursor-pointer"
+                    <li key={index} className="w-full ">
+                      <Link
+                        to={"/blog"}
+                        state={{ blogid: result._id }}
+                        className="block w-full p-2 hover:bg-zinc-100 cursor-pointer"
                       >
                         {result.heading}
-                      </li>
-                    </Link>
+                      </Link>
+                    </li>
                   ))}
                 </ul>
               )}

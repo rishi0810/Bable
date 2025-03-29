@@ -14,25 +14,23 @@ const TopResults = ({ results }) => {
 
   return (
     <>
-      {sortedlist ? (
-        <div className="flex w-full mx-auto gap-5 mb-10">
+       {sortedlist ? (
+        <div className="flex w-full mx-auto gap-5 mb-10 justify-center">
           {sortedlist.map((item) => {
             return (
               <Link
                 to={"/blog"}
                 state={{ blogid: item._id }}
-                className="max-w-1/5 "
+                className="w-1/5"
+                key={item._id}
               >
-                <div
-                  key={item._id}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:scale-105 transition duration-150 ease-in cursor-pointer min-h-2/3"
-                >
+                <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:scale-105 transition duration-150 ease-in cursor-pointer flex flex-col h-80">
                   <img
-                    className="w-full h-48 object-cover"
+                    className="w-full h-4/6 object-cover"
                     src={item.img_url}
                     alt=""
                   />
-                  <div className="p-4">
+                  <div className="p-4 flex-grow flex items-center justify-center">
                     <h2 className="text-md font-semibold text-zinc-800 text-center font-poppins line-clamp-1">
                       {item.heading}
                     </h2>
