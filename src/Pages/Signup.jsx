@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 export default function Signup() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -30,6 +31,7 @@ export default function Signup() {
       const data = await response.json();
       if (response.ok) {
         console.log("Blog Submitted Successfully:", data);
+        toast.success("Signed up successfully", {duration : 1000});
         navigate("/login");
       } else {
         console.error("Error:", data.error);

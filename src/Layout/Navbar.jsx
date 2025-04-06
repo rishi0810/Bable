@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import image from "../assets/logo.png";
+import toast from "react-hot-toast";
 const Navbar = () => {
   const navigate = useNavigate();
   const [isloggedin, setisloggedin] = useState(false);
@@ -23,14 +24,25 @@ const Navbar = () => {
     currentstatus();
   }, []);
 
-  const handleLogout = async () => {
-    await fetch("https://bable-backend.vercel.app/user/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-
-    navigate("/");
-    window.location.reload();
+  const handlelogout = async (e) => {
+    try {
+      const response = await fetch("https://bable-backend.vercel.app/user/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      if (response.ok) {
+        setTimeout(() => {
+          toast.success("Logged out successfully!", { duration: 1000 });
+          setTimeout(() => {
+            navigate("/login");
+            window.location.reload();
+          }, 1500);
+        }, 500);
+      }
+    } catch (err) {
+      toast.error("Failed to logout...");
+      console.error("Error + ", err);
+    }
   };
 
   return (
@@ -106,7 +118,7 @@ const Navbar = () => {
           <>
             <button
               className="bg-zinc-300 rounded-sm p-2 hover:bg-zinc-400 hover:text-white cursor-pointer font-semibold"
-              onClick={() => handleLogout()}
+              onClick={() => handlelogout()}
             >
               Logout
             </button>
