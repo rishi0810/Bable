@@ -1,22 +1,41 @@
-Bable: A Blogging Website 
+# Bable: A Blogging Website  
 
-This repository contains the frontend side of the project
+Bable is a feature-rich blogging platform built with **React.js** on the frontend and **Node.js** on the backend. It allows users to create, save, and manage blogs seamlessly.  
 
-Created with React JS and Node.Js backend
+## Features  
 
-Used JWT for auth, HTTPOnly cookies, Argon2 for hashing and MongoDB for database management
+### Currently Implemented:  
+- User authentication with **JWT**, **HTTPOnly cookies**, and **Argon2** for secure password hashing  
+- **Sign up, Log in, and Log out** functionalities  
+- Create new blog posts and save them  
+- Personal collection of saved blogs  
 
-Functionalities currently present :
+### Upcoming Features:  
+- **Comment section** for interactive discussions  
+- **Upvotes and downvotes** to rank blogs  
+- **Sorting based on popularity**  
+- **Profile picture upload and management**  
 
-1) Loggin in
-2) Loggin out
-3) Signing up
-4) Creating new blog + saving it into blogs
-5) Saving blogs in personal array of blogs
+## Tech Stack  
+- **Frontend:** React.js  
+- **Backend:** Node.js  
+- **Database:** MongoDB  
+- **Authentication:** JWT, HTTPOnly Cookies, Argon2  
 
-Functionalities to be added further : 
+## Installation and Setup  
 
-1) Comment Section
-2) Upvotes and Downvotes
-3) Sorting based on popularity
-4) Profile Picture Capability
+1. **Clone the repository**  
+   ```sh
+   git clone https://github.com/rishi0810/Bable.git
+   cd bable
+   ```
+
+2. **Install dependencies**  
+   ```sh
+   npm install
+   ```
+
+3. **Run the development server**  
+   ```sh
+   npm start
+   ```
