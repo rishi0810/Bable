@@ -296,8 +296,8 @@ export default function Create() {
                     }}
                     className={`p-1 rounded ${
                       editor.isActive("link")
-                        ? "bg-zinc-200"
-                        : "hover:bg-zinc-100"
+                        ? "text-blue-800"
+                        : "hover:text-blue-600 hover:underline"
                     }`}
                     title="Link"
                   >

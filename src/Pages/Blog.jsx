@@ -61,7 +61,8 @@ const Blog = () => {
   };
   useEffect(() => {
     fetching();
-  }, [blogid]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="min-h-screen m-0 py-10 px-5 md:px-10 flex justify-center font-poppins mb-20">
