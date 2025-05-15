@@ -64,30 +64,33 @@ const Blog = () => {
   }, [blogid]);
 
   return (
-    <div className="min-h-screen m-0 py-15 px-10 flex gap-20 justify-center font-poppins">
+    <div className="min-h-screen m-0 py-10 px-5 md:px-10 flex justify-center font-poppins mb-20">
       {blog && Object.keys(blog).length > 0 ? (
-        <div className="flex flex-col gap-8 w-1/2" key={blog._id}>
-          <h1 className="text-zinc-800 text-4xl font-poppins font-bold">
+        <div className="flex flex-col gap-8 w-full max-w-3xl" key={blog._id}>
+          <h1 className="text-zinc-800 text-3xl md:text-4xl font-poppins font-bold mt-6">
             {blog.heading}
           </h1>
-          <h5 className="text-zinc-800 text-xl font-poppins font-semibold">
+          <h5 className="text-zinc-800 text-lg md:text-xl font-poppins font-semibold">
             {blog.author.name}
           </h5>
-          <div className="space-y-5">
-            <img
-              src={blog.img_url}
-              className="w-full h-3/5 rounded-lg shadow"
-              alt=""
+          <div className="space-y-8 mb-12">
+            {blog.img_url && (
+              <img
+                src={blog.img_url}
+                className="w-full h-auto rounded-lg shadow-md"
+                alt="Blog cover"
+              />
+            )}
+            <div
+              className="prose max-w-none text-lg text-zinc-700 leading-relaxed font-poppins"
+              dangerouslySetInnerHTML={{ __html: blog.content }}
             />
-            <p className="text-lg text-justify font-poppins text-zinc-700">
-              {blog.content}
-            </p>
             {isloggedin && (
               <button
                 onClick={() => saveblog(blog._id)}
-                className="bg-zinc-200 hover:bg-zinc-300 cursor-pointer rounded-md shadow-md p-3 flex gap-1"
+                className="bg-zinc-200 hover:bg-zinc-300 cursor-pointer rounded-md shadow-md p-3 flex gap-2 items-center mt-8"
               >
-                <Save className="size-6" />
+                <Save className="size-5" />
                 Save
               </button>
             )}

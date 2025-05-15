@@ -11,13 +11,20 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.12",
+    "@tiptap/extension-image": "^2.12.0",
+    "@tiptap/extension-link": "^2.12.0",
+    "@tiptap/extension-placeholder": "^2.12.0",
+    "@tiptap/extension-text-align": "^2.12.0",
+    "@tiptap/react": "^2.12.0",
+    "@tiptap/starter-kit": "^2.12.0",
     "lucide-react": "^0.479.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
     "react-router": "^7.3.0",
     "react-router-dom": "^7.3.0",
-    "tailwindcss": "^4.0.12"
+    "tailwindcss": "^4.0.12",
+    "tiptap": "^1.32.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
