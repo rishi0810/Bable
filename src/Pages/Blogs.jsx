@@ -8,7 +8,7 @@ const Blogs = () => {
     const fetching = async () => {
       const response = await fetch("https://bable-backend.vercel.app/blog");
       const data = await response.json();
-      if (data) setresults(data);
+      if (data) setresults(data.reverse());
       else console.error("Unable to fetch");
     };
     fetching();
