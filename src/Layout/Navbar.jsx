@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
-import image from "../assets/logo.png";
+import image from "../assets/logo.avif";
 import toast from "react-hot-toast";
 const Navbar = () => {
   const navigate = useNavigate();

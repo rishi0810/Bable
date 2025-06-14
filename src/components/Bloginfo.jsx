@@ -1,5 +1,5 @@
 import React from "react";
-import img1 from "../assets/bloglaptop.jpg";
+import img1 from "../assets/bloglaptop.avif";
 const Bloginfo = () => {
   return (
     <div className="px-14 flex justify-center space-x-60 overflow-hidden bg-orange-400">

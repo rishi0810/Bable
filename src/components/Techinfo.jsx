@@ -1,5 +1,5 @@
 import React from "react";
-import img2 from "../assets/pen.jpg";
+import img2 from "../assets/pen.avif";
 const Techinfo = () => {
   return (
     <div className="px-14 flex justify-center space-x-60 overflow-hidden bg-red-400">
