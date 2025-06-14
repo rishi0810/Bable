@@ -50,11 +50,11 @@ const Blogs = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-5">
-      <section className="p-10 w-5/6 flex justify-center border-b border-zinc-600 mb-10">
+    <div className="min-h-screen flex flex-col gap-2">
+      <section className="p-5 mb-5">
         <Search results={results} />
       </section>
-      <section className="p-10 w-5/6 flex justify-center border-b border-zinc-600 mb-10">
+      <section className="p-5 mb-10">
         <TopResults results={results} />
       </section>
     </div>
