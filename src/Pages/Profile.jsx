@@ -88,8 +88,8 @@ const Profile = () => {
                 className="flex w-full justify-between items-center"
               >
                 <Link
-                  to={"/blog"}
-                  state={{ blogid: blog._id }}
+                  to={`/blog/${blog._id}`}
+                  // state={{ blogid: blog._id }}
                   className="text-sky-600 hover:underline"
                 >
                   {blog.heading}
@@ -120,7 +120,7 @@ const Profile = () => {
                 className="flex w-full justify-between items-center"
               >
                 <Link
-                  to={"/blog"}
+                  to={`/blog/${blog._id}`}
                   state={{ blogid: blog._id }}
                   className="text-sky-600 hover:underline"
                 >
