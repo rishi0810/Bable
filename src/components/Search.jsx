@@ -53,8 +53,7 @@ const Search = ({ results }) => {
                   {filtereddata.map((result, index) => (
                     <li key={index} className="w-full ">
                       <Link
-                        to={"/blog"}
-                        state={{ blogid: result._id }}
+                        to={`/blog/${result._id}`}
                         className="block w-full p-2 hover:bg-zinc-100 cursor-pointer"
                       >
                         {result.heading}

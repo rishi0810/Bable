@@ -23,7 +23,7 @@ const Root = () => {
     createRoutesFromElements(
       <Route path="" element={<App />}>
         <Route path="" element={<Home />} />
-        <Route path="blog" element={<Blog />} />
+        <Route path="blog/:id" element={<Blog />} />
         <Route path="create" element={<Create />} />
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />

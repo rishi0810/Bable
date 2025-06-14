@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import { useParams } from "react-router";
 import { Save } from "lucide-react";
 const Blog = () => {
-  const location = useLocation();
-  const blogid = location.state?.blogid;
+  const { id } = useParams();
+  console.log(id);
+  const blogid = id;
+
   const [blog, setblog] = useState([]);
   const [isloggedin, setisloggedin] = useState(false);
 
@@ -60,9 +62,10 @@ const Blog = () => {
     }
   };
   useEffect(() => {
-    fetching();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (blogid) {
+      fetching();
+    }
+  }, [blogid]);
 
   return (
     <div className="min-h-screen m-0 py-10 px-5 md:px-10 flex justify-center font-poppins mb-20">

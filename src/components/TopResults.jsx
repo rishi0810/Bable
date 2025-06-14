@@ -14,16 +14,11 @@ const TopResults = ({ results }) => {
 
   return (
     <>
-       {sortedlist ? (
+      {sortedlist ? (
         <div className="grid grid-cols-4 w-full mx-auto gap-5 mb-10 justify-center">
           {sortedlist.map((item) => {
             return (
-              <Link
-                to={"/blog"}
-                state={{ blogid: item._id }}
-                // className="w-1/5"
-                key={item._id}
-              >
+              <Link to={`/blog/${item._id}`} key={item._id}>
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:scale-105 transition duration-150 ease-in cursor-pointer flex flex-col h-80">
                   <img
                     className="w-full h-4/6 object-cover"
