@@ -1,4 +1,3 @@
-import React from "react";
 import pfp from "../assets/pfp.jpg";
 
 const About = () => {

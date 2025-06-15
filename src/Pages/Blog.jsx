@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Save } from "lucide-react";
+import { Save, Share } from "lucide-react";
+import toast from "react-hot-toast";
 const Blog = () => {
   const { id } = useParams();
-  console.log(id);
   const blogid = id;
 
   const [blog, setblog] = useState([]);
@@ -29,6 +29,15 @@ const Blog = () => {
 
     currentstatus();
   }, []);
+
+  const copyCurrentUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success("URL copied to clipboard!", { duration: 1000 });
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
 
   const fetching = async () => {
     if (blogid) {
@@ -56,7 +65,7 @@ const Blog = () => {
         }
       );
       const data = await response.json();
-      alert(data.message);
+      toast.success(`${data.message}`, { duration: 1000 });
     } catch (error) {
       console.error("Error occured : " + error);
     }
@@ -86,23 +95,70 @@ const Blog = () => {
               />
             )}
             <div
-              className="prose max-w-none text-lg text-zinc-700 leading-relaxed font-poppins"
+              className="prose max-w-none text-lg text-zinc-700 leading-relaxed font-poppins mb-10"
               dangerouslySetInnerHTML={{ __html: blog.content }}
             />
             {isloggedin && (
-              <button
-                onClick={() => saveblog(blog._id)}
-                className="bg-zinc-200 hover:bg-zinc-300 cursor-pointer rounded-md shadow-md p-3 flex gap-2 items-center mt-8"
-              >
-                <Save className="size-5" />
-                Save
-              </button>
+              <div className="flex space-x-8">
+                <div className="relative group">
+                  <button
+                    className="p-2 pl-0 rounded-md transition-all hover:cursor-pointer"
+                    onClick={() => saveblog(blog._id)}
+                  >
+                    <Save className="w-6 h-6 text-zinc-600 hover:text-black " />
+                  </button>
+
+                  <div className="absolute left-[12px] -top-12 -translate-x-1/2 mt-2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                    <div className="bg-black text-white text-xs px-2 py-2 rounded shadow whitespace-nowrap">
+                      Save
+                    </div>
+
+                    <div className="w-2 h-2 bg-black rotate-45 -mt-1"></div>
+                  </div>
+                </div>
+
+                <div className="relative group w-6">
+                  <button
+                    className="p-2 pl-0 rounded-md transition-all hover:cursor-pointer"
+                    onClick={copyCurrentUrl}
+                  >
+                    <Share className="w-6 h-6 text-zinc-600 hover:text-black" />
+                  </button>
+
+                  <div className="absolute left-[12px] -top-12 -translate-x-1/2 mt-2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                    <div className="bg-black text-white text-xs px-2 py-2 rounded shadow whitespace-nowrap">
+                      Share
+                    </div>
+
+                    <div className="w-2 h-2 bg-black rotate-45 -mt-1"></div>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </div>
       ) : (
-        <div className="min-h-screen flex justify-center items-center text-xl">
-          Loading...
+        <div
+          className="flex flex-col gap-8 w-full max-w-3xl animate-pulse"
+          key="skeleton"
+        >
+          <div className="h-10 bg-gray-200 rounded w-3/4 mt-6"></div>
+
+          <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+
+          <div className="w-full h-64 bg-gray-200 rounded-lg shadow-md"></div>
+
+          <div className="space-y-3">
+            <div className="h-4 bg-gray-200 rounded w-full"></div>
+            <div className="h-4 bg-gray-200 rounded w-11/12"></div>
+            <div className="h-4 bg-gray-200 rounded w-4/5"></div>
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+          </div>
+
+          {isloggedin && (
+            <div className="h-10 bg-gray-200 rounded w-28 mt-8"></div>
+          )}
         </div>
       )}
     </div>
