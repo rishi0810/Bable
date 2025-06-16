@@ -77,35 +77,35 @@ const Blog = () => {
   }, [blogid]);
 
   return (
-    <div className="min-h-screen m-0 py-10 px-5 md:px-10 flex justify-center font-poppins mb-20">
+    <div className="min-h-screen m-0 py-8 px-2 sm:px-5 md:px-10 flex justify-center font-poppins mb-20">
       {blog && Object.keys(blog).length > 0 ? (
-        <div className="flex flex-col gap-8 w-full max-w-3xl" key={blog._id}>
-          <h1 className="text-zinc-800 text-3xl md:text-4xl font-poppins font-bold mt-6">
+        <div className="flex flex-col gap-6 w-full max-w-3xl" key={blog._id}>
+          <h1 className="text-zinc-800 text-2xl sm:text-3xl md:text-4xl font-poppins font-bold mt-6">
             {blog.heading}
           </h1>
-          <h5 className="text-zinc-800 text-lg md:text-xl font-poppins font-semibold">
+          <h5 className="text-zinc-800 text-base sm:text-lg md:text-xl font-poppins font-semibold">
             {blog.author.name}
           </h5>
           <div className="space-y-8 mb-12">
             {blog.img_url && (
               <img
                 src={blog.img_url}
-                className="w-full h-auto rounded-lg shadow-md"
+                className="w-full h-48 sm:h-64 md:h-auto object-cover rounded-lg shadow-md"
                 alt="Blog cover"
               />
             )}
             <div
-              className="prose max-w-none text-lg text-zinc-700 leading-relaxed font-poppins mb-10"
+              className="prose max-w-none text-base sm:text-lg text-zinc-700 leading-relaxed font-poppins mb-10"
               dangerouslySetInnerHTML={{ __html: blog.content }}
             />
             {isloggedin ? (
-              <div className="flex space-x-8">
+              <div className="flex space-x-6 sm:space-x-8">
                 <div className="relative group">
                   <button
                     className="p-2 pl-0 rounded-md transition-all hover:cursor-pointer"
                     onClick={() => saveblog(blog._id)}
                   >
-                    <Save className="w-6 h-6 text-zinc-600 hover:text-black " />
+                    <Save className="w-5 h-5 sm:w-6 sm:h-6 text-zinc-600 hover:text-black " />
                   </button>
 
                   <div className="absolute left-[12px] -top-12 -translate-x-1/2 mt-2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
@@ -122,7 +122,7 @@ const Blog = () => {
                     className="p-2 pl-0 rounded-md transition-all hover:cursor-pointer"
                     onClick={copyCurrentUrl}
                   >
-                    <Share className="w-6 h-6 text-zinc-600 hover:text-black" />
+                    <Share className="w-5 h-5 sm:w-6 sm:h-6 text-zinc-600 hover:text-black" />
                   </button>
 
                   <div className="absolute left-[12px] -top-12 -translate-x-1/2 mt-2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
@@ -140,7 +140,7 @@ const Blog = () => {
                   className="p-2 pl-0 rounded-md transition-all hover:cursor-pointer"
                   onClick={copyCurrentUrl}
                 >
-                  <Share className="w-6 h-6 text-zinc-600 hover:text-black" />
+                  <Share className="w-5 h-5 sm:w-6 sm:h-6 text-zinc-600 hover:text-black" />
                 </button>
 
                 <div className="absolute left-[12px] -top-12 -translate-x-1/2 mt-2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
@@ -156,14 +156,14 @@ const Blog = () => {
         </div>
       ) : (
         <div
-          className="flex flex-col gap-8 w-full max-w-3xl animate-pulse"
+          className="flex flex-col gap-6 w-full max-w-3xl animate-pulse"
           key="skeleton"
         >
           <div className="h-10 bg-gray-200 rounded w-3/4 mt-6"></div>
 
           <div className="h-6 bg-gray-200 rounded w-1/4"></div>
 
-          <div className="w-full h-64 bg-gray-200 rounded-lg shadow-md"></div>
+          <div className="w-full h-48 sm:h-64 bg-gray-200 rounded-lg shadow-md"></div>
 
           <div className="space-y-3">
             <div className="h-4 bg-gray-200 rounded w-full"></div>

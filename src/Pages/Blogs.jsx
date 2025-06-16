@@ -50,11 +50,11 @@ const Blogs = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col gap-2">
-      <section className="p-5 mb-5">
+    <div className="min-h-screen flex flex-col gap-2 px-2 sm:px-5">
+      <section className="mb-5">
         <Search results={results} />
       </section>
-      <section className="p-5 mb-10">
+      <section className="mb-10">
         <TopResults results={results} />
       </section>
     </div>

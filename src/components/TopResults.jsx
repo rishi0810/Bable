@@ -23,11 +23,9 @@ const TopResults = ({ results }) => {
               <Link to={`/blog/${item._id}`} key={item._id}>
                 <article className="group bg-white hover:bg-gray-50/50 rounded-2xl overflow-hidden border border-transparent hover:border-gray-200 transition-all duration-300 ease-out hover:shadow-md mb-5">
                   <div
-                    className={`flex ${
-                      isEven ? "flex-row bg-zinc-100/80" : "flex-row-reverse"
-                    } gap-6 p-6 `}
+                    className={`flex flex-col md:${isEven ? "flex-row bg-zinc-100/80" : "flex-row-reverse"} gap-4 md:gap-6 p-4 md:p-6`}
                   >
-                    <div className="flex-shrink-0 w-56 h-36">
+                    <div className="flex-shrink-0 w-full h-40 md:w-56 md:h-36">
                       <img
                         className="w-full h-full object-cover rounded-xl bg-gray-100"
                         src={item.img_url}
@@ -36,9 +34,9 @@ const TopResults = ({ results }) => {
                       />
                     </div>
 
-                    <div className="flex-1 flex flex-col justify-center min-w-0">
+                    <div className="flex-1 flex flex-col justify-center min-w-0 mt-4 md:mt-0">
                       <div className="space-y-3">
-                        <h2 className="text-2xl font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-gray-700 transition-colors">
+                        <h2 className="text-xl md:text-2xl font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-gray-700 transition-colors">
                           {item.heading}
                         </h2>
 

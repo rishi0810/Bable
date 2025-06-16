@@ -73,11 +73,11 @@ const Search = ({ results }) => {
 
   return (
     <div>
-      <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="max-w-[85rem] mx-auto px-2 sm:px-4 sm:px-6 lg:px-8 py-10 sm:py-20">
         <div className="relative mx-auto max-w-4xl grid space-y-5 sm:space-y-10">
           <div className="relative ">
             <div
-              className={`sm:flex sm:space-x-3 p-3 bg-white border rounded-lg shadow-lg shadow-gray-100 transition-all duration-300 mx-auto ${
+              className={`sm:flex sm:space-x-3 p-2 sm:p-3 bg-white border rounded-lg shadow-lg shadow-gray-100 transition-all duration-300 mx-auto ${
                 isSearchFocused
                   ? "border-zinc-400 shadow-xl"
                   : "border-gray-200"
@@ -87,7 +87,7 @@ const Search = ({ results }) => {
                 <input
                   id="search-input"
                   type="text"
-                  className="py-2.5 sm:py-3 pl-10 pr-20 block w-full border-transparent rounded-lg sm:text-sm focus:border-zinc-500 focus:ring-zinc-500 placeholder-gray-500 transition-all duration-200"
+                  className="py-2 sm:py-2.5 sm:py-3 pl-10 pr-20 block w-full border-transparent rounded-lg sm:text-sm focus:border-zinc-500 focus:ring-zinc-500 placeholder-gray-500 transition-all duration-200 text-base"
                   placeholder="Search for any topic..."
                   value={query}
                   onChange={handleevent}
