@@ -80,3 +80,7 @@
   font-style: italic;
   background: #f9fafb;
 }
+
+.tiptap p.is-empty:not(:only-child)::before {
+  display: none;
+}
