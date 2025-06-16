@@ -88,7 +88,7 @@ const Navbar = () => {
               }`
             }
           >
-            Blog
+            Blogs
           </NavLink>
        
 
