@@ -43,9 +43,9 @@ Bable is a feature-rich blogging platform built with **React.js** on the fronten
 ## Screenshots
 
 ### Landing Page
-![Landing Page](https://res.cloudinary.com/dtz0urit6/image/upload/f_avif,q_auto/cloudinary-tools-uploads/dk9xiwt6njchmuw5u2vs.avif)
+![Landing Page](https://i.ibb.co/S7MvTtDN/Screenshot-2025-06-16-at-8-22-04-PM.jpg)
 *The Bable landing page welcomes users with a clean, modern interface and easy access to sign up or log in.*
 
 ### Blogs Page
-![Blogs Page](https://res.cloudinary.com/dtz0urit6/image/upload/f_avif,q_auto/cloudinary-tools-uploads/rgnmh1kixhgjn52l3zcc.avif)
+![Blogs Page](https://i.ibb.co/QSn5vsT/Screenshot-2025-06-16-at-8-22-50-PM.jpg)
 *The Blogs page displays a curated list of blog posts, allowing users to explore, read, and interact with content from the community.*
