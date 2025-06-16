@@ -47,6 +47,13 @@ const TopResults = ({ results }) => {
                             {item.author.name}
                           </p>
                         )}
+                        <p className="text-gray-400 text-sm">
+                          {new Date(item.createdAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </p>
                       </div>
                     </div>
                   </div>
