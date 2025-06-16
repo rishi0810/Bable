@@ -21,19 +21,25 @@ export default function Create() {
   const [imageError, setImageError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Initialize TipTap editor
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: false,
+        bulletList: false,
+        orderedList: false,
+        blockquote: false,
+      }),
       Image,
       Link.configure({
         openOnClick: false,
       }),
       TextAlign.configure({
-        types: ["heading", "paragraph"],
+        types: ["paragraph"],
       }),
       Placeholder.configure({
-        placeholder: "Write your blog content here...",
+        placeholder: "Start writing your story…",
+        showOnlyWhenEditable: true,
+        showOnlyCurrent: true,
       }),
     ],
     content: "",
@@ -119,260 +125,80 @@ export default function Create() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen p-4 font-poppins">
-      <div className="p-6 w-full max-w-4xl">
-        <h2 className="text-3xl font-bold mb-6 text-zinc-950">
-          Create a Blog Post
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label
-              htmlFor="heading"
-              className="block text-sm font-medium mb-1 text-zinc-700"
-            >
-              Blog Title
-            </label>
-            <input
-              id="heading"
-              name="heading"
-              value={formData.heading}
-              onChange={handleChange}
-              placeholder="Enter a captivating title"
-              className="w-full p-3 border rounded-lg text-lg font-semibold focus:ring-2 focus:ring-zinc-500 focus:border-transparent"
-              required
-            />
-          </div>
+    <div className="flex flex-col md:flex-row min-h-screen font-poppins bg-white">
 
-          <div>
-            <label className="block text-sm font-medium mb-1 text-zinc-700">
-              Blog Content
-            </label>
-            <div className="border rounded-lg p-1 bg-white min-h-[300px]">
-              {editor && (
-                <div className="tiptap-toolbar border-b mb-2 p-2 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => editor.chain().focus().toggleBold().run()}
-                    className={`p-1 rounded ${
-                      editor.isActive("bold")
-                        ? "bg-zinc-200"
-                        : "hover:bg-zinc-100"
-                    }`}
-                    title="Bold"
-                  >
-                    <span className="font-bold">B</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => editor.chain().focus().toggleItalic().run()}
-                    className={`p-1 rounded ${
-                      editor.isActive("italic")
-                        ? "bg-zinc-200"
-                        : "hover:bg-zinc-100"
-                    }`}
-                    title="Italic"
-                  >
-                    <span className="italic">I</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      editor.chain().focus().toggleHeading({ level: 1 }).run()
-                    }
-                    className={`p-1 rounded ${
-                      editor.isActive("heading", { level: 1 })
-                        ? "bg-zinc-200"
-                        : "hover:bg-zinc-100"
-                    }`}
-                    title="Heading 1"
-                  >
-                    H1
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      editor.chain().focus().toggleHeading({ level: 2 }).run()
-                    }
-                    className={`p-1 rounded ${
-                      editor.isActive("heading", { level: 2 })
-                        ? "bg-zinc-200"
-                        : "hover:bg-zinc-100"
-                    }`}
-                    title="Heading 2"
-                  >
-                    H2
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      editor.chain().focus().toggleBulletList().run()
-                    }
-                    className={`p-1 rounded ${
-                      editor.isActive("bulletList")
-                        ? "bg-zinc-200"
-                        : "hover:bg-zinc-100"
-                    }`}
-                    title="Bullet List"
-                  >
-                    • List
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      editor.chain().focus().toggleOrderedList().run()
-                    }
-                    className={`p-1 rounded ${
-                      editor.isActive("orderedList")
-                        ? "bg-zinc-200"
-                        : "hover:bg-zinc-100"
-                    }`}
-                    title="Numbered List"
-                  >
-                    1. List
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      editor.chain().focus().toggleBlockquote().run()
-                    }
-                    className={`p-1 rounded ${
-                      editor.isActive("blockquote")
-                        ? "bg-zinc-200"
-                        : "hover:bg-zinc-100"
-                    }`}
-                    title="Quote"
-                  >
-                    Quote
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      editor.chain().focus().setTextAlign("left").run()
-                    }
-                    className={`p-1 rounded ${
-                      editor.isActive({ textAlign: "left" })
-                        ? "bg-zinc-200"
-                        : "hover:bg-zinc-100"
-                    }`}
-                    title="Align Left"
-                  >
-                    ←
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      editor.chain().focus().setTextAlign("center").run()
-                    }
-                    className={`p-1 rounded ${
-                      editor.isActive({ textAlign: "center" })
-                        ? "bg-zinc-200"
-                        : "hover:bg-zinc-100"
-                    }`}
-                    title="Align Center"
-                  >
-                    ↔
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      editor.chain().focus().setTextAlign("right").run()
-                    }
-                    className={`p-1 rounded ${
-                      editor.isActive({ textAlign: "right" })
-                        ? "bg-zinc-200"
-                        : "hover:bg-zinc-100"
-                    }`}
-                    title="Align Right"
-                  >
-                    →
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const url = window.prompt("Enter the URL");
-                      if (url) {
-                        editor.chain().focus().setLink({ href: url }).run();
-                      }
-                    }}
-                    className={`p-1 rounded ${
-                      editor.isActive("link")
-                        ? "text-blue-800"
-                        : "hover:text-blue-600 hover:underline"
-                    }`}
-                    title="Link"
-                  >
-                    Link
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const url = window.prompt("Enter the image URL");
-                      if (url) {
-                        editor.chain().focus().setImage({ src: url }).run();
-                      }
-                    }}
-                    className="p-1 rounded hover:bg-zinc-100"
-                    title="Image"
-                  >
-                    Image
-                  </button>
-                </div>
-              )}
-              <EditorContent
-                editor={editor}
-                className="prose max-w-none p-3 min-h-[250px]"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="imageUrl"
-              className="block text-sm font-medium mb-1 text-zinc-700"
-            >
-              Cover Image URL
-            </label>
-            <input
-              id="imageUrl"
-              name="imageUrl"
-              value={formData.imageUrl}
-              onChange={handleChange}
-              placeholder="Enter image URL for your blog cover"
-              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-zinc-500 focus:border-transparent"
-            />
-          </div>
-
-          {imagePreview && (
-            <div className="mt-4">
-              <label className="block text-sm font-medium mb-1 text-zinc-700">
-                Image Preview
-              </label>
-              <img
-                src={imagePreview}
-                alt="Blog Cover"
-                className="w-full h-auto rounded-lg border"
-                onError={handleImageError}
-                onLoad={handleImageLoad}
-                style={{ display: imageError ? "none" : "block" }}
-              />
-              {imageError && (
-                <div className="bg-gray-100 text-gray-500 border rounded-lg w-full h-40 flex items-center justify-center">
-                  <p>Invalid image URL or image failed to load</p>
-                </div>
-              )}
+      <div className="flex-1 p-6 md:p-12 max-w-2xl mx-auto">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <input
+            id="heading"
+            name="heading"
+            value={formData.heading}
+            onChange={handleChange}
+            placeholder="Title"
+            className="w-full text-4xl font-bold bg-transparent border-0 border-b border-zinc-200 focus:ring-0 focus:border-zinc-400 placeholder:text-zinc-400 mb-6 outline-none"
+            required
+            autoComplete="off"
+            style={{ boxShadow: "none" }}
+          />
+          <input
+            id="imageUrl"
+            name="imageUrl"
+            value={formData.imageUrl}
+            onChange={handleChange}
+            placeholder="Cover image URL"
+            className="w-full text-base bg-transparent border-0 border-b border-zinc-200 focus:ring-0 focus:border-zinc-400 placeholder:text-zinc-400 mb-6 outline-none"
+            autoComplete="off"
+            style={{ boxShadow: "none" }}
+          />
+    
+          {editor && (
+            <div className="flex flex-wrap gap-2 mb-2 border-b pb-2">
+              <button type="button" onClick={() => editor.chain().focus().toggleBold().run()} className={`p-1 rounded ${editor.isActive("bold") ? "bg-zinc-200" : "hover:bg-zinc-100"}`} title="Bold"><b>B</b></button>
+              <button type="button" onClick={() => editor.chain().focus().toggleItalic().run()} className={`p-1 rounded ${editor.isActive("italic") ? "bg-zinc-200" : "hover:bg-zinc-100"}`} title="Italic"><i>I</i></button>
+              <button type="button" onClick={() => editor.chain().focus().setTextAlign("left").run()} className={`p-1 rounded ${editor.isActive({ textAlign: "left" }) ? "bg-zinc-200" : "hover:bg-zinc-100"}`} title="Align Left">⇤</button>
+              <button type="button" onClick={() => editor.chain().focus().setTextAlign("center").run()} className={`p-1 rounded ${editor.isActive({ textAlign: "center" }) ? "bg-zinc-200" : "hover:bg-zinc-100"}`} title="Align Center">↔</button>
+              <button type="button" onClick={() => editor.chain().focus().setTextAlign("right").run()} className={`p-1 rounded ${editor.isActive({ textAlign: "right" }) ? "bg-zinc-200" : "hover:bg-zinc-100"}`} title="Align Right">⇥</button>
+              <button type="button" onClick={() => {
+                const url = window.prompt("Enter the URL");
+                if (url) editor.chain().focus().setLink({ href: url }).run();
+              }} className={`p-1 rounded ${editor.isActive("link") ? "text-blue-800" : "hover:text-blue-600 hover:underline"}`} title="Link">🔗</button>
+              <button type="button" onClick={() => {
+                const url = window.prompt("Enter the image URL");
+                if (url) editor.chain().focus().setImage({ src: url }).run();
+              }} className="p-1 rounded hover:bg-zinc-100" title="Image">🖼️</button>
             </div>
           )}
-
+          <div className="bg-zinc-50 rounded-2xl shadow-md p-6 min-h-[380px]">
+            <EditorContent
+              editor={editor}
+              className="tiptap max-w-none min-h-[500px] focus:outline-none text-lg"
+            />
+          </div>
           <button
             type="submit"
-            className={`w-full bg-zinc-900 text-white p-3 rounded-lg cursor-pointer hover:bg-zinc-700 font-medium text-lg transition duration-200 ${
-              isSubmitting ? "opacity-70" : ""
-            }`}
+            className={`w-full bg-zinc-900 text-white p-3 rounded-lg cursor-pointer hover:bg-zinc-700 font-medium text-lg transition duration-200 ${isSubmitting ? "opacity-70" : ""}`}
             disabled={isSubmitting}
           >
             {isSubmitting ? "Publishing..." : "Publish Blog"}
           </button>
         </form>
+      </div>
+      <div className="hidden md:block w-1/2 bg-gray-50 border-l border-zinc-100 p-8 overflow-y-auto">
+        <div className="max-w-xl mx-auto">
+          {formData.imageUrl && !imageError && (
+            <img
+              src={formData.imageUrl}
+              alt="Blog Cover Preview"
+              className="w-full h-64 object-cover rounded-xl mb-6 border"
+              onError={handleImageError}
+              onLoad={handleImageLoad}
+            />
+          )}
+          <h1 className="text-4xl font-bold text-zinc-750 mb-4 break-words">
+            {formData.heading || <span className="text-zinc-300">Title</span>}
+          </h1>
+          <div className="prose prose-zinc max-w-none" dangerouslySetInnerHTML={{ __html: formData.content || '<p class="text-zinc-750">Start writing your story…</p>' }} />
+        </div>
       </div>
     </div>
   );

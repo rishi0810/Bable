@@ -31,3 +31,52 @@
     width: 0;
     height: 0;
   }
+
+/* TipTap Placeholder Styling */
+.tiptap p.is-empty::before {
+  content: attr(data-placeholder);
+  color: #bdbdbd;
+  font-size: 1.5rem;
+  font-weight: 300;
+  font-family: 'Poppins', sans-serif;
+  pointer-events: none;
+  height: 0;
+  float: left;
+  line-height: 1.2;
+}
+
+.tiptap:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* TipTap Editor Block Styles */
+.tiptap h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 1.5rem 0 1rem 0;
+}
+.tiptap h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1.2rem 0 0.8rem 0;
+}
+.tiptap ul, .tiptap ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  list-style-position: inside;
+}
+.tiptap ul {
+  list-style-type: disc;
+}
+.tiptap ol {
+  list-style-type: decimal;
+}
+.tiptap blockquote {
+  border-left: 4px solid #d1d5db;
+  color: #6b7280;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+  background: #f9fafb;
+}
