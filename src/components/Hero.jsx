@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const words = ["Write", "Share", "Inspire"];
 const TypingEffect = () => {
   const [index, setIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const words = ["Write", "Share", "Inspire"];
 
   useEffect(() => {
     const currentWord = words[index];
@@ -34,8 +35,11 @@ const TypingEffect = () => {
   }, [displayText, isDeleting, index]);
 
   return (
-    <span className="ml-2 text-zinc-700 font-semibold">
-      – {displayText}
+    <span
+      className="text-zinc-700 font-semibold inline-block text-center"
+      style={{ display: "inline-block", minWidth: "7ch" }} // Enough space for "Inspire"
+    >
+      {displayText}
       <span className="animate-pulse">|</span>
     </span>
   );
@@ -68,7 +72,7 @@ const Hero = () => {
     <div className="text-center px-4 sm:px-8 md:px-20 pt-10 pb-6 font-poppins bg-white">
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-800 inline-flex flex-wrap justify-center items-center">
         <span className="whitespace-nowrap">
-          Bable <TypingEffect />
+          Bable -<TypingEffect />
         </span>
       </h1>
 
