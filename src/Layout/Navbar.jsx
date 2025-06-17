@@ -61,7 +61,7 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 w-full px-4 sm:px-8 bg-white z-50 shadow-md">
-      <nav className="flex items-center w-full">
+      <nav className="flex items-center justify-between w-full">
         <div className="flex items-center gap-2">
           <img src={image} alt="" className="size-7 rounded-full" />
           <h3 className="font-bold text-xl sm:text-2xl">Bable</h3>
@@ -74,11 +74,11 @@ const Navbar = () => {
           {menuOpen ? <HiX /> : <HiMenu />}
         </button>
         <div
-          className={`flex-col sm:flex-row flex items-center gap-x-7 gap-y-2
-                      mx-auto absolute sm:static top-16 right-1 sm:right-0
-                      w-40 p-4 sm:w-auto bg-white sm:bg-transparent
+          className={`flex-col sm:items-center items-start sm:flex-row flex sm:border-none gap-x-7 gap-y-2
+                      mx-auto absolute sm:static top-12 right-0 sm:right-0
+                      w-full p-4 sm:w-auto bg-white sm:bg-transparent
                       shadow-md sm:shadow-none z-40 transition-all duration-300 ease-in-out
-                      transform origin-top
+                      transform origin-top-right
                       ${
                         menuOpen
                           ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
@@ -89,8 +89,8 @@ const Navbar = () => {
           <NavLink
             to={"/"}
             className={({ isActive }) =>
-              `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-zinc-600" : "hover:text-zinc-600"
+              `relative inline-block text-black px-3 py-2 sm:border-none border-b border-zinc-400 sm:w-fit w-full ${
+                isActive ? "sm:bg-zinc-200/60 bg-none" : "hover:text-zinc-600"
               }`
             }
             onClick={() => setMenuOpen(!menuOpen)}
@@ -100,8 +100,8 @@ const Navbar = () => {
           <NavLink
             to={isloggedin ? "/create" : "/login"}
             className={({ isActive }) =>
-              `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-zinc-600" : "hover:text-zinc-600"
+              `relative inline-block text-black px-3 py-2 sm:border-none border-b border-zinc-400 sm:w-fit w-full ${
+                isActive ? "sm:bg-zinc-200/60 bg-none" : "hover:text-zinc-600"
               }`
             }
             onClick={() => setMenuOpen(!menuOpen)}
@@ -111,8 +111,8 @@ const Navbar = () => {
           <NavLink
             to="/blogs"
             className={({ isActive }) =>
-              `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-zinc-600" : "hover:text-zinc-600"
+              `relative inline-block text-black px-3 py-2 sm:border-none border-b border-zinc-400 sm:w-fit w-full ${
+                isActive ? "sm:bg-zinc-200/60 bg-none" : "hover:text-zinc-600"
               }`
             }
             onClick={() => setMenuOpen(!menuOpen)}
@@ -139,8 +139,8 @@ const Navbar = () => {
           <NavLink
             to="/about"
             className={({ isActive }) =>
-              `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-zinc-600" : "hover:text-zinc-600"
+              `relative inline-block text-black px-3 py-2 sm:border-none border-b border-zinc-400 sm:w-fit w-full ${
+                isActive ? "sm:bg-zinc-200/60 bg-none" : "hover:text-zinc-600"
               }`
             }
             onClick={() => setMenuOpen(!menuOpen)}
@@ -158,23 +158,23 @@ const Navbar = () => {
               Logout
             </button>
           ) : (
-            <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
-              <Link to={"/signup"}>
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto sm:mt-0 mt-5">
+              <Link to={"/signup"} className="w-full sm:w-fit">
                 <button
                   type="button"
-                  className="py-2 px-3 text-sm font-medium rounded-md bg-white shadow-md text-black hover:bg-zinc-100 focus:outline-none cursor-pointer w-full sm:w-auto"
+                  className="py-2 px-3 text-sm font-medium rounded-md bg-white border  text-black hover:bg-zinc-100 focus:outline-none cursor-pointer w-full sm:w-auto"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Sign up
+                  Signup
                 </button>
               </Link>
-              <Link to={"/login"}>
+              <Link to={"/login"} className="w-full sm:w-fit">
                 <button
                   type="button"
                   className="py-2 px-3 text-sm font-medium rounded-md bg-zinc-400 text-white hover:bg-zinc-500 focus:outline-none cursor-pointer w-full sm:w-auto"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Log in
+                  Login
                 </button>
               </Link>
             </div>

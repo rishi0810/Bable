@@ -37,7 +37,7 @@ const TypingEffect = () => {
   return (
     <span
       className="text-zinc-700 font-semibold inline-block text-center"
-      style={{ display: "inline-block", minWidth: "7ch" }} // Enough space for "Inspire"
+      style={{ display: "inline-block", minWidth: "7ch" }}
     >
       {displayText}
       <span className="animate-pulse">|</span>
