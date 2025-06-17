@@ -8,6 +8,8 @@ import Login from "./Pages/Login.jsx";
 import Blogs from "./Pages/Blogs.jsx";
 import Profile from "./Pages/Profile.jsx";
 import About from "./Pages/About.jsx";
+import Policy from "./misc/Policy.jsx";
+import PrPolicy from "./misc/PrPolicy.jsx";
 
 import {
   createBrowserRouter,
@@ -29,6 +31,8 @@ const Root = () => {
         <Route path="blogs" element={<Blogs />} />
         <Route path="profile" element={<Profile />} />
         <Route path="about" element={<About />} />
+        <Route path="policy" element={<Policy />} />
+        <Route path="prpolicy" element={<PrPolicy />} />
       </Route>
     )
   );
@@ -36,6 +40,4 @@ const Root = () => {
   return <RouterProvider router={router} />;
 };
 
-createRoot(document.getElementById("root")).render(
-    <Root />
-);
+createRoot(document.getElementById("root")).render(<Root />);

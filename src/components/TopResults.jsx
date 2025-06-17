@@ -23,7 +23,13 @@ const TopResults = ({ results }) => {
               <Link to={`/blog/${item._id}`} key={item._id}>
                 <article className="group bg-white hover:bg-gray-50/50 rounded-2xl overflow-hidden border border-transparent hover:border-gray-200 transition-all duration-300 ease-out hover:shadow-md mb-5">
                   <div
-                    className={`flex flex-col md:${isEven ? "flex-row bg-zinc-100/80" : "flex-row-reverse"} gap-4 md:gap-6 p-4 md:p-6 ${isEven ? 'md:flex-row md:bg-zinc-100/80' : 'md:flex-row-reverse'}`}
+                    className={`flex flex-col md:${
+                      isEven ? "flex-row bg-zinc-100/80" : "flex-row-reverse"
+                    } gap-4 md:gap-6 p-4 md:p-6 ${
+                      isEven
+                        ? "md:flex-row md:bg-zinc-100/80"
+                        : "md:flex-row-reverse"
+                    }`}
                   >
                     <div className="flex-shrink-0 w-full h-40 md:w-56 md:h-36">
                       <img

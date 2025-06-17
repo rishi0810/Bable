@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import image from "../assets/logo.avif";
 import toast from "react-hot-toast";
@@ -10,10 +10,13 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const checkAuth = async () => {
-    const response = await fetch("https://bable-backend.vercel.app/user/authcheck", {
-      method: "GET",
-      credentials: "include",
-    });
+    const response = await fetch(
+      "https://bable-backend.vercel.app/user/authcheck",
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
     const data = await response.json();
     return data.Authenticated;
   };
@@ -27,56 +30,81 @@ const Navbar = () => {
     currentstatus();
   }, []);
 
-  const handlelogout = async (e) => {
-    try {
-      const response = await fetch("https://bable-backend.vercel.app/user/logout", {
+  const handlelogout = async () => {
+    const logoutPromise = fetch(
+      "https://bable-backend.vercel.app/user/logout",
+      {
         method: "POST",
         credentials: "include",
-      });
+      }
+    );
+
+    toast.promise(logoutPromise, {
+      loading: "Logging out...",
+      success: "Logged out successfully!",
+      error: "Failed to logout.",
+    });
+
+    try {
+      const response = await logoutPromise;
+
       if (response.ok) {
         setTimeout(() => {
-          toast.success("Logged out successfully!", { duration: 1000 });
-          setTimeout(() => {
-            navigate("/login");
-            window.location.reload();
-          }, 1500);
-        }, 500);
+          navigate("/login");
+          window.location.reload();
+        }, 1500);
       }
     } catch (err) {
-      toast.error("Failed to logout...");
-      console.error("Error + ", err);
+      console.error("Error: ", err);
     }
   };
 
   return (
-    <header className="sticky top-0 w-full py-2 px-4 sm:px-8 bg-white z-50 shadow-md">
-      <nav className="flex items-center w-full justify-between">
+    <header className="sticky top-0 w-full px-4 sm:px-8 bg-white z-50 shadow-md">
+      <nav className="flex items-center w-full">
         <div className="flex items-center gap-2">
-          <img src={image} alt="" className="size-8 rounded-full" />
+          <img src={image} alt="" className="size-7 rounded-full" />
           <h3 className="font-bold text-xl sm:text-2xl">Bable</h3>
         </div>
-        <button className="sm:hidden ml-auto text-3xl p-2" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+        <button
+          className="sm:hidden ml-auto text-3xl p-2 z-50"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+        >
           {menuOpen ? <HiX /> : <HiMenu />}
         </button>
-        <div className={`flex-col sm:flex-row flex items-center gap-x-7 gap-y-2 mx-auto absolute sm:static top-14 left-0 w-full sm:w-auto bg-white sm:bg-transparent shadow-md sm:shadow-none transition-all duration-200 z-40 ${menuOpen ? "flex" : "hidden sm:flex"}`}>
+        <div
+          className={`flex-col sm:flex-row flex items-center gap-x-7 gap-y-2
+                      mx-auto absolute sm:static top-16 right-1 sm:right-0
+                      w-40 p-4 sm:w-auto bg-white sm:bg-transparent
+                      shadow-md sm:shadow-none z-40 transition-all duration-300 ease-in-out
+                      transform origin-top
+                      ${
+                        menuOpen
+                          ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
+                          : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
+                      }
+                      sm:opacity-100 sm:scale-100 sm:translate-y-0 sm:pointer-events-auto`}
+        >
           <NavLink
-            to="/"
+            to={"/"}
             className={({ isActive }) =>
               `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-lime-400" : "hover:text-zinc-600"
+                isActive ? "border-b-2 border-zinc-600" : "hover:text-zinc-600"
               }`
             }
-            end
+            onClick={() => setMenuOpen(!menuOpen)}
           >
             Home
           </NavLink>
           <NavLink
-            to= {isloggedin ? "/create" : "/login"}
+            to={isloggedin ? "/create" : "/login"}
             className={({ isActive }) =>
               `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-lime-400" : "hover:text-zinc-600"
+                isActive ? "border-b-2 border-zinc-600" : "hover:text-zinc-600"
               }`
             }
+            onClick={() => setMenuOpen(!menuOpen)}
           >
             Create
           </NavLink>
@@ -84,13 +112,13 @@ const Navbar = () => {
             to="/blogs"
             className={({ isActive }) =>
               `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-lime-400" : "hover:text-zinc-600"
+                isActive ? "border-b-2 border-zinc-600" : "hover:text-zinc-600"
               }`
             }
+            onClick={() => setMenuOpen(!menuOpen)}
           >
             Blogs
           </NavLink>
-       
 
           {isloggedin ? (
             <NavLink
@@ -98,10 +126,11 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `relative inline-block text-black px-3 py-2 ${
                   isActive
-                    ? "border-b-2 border-lime-400"
+                    ? "border-b-2 border-zinc-600"
                     : "hover:text-zinc-600"
                 }`
               }
+              onClick={() => setMenuOpen(!menuOpen)}
             >
               Profile
             </NavLink>
@@ -111,16 +140,20 @@ const Navbar = () => {
             to="/about"
             className={({ isActive }) =>
               `relative inline-block text-black px-3 py-2 ${
-                isActive ? "border-b-2 border-lime-400" : "hover:text-zinc-600"
+                isActive ? "border-b-2 border-zinc-600" : "hover:text-zinc-600"
               }`
             }
+            onClick={() => setMenuOpen(!menuOpen)}
           >
             About
           </NavLink>
           {isloggedin ? (
             <button
               className="bg-zinc-300 rounded-sm p-2 w-full sm:w-auto hover:bg-zinc-400 hover:text-white cursor-pointer font-semibold"
-              onClick={() => { setMenuOpen(false); handlelogout(); }}
+              onClick={() => {
+                setMenuOpen(false);
+                handlelogout();
+              }}
             >
               Logout
             </button>

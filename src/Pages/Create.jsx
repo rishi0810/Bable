@@ -126,7 +126,6 @@ export default function Create() {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen font-poppins bg-white">
-
       <div className="flex-1 p-6 md:p-12 max-w-2xl mx-auto">
         <form onSubmit={handleSubmit} className="space-y-8">
           <input
@@ -150,22 +149,99 @@ export default function Create() {
             autoComplete="off"
             style={{ boxShadow: "none" }}
           />
-    
+
           {editor && (
             <div className="flex flex-wrap gap-2 mb-2 border-b pb-2">
-              <button type="button" onClick={() => editor.chain().focus().toggleBold().run()} className={`p-1 rounded ${editor.isActive("bold") ? "bg-zinc-200" : "hover:bg-zinc-100"}`} title="Bold"><b>B</b></button>
-              <button type="button" onClick={() => editor.chain().focus().toggleItalic().run()} className={`p-1 rounded ${editor.isActive("italic") ? "bg-zinc-200" : "hover:bg-zinc-100"}`} title="Italic"><i>I</i></button>
-              <button type="button" onClick={() => editor.chain().focus().setTextAlign("left").run()} className={`p-1 rounded ${editor.isActive({ textAlign: "left" }) ? "bg-zinc-200" : "hover:bg-zinc-100"}`} title="Align Left">⇤</button>
-              <button type="button" onClick={() => editor.chain().focus().setTextAlign("center").run()} className={`p-1 rounded ${editor.isActive({ textAlign: "center" }) ? "bg-zinc-200" : "hover:bg-zinc-100"}`} title="Align Center">↔</button>
-              <button type="button" onClick={() => editor.chain().focus().setTextAlign("right").run()} className={`p-1 rounded ${editor.isActive({ textAlign: "right" }) ? "bg-zinc-200" : "hover:bg-zinc-100"}`} title="Align Right">⇥</button>
-              <button type="button" onClick={() => {
-                const url = window.prompt("Enter the URL");
-                if (url) editor.chain().focus().setLink({ href: url }).run();
-              }} className={`p-1 rounded ${editor.isActive("link") ? "text-blue-800" : "hover:text-blue-600 hover:underline"}`} title="Link">🔗</button>
-              <button type="button" onClick={() => {
-                const url = window.prompt("Enter the image URL");
-                if (url) editor.chain().focus().setImage({ src: url }).run();
-              }} className="p-1 rounded hover:bg-zinc-100" title="Image">🖼️</button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().toggleBold().run()}
+                className={`p-1 rounded ${
+                  editor.isActive("bold") ? "bg-zinc-200" : "hover:bg-zinc-100"
+                }`}
+                title="Bold"
+              >
+                <b>B</b>
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().toggleItalic().run()}
+                className={`p-1 rounded ${
+                  editor.isActive("italic")
+                    ? "bg-zinc-200"
+                    : "hover:bg-zinc-100"
+                }`}
+                title="Italic"
+              >
+                <i>I</i>
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  editor.chain().focus().setTextAlign("left").run()
+                }
+                className={`p-1 rounded ${
+                  editor.isActive({ textAlign: "left" })
+                    ? "bg-zinc-200"
+                    : "hover:bg-zinc-100"
+                }`}
+                title="Align Left"
+              >
+                ⇤
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  editor.chain().focus().setTextAlign("center").run()
+                }
+                className={`p-1 rounded ${
+                  editor.isActive({ textAlign: "center" })
+                    ? "bg-zinc-200"
+                    : "hover:bg-zinc-100"
+                }`}
+                title="Align Center"
+              >
+                ↔
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  editor.chain().focus().setTextAlign("right").run()
+                }
+                className={`p-1 rounded ${
+                  editor.isActive({ textAlign: "right" })
+                    ? "bg-zinc-200"
+                    : "hover:bg-zinc-100"
+                }`}
+                title="Align Right"
+              >
+                ⇥
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const url = window.prompt("Enter the URL");
+                  if (url) editor.chain().focus().setLink({ href: url }).run();
+                }}
+                className={`p-1 rounded ${
+                  editor.isActive("link")
+                    ? "text-blue-800"
+                    : "hover:text-blue-600 hover:underline"
+                }`}
+                title="Link"
+              >
+                🔗
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const url = window.prompt("Enter the image URL");
+                  if (url) editor.chain().focus().setImage({ src: url }).run();
+                }}
+                className="p-1 rounded hover:bg-zinc-100"
+                title="Image"
+              >
+                🖼️
+              </button>
             </div>
           )}
           <div className="bg-zinc-50 rounded-2xl shadow-md p-6 min-h-[380px]">
@@ -176,7 +252,9 @@ export default function Create() {
           </div>
           <button
             type="submit"
-            className={`w-full bg-zinc-900 text-white p-3 rounded-lg cursor-pointer hover:bg-zinc-700 font-medium text-lg transition duration-200 ${isSubmitting ? "opacity-70" : ""}`}
+            className={`w-full bg-zinc-900 text-white p-3 rounded-lg cursor-pointer hover:bg-zinc-700 font-medium text-lg transition duration-200 ${
+              isSubmitting ? "opacity-70" : ""
+            }`}
             disabled={isSubmitting}
           >
             {isSubmitting ? "Publishing..." : "Publish Blog"}
@@ -197,7 +275,14 @@ export default function Create() {
           <h1 className="text-4xl font-bold text-zinc-750 mb-4 break-words">
             {formData.heading || <span className="text-zinc-300">Title</span>}
           </h1>
-          <div className="prose prose-zinc max-w-none" dangerouslySetInnerHTML={{ __html: formData.content || '<p class="text-zinc-750">Start writing your story…</p>' }} />
+          <div
+            className="prose prose-zinc max-w-none"
+            dangerouslySetInnerHTML={{
+              __html:
+                formData.content ||
+                '<p class="text-zinc-750">Start writing your story…</p>',
+            }}
+          />
         </div>
       </div>
     </div>

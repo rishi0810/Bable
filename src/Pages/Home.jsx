@@ -1,4 +1,3 @@
-import React from "react";
 import Bloginfo from "../components/Bloginfo.jsx";
 import Techinfo from "../components/Techinfo.jsx";
 import Map from "../components/Map.jsx";
