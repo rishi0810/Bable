@@ -66,9 +66,12 @@ const Hero = () => {
 
   return (
     <div className="text-center px-4 sm:px-8 md:px-20 pt-10 pb-6 font-poppins bg-white">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-800">
-        Bable <TypingEffect />
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-800 inline-flex flex-wrap justify-center items-center">
+        <span className="whitespace-nowrap">
+          Bable <TypingEffect />
+        </span>
       </h1>
+
       <p className="text-base sm:text-lg text-zinc-600 mt-4 max-w-2xl mx-auto">
         Unleash your thoughts with Bable – the blogging platform where ideas
         flow freely. Share your stories, engage with a like-minded community,
