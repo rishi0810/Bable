@@ -65,7 +65,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-zinc-200 via-transparent to-zinc-200 px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
       <div className="flex flex-col justify-center items-center space-y-3 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
         <div className="border border-zinc-200 rounded-xl shadow-xl w-full">
           <div className="p-6 sm:p-7 md:p-8 lg:p-10">

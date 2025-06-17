@@ -14,7 +14,7 @@ const Home = () => {
         <Techinfo />
         <Map />
       </section>
-      <div className="w-5/6 bg-zinc-600 h-[1px] my-1"></div>
+     
     </div>
   );
 };
