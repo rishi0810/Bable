@@ -48,7 +48,10 @@ const Blog = () => {
           `https://bable-backend.vercel.app/blog/${blogid}`
         );
         const data = await response.json();
-        if (data) setblog(data);
+        if (data) {
+          setblog(data);
+          setuserID(data.author._id);
+        }
       } catch (error) {
         console.error("Error fetching blog:", error);
       }
