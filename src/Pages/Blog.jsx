@@ -88,12 +88,15 @@ const Blog = () => {
           <h1 className="text-zinc-800 text-2xl sm:text-3xl md:text-4xl font-poppins font-bold mt-6">
             {blog.heading}
           </h1>
-          <Link
-            to={`/profile/${userID}`}
+          <a
+            href={`/profile/${userID}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-zinc-800 text-base sm:text-lg md:text-xl font-poppins font-semibold hover:underline"
           >
             {blog.author.name}
-          </Link>
+          </a>
+
           <div className="space-y-8 mb-12">
             {blog.img_url && (
               <img
