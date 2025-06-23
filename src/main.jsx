@@ -29,7 +29,7 @@ const Root = () => {
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
         <Route path="blogs" element={<Blogs />} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="profile/:userID" element={<Profile />} />
         <Route path="about" element={<About />} />
         <Route path="policy" element={<Policy />} />
         <Route path="prpolicy" element={<PrPolicy />} />

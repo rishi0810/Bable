@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, Link } from "react-router";
 import { Save, Share } from "lucide-react";
 import toast from "react-hot-toast";
 const Blog = () => {
@@ -8,6 +8,7 @@ const Blog = () => {
 
   const [blog, setblog] = useState([]);
   const [isloggedin, setisloggedin] = useState(false);
+  const [userID, setuserID] = useState("");
 
   const checkAuth = async () => {
     const response = await fetch(
@@ -18,6 +19,7 @@ const Blog = () => {
       }
     );
     const data = await response.json();
+    if (data) setuserID(data.userId);
     return data.Authenticated;
   };
 
@@ -83,9 +85,12 @@ const Blog = () => {
           <h1 className="text-zinc-800 text-2xl sm:text-3xl md:text-4xl font-poppins font-bold mt-6">
             {blog.heading}
           </h1>
-          <h5 className="text-zinc-800 text-base sm:text-lg md:text-xl font-poppins font-semibold">
+          <Link
+            to={`/profile/${userID}`}
+            className="text-zinc-800 text-base sm:text-lg md:text-xl font-poppins font-semibold hover:underline"
+          >
             {blog.author.name}
-          </h5>
+          </Link>
           <div className="space-y-8 mb-12">
             {blog.img_url && (
               <img

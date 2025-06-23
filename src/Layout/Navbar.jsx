@@ -8,6 +8,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isloggedin, setisloggedin] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userID, setuserID] = useState("");
 
   const checkAuth = async () => {
     const response = await fetch(
@@ -18,6 +19,7 @@ const Navbar = () => {
       }
     );
     const data = await response.json();
+    if(data) setuserID(data.userId);
     return data.Authenticated;
   };
 
@@ -122,7 +124,7 @@ const Navbar = () => {
 
           {isloggedin ? (
             <NavLink
-              to="/profile"
+              to={`/profile/${userID}`}
               className={({ isActive }) =>
                 `relative inline-block text-black px-3 py-2 ${
                   isActive
