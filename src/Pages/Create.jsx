@@ -6,10 +6,11 @@ import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
+import { useAuth } from "../hooks/useAuth.js";
 
 export default function Create() {
   const navigate = useNavigate();
-  const [isloggedin, setisloggedin] = useState(false);
+  const { isAuthenticated } = useAuth();
   const [isChecking, setIsChecking] = useState(true);
   const [formData, setFormData] = useState({
     heading: "",
@@ -50,16 +51,9 @@ export default function Create() {
 
   const checkAuth = useCallback(async () => {
     try {
-      const response = await fetch(
-        "https://bable-backend.vercel.app/user/authcheck",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-      setisloggedin(data.Authenticated);
-    } finally {
+      setIsChecking(false);
+    } catch (error) {
+      console.error("Auth check failed:", error);
       setIsChecking(false);
     }
   }, []);
@@ -69,10 +63,10 @@ export default function Create() {
   }, [checkAuth]);
 
   useEffect(() => {
-    if (!isChecking && !isloggedin) {
+    if (!isChecking && !isAuthenticated) {
       navigate("/login");
     }
-  }, [isChecking, isloggedin, navigate]);
+  }, [isChecking, isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

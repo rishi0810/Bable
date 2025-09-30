@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
+import { useAuth } from "../hooks/useAuth.js";
+
 const Login = () => {
   const navigate = useNavigate();
   const [formdata, setformdata] = useState({ email: "", password: "" });
   const [isloading, setisloading] = useState(false);
   const [remember, setremember] = useState(false);
+  const { login, isAuthenticated } = useAuth();
 
   const handlecheck = (e) => {
     setremember(e.target.checked);
@@ -32,33 +35,22 @@ const Login = () => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     setisloading(true);
+    
     if (remember) {
       const user = { email: formdata.email, password: formdata.password };
       localStorage.setItem("user", JSON.stringify(user));
     }
 
     try {
-      const response = await fetch("https://bable-backend.vercel.app/user/login", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formdata),
+      await login(formdata);
+      toast.success("Logged in successfully!", {
+        duration: 1000,
       });
-
-      if (response.ok) {
-        toast.success("Logged in successfully!", {
-          duration: 1000,
-        });
-        setTimeout(() => {
-          navigate("/");
-          window.location.reload();
-        }, 1200);
-      } else {
-        toast.error("Invalid Credential");
-      }
-    } catch (err) {
-      toast.error("Something went wrong. Please try again.");
-      console.error(err);
+      setTimeout(() => {
+        navigate("/");
+      }, 1200);
+    } catch (error) {
+      toast.error(error.message || "Invalid credentials");
     } finally {
       setisloading(false);
     }
@@ -75,7 +67,7 @@ const Login = () => {
                 Don't have an account yet?
                 <Link
                   to={"/signup"}
-                  className="text-zinc-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium ml-1"
+                  className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium ml-1 underline"
                 >
                   Sign up here
                 </Link>

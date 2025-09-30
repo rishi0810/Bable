@@ -1,0 +1,16 @@
+const LoadingSpinner = ({ size = "medium", message = "Loading..." }) => {
+  const sizeClasses = {
+    small: "w-6 h-6",
+    medium: "w-8 h-8", 
+    large: "w-12 h-12"
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center p-8">
+      <div className={`${sizeClasses[size]} border-3 border-gray-200 border-t-gray-600 rounded-full animate-spin`}></div>
+      <p className="mt-4 text-gray-600 text-sm font-medium">{message}</p>
+    </div>
+  );
+};
+
+export default LoadingSpinner;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo, memo } from "react";
 import { Link } from "react-router";
 
 const Search = ({ results }) => {
@@ -7,52 +7,62 @@ const Search = ({ results }) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleevent = (e) => {
+
+  const debouncedSearch = useCallback((searchQuery, resultsArray) => {
+    const timeoutId = setTimeout(() => {
+      if (searchQuery.trim() === "") {
+        setfiltereddata([]);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const filterapply = resultsArray.filter((obj) =>
+          obj.heading.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setfiltereddata(filterapply);
+      } catch (error) {
+        console.error("Fetching error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  
+  const memoizedResults = useMemo(() => results || [], [results]);
+
+  const handleevent = useCallback((e) => {
     const newData = e.target.value;
     setquery(newData);
-  };
+    
+    if (newData.trim() !== "") {
+      setIsLoading(true);
+    }
+  }, []);
 
-  const handleShortcut = (e) => {
+  const handleShortcut = useCallback((e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === "k") {
       e.preventDefault();
       document.getElementById("search-input")?.focus();
     }
-  };
+  }, []);
 
   useEffect(() => {
     document.addEventListener("keydown", handleShortcut);
     return () => {
       document.removeEventListener("keydown", handleShortcut);
     };
-  }, []);
+  }, [handleShortcut]);
 
   useEffect(() => {
-    const filtering = async () => {
-      if (query.trim() === "") {
-        setfiltereddata([]);
-        setIsLoading(false);
-        return;
-      }
+    const cleanup = debouncedSearch(query, memoizedResults);
+    return cleanup;
+  }, [query, memoizedResults, debouncedSearch]);
 
-      setIsLoading(true);
-
-      setTimeout(() => {
-        try {
-          const filterapply = results.filter((obj) =>
-            obj.heading.toLowerCase().includes(query.toLowerCase())
-          );
-          setfiltereddata(filterapply);
-        } catch (error) {
-          console.error("Fetching error:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      }, 300);
-    };
-    filtering();
-  }, [query, results]);
-
-  const ShimmerItem = () => (
+  const ShimmerItem = memo(() => (
     <li className="border-b border-gray-50 last:border-b-0">
       <div className="block px-4 py-3">
         <div className="flex items-start space-x-3 animate-pulse">
@@ -69,7 +79,7 @@ const Search = ({ results }) => {
         </div>
       </div>
     </li>
-  );
+  ));
 
   return (
     <div>
@@ -130,7 +140,7 @@ const Search = ({ results }) => {
 
                   <ul className="max-h-64 overflow-y-auto">
                     {isLoading ? (
-                      // Shimmer loading state
+                      
                       <>
                         <ShimmerItem />
                         <ShimmerItem />

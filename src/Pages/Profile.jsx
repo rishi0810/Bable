@@ -43,7 +43,7 @@ const Skeleton = () => (
 );
 
 const ErrorScreen = () => (
-  <div className="min-h-screen flex flex-col justify-center items-center text-center px-4">
+  <div className="flex flex-col justify-center items-center text-center px-4 py-16">
     <div className="bg-red-100 text-red-700 border border-red-300 px-6 py-4 rounded-lg shadow">
       <h2 className="text-xl font-bold mb-2">Failed to load profile</h2>
       <p className="text-sm">Something went wrong while fetching user data.</p>

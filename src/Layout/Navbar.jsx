@@ -1,186 +1,255 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import image from "../assets/logo.avif";
-import toast from "react-hot-toast";
-import { HiMenu, HiX } from "react-icons/hi";
+import { HiMenu, HiX, HiUser, HiLogout } from "react-icons/hi";
+import { useAuth } from "../hooks/useAuth.js";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [isloggedin, setisloggedin] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [userID, setuserID] = useState("");
+  const { isAuthenticated, userId, logout } = useAuth();
 
-  const checkAuth = async () => {
-    const response = await fetch(
-      "https://bable-backend.vercel.app/user/authcheck",
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    );
-    const data = await response.json();
-    if(data) setuserID(data.userId);
-    return data.Authenticated;
-  };
-
-  useEffect(() => {
-    const currentstatus = async () => {
-      const authStatus = await checkAuth();
-      setisloggedin(authStatus);
-    };
-
-    currentstatus();
-  }, []);
-
-  const handlelogout = async () => {
-    const logoutPromise = fetch(
-      "https://bable-backend.vercel.app/user/logout",
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
-
-    toast.promise(logoutPromise, {
-      loading: "Logging out...",
-      success: "Logged out successfully!",
-      error: "Failed to logout.",
-    });
-
+  const handleLogout = async () => {
     try {
-      const response = await logoutPromise;
-
-      if (response.ok) {
-        setTimeout(() => {
-          navigate("/login");
-          window.location.reload();
-        }, 1500);
-      }
-    } catch (err) {
-      console.error("Error: ", err);
+      await logout();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
     }
   };
 
   return (
-    <header className="sticky top-0 w-full px-4 sm:px-8 bg-white z-50 shadow-md">
-      <nav className="flex items-center justify-between w-full">
-        <div className="flex items-center gap-2">
-          <img src={image} alt="" className="size-7 rounded-full" />
-          <h3 className="font-bold text-xl sm:text-2xl">Bable</h3>
-        </div>
-        <button
-          className="sm:hidden ml-auto text-3xl p-2 z-50"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <HiX /> : <HiMenu />}
-        </button>
-        <div
-          className={`flex-col sm:items-center items-start sm:flex-row flex sm:border-none gap-x-7 gap-y-2
-                      mx-auto absolute sm:static top-12 right-0 sm:right-0
-                      w-full p-4 sm:w-auto bg-white sm:bg-transparent
-                      shadow-md sm:shadow-none z-40 transition-all duration-300 ease-in-out
-                      transform origin-top-right
-                      ${
-                        menuOpen
-                          ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
-                          : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
-                      }
-                      sm:opacity-100 sm:scale-100 sm:translate-y-0 sm:pointer-events-auto`}
-        >
-          <NavLink
-            to={"/"}
-            className={({ isActive }) =>
-              `relative inline-block text-black px-3 py-2 sm:border-none border-b border-zinc-400 sm:w-fit w-full ${
-                isActive ? "sm:bg-zinc-200/60 bg-none" : "hover:text-zinc-600"
-              }`
-            }
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to={isloggedin ? "/create" : "/login"}
-            className={({ isActive }) =>
-              `relative inline-block text-black px-3 py-2 sm:border-none border-b border-zinc-400 sm:w-fit w-full ${
-                isActive ? "sm:bg-zinc-200/60 bg-none" : "hover:text-zinc-600"
-              }`
-            }
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            Create
-          </NavLink>
-          <NavLink
-            to="/blogs"
-            className={({ isActive }) =>
-              `relative inline-block text-black px-3 py-2 sm:border-none border-b border-zinc-400 sm:w-fit w-full ${
-                isActive ? "sm:bg-zinc-200/60 bg-none" : "hover:text-zinc-600"
-              }`
-            }
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            Blogs
-          </NavLink>
+    <header className="sticky top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo Section */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <img 
+                src={image} 
+                alt="Bable Logo" 
+                className="size-8 rounded-full ring-2 ring-transparent group-hover:ring-gray-300 transition-all duration-300" 
+              />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gray-500/10 to-gray-700/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+            <h3 className="font-bold text-xl sm:text-2xl bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+              Bable
+            </h3>
+          </Link>
 
-          {isloggedin ? (
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-1">
             <NavLink
-              to={`/profile/${userID}`}
+              to="/"
               className={({ isActive }) =>
-                `relative inline-block text-black px-3 py-2 ${
-                  isActive
-                    ? "border-b-2 border-zinc-600"
-                    : "hover:text-zinc-600"
+                `relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive 
+                    ? "text-gray-900 bg-gray-100" 
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                 }`
               }
-              onClick={() => setMenuOpen(!menuOpen)}
             >
-              Profile
+              Home
             </NavLink>
-          ) : null}
-
-          <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              `relative inline-block text-black px-3 py-2 sm:border-none border-b border-zinc-400 sm:w-fit w-full ${
-                isActive ? "sm:bg-zinc-200/60 bg-none" : "hover:text-zinc-600"
-              }`
-            }
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            About
-          </NavLink>
-          {isloggedin ? (
-            <button
-              className="bg-zinc-300 rounded-sm p-2 w-full sm:w-auto hover:bg-zinc-400 hover:text-white cursor-pointer font-semibold"
-              onClick={() => {
-                setMenuOpen(false);
-                handlelogout();
-              }}
+            <NavLink
+              to={isAuthenticated ? "/create" : "/login"}
+              className={({ isActive }) =>
+                `relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive 
+                    ? "text-gray-900 bg-gray-100" 
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`
+              }
             >
-              Logout
-            </button>
-          ) : (
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto sm:mt-0 mt-5">
-              <Link to={"/signup"} className="w-full sm:w-fit">
+              Create
+            </NavLink>
+            <NavLink
+              to="/blogs"
+              className={({ isActive }) =>
+                `relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive 
+                    ? "text-gray-900 bg-gray-100" 
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`
+              }
+            >
+              Blogs
+            </NavLink>
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                `relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive 
+                    ? "text-gray-900 bg-gray-100" 
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`
+              }
+            >
+              About
+            </NavLink>
+          </div>
+
+          {/* Auth Section */}
+          <div className="hidden md:flex items-center space-x-3">
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-3">
+                <NavLink
+                  to={`/profile/${userId || ''}`}
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                      isActive 
+                        ? "text-gray-900 bg-gray-100" 
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    }`
+                  }
+                >
+                  <HiUser className="size-4" />
+                  Profile
+                </NavLink>
                 <button
-                  type="button"
-                  className="py-2 px-3 text-sm font-medium rounded-md bg-white border  text-black hover:bg-zinc-100 focus:outline-none cursor-pointer w-full sm:w-auto"
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-all duration-200"
+                >
+                  <HiLogout className="size-4" />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Link to="/signup">
+                  <button className="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:text-gray-900 transition-all duration-200">
+                    Sign up
+                  </button>
+                </Link>
+                <Link to="/login">
+                  <button className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg hover:from-gray-900 hover:to-black transition-all duration-200 shadow-sm hover:shadow-md">
+                    Log in
+                  </button>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-200"
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <HiX className="size-6" /> : <HiMenu className="size-6" />}
+          </button>
+        </div>
+
+        {/* Mobile Navigation Menu */}
+        <div
+          className={`md:hidden transition-all duration-300 ease-in-out ${
+            menuOpen
+              ? "max-h-screen opacity-100 visible"
+              : "max-h-0 opacity-0 invisible"
+          } overflow-hidden`}
+        >
+          <div className="py-4 space-y-2 border-t border-gray-100">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive 
+                    ? "text-gray-900 bg-gray-100" 
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`
+              }
+              onClick={() => setMenuOpen(false)}
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to={isAuthenticated ? "/create" : "/login"}
+              className={({ isActive }) =>
+                `block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive 
+                    ? "text-gray-900 bg-gray-100" 
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`
+              }
+              onClick={() => setMenuOpen(false)}
+            >
+              Create
+            </NavLink>
+            <NavLink
+              to="/blogs"
+              className={({ isActive }) =>
+                `block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive 
+                    ? "text-gray-900 bg-gray-100" 
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`
+              }
+              onClick={() => setMenuOpen(false)}
+            >
+              Blogs
+            </NavLink>
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                `block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  isActive 
+                    ? "text-gray-900 bg-gray-100" 
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`
+              }
+              onClick={() => setMenuOpen(false)}
+            >
+              About
+            </NavLink>
+
+            {isAuthenticated ? (
+              <div className="pt-4 border-t border-gray-100 space-y-2">
+                <NavLink
+                  to={`/profile/${userId || ''}`}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                      isActive 
+                        ? "text-gray-900 bg-gray-100" 
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    }`
+                  }
                   onClick={() => setMenuOpen(false)}
                 >
-                  Signup
-                </button>
-              </Link>
-              <Link to={"/login"} className="w-full sm:w-fit">
+                  <HiUser className="size-4" />
+                  Profile
+                </NavLink>
                 <button
-                  type="button"
-                  className="py-2 px-3 text-sm font-medium rounded-md bg-zinc-400 text-white hover:bg-zinc-500 focus:outline-none cursor-pointer w-full sm:w-auto"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={() => {
+                    setMenuOpen(false);
+                    handleLogout();
+                  }}
+                  className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-all duration-200"
                 >
-                  Login
+                  <HiLogout className="size-4" />
+                  Logout
                 </button>
-              </Link>
-            </div>
-          )}
+              </div>
+            ) : (
+              <div className="pt-4 border-t border-gray-100 space-y-2">
+                <Link to="/signup" className="block">
+                  <button 
+                    onClick={() => setMenuOpen(false)}
+                    className="w-full px-4 py-3 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:text-gray-900 transition-all duration-200"
+                  >
+                    Sign up
+                  </button>
+                </Link>
+                <Link to="/login" className="block">
+                  <button 
+                    onClick={() => setMenuOpen(false)}
+                    className="w-full px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg hover:from-gray-900 hover:to-black transition-all duration-200"
+                  >
+                    Log in
+                  </button>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
     </header>
