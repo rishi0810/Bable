@@ -1,48 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
 
-@theme{
-    --font-poppins : "Poppins", sans-serif;
+@theme {
+  --font-poppins: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-html{
+html {
   scroll-behavior: smooth;
+
+  font-display: swap;
 }
 
-/* width */
-::-webkit-scrollbar {
-    width: 5px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #ffffff;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #706f6f;
-    border-radius: 5px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #000000;
-  }
-  ::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 0;
-    height: 0;
-  }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+}
 
-/* TipTap Placeholder Styling */
+.fonts-loaded body {
+  font-family: var(--font-poppins);
+}
+
+.font-poppins {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+  font-display: swap;
+}
+
+.fonts-loaded .font-poppins {
+  font-family: var(--font-poppins);
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #706f6f;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #000000;
+}
+::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0;
+  height: 0;
+}
+
 .tiptap p.is-empty::before {
   content: attr(data-placeholder);
   color: #bdbdbd;
   font-size: 1.5rem;
   font-weight: 300;
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-poppins);
   pointer-events: none;
   height: 0;
   float: left;
@@ -56,4 +72,17 @@ html{
 
 .tiptap p.is-empty:not(:only-child)::before {
   display: none;
+}
+
+@keyframes font-fade-in {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fonts-loaded .font-poppins {
+  animation: font-fade-in 0.2s ease-in;
 }
