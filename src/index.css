@@ -46,6 +46,7 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #000000;
 }
+
 ::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -78,6 +79,7 @@ body {
   from {
     opacity: 0.8;
   }
+
   to {
     opacity: 1;
   }
@@ -85,4 +87,94 @@ body {
 
 .fonts-loaded .font-poppins {
   animation: font-fade-in 0.2s ease-in;
+}
+
+/* Blog Editor Styles */
+.font-merriweather {
+  font-family: "Merriweather", Georgia, "Times New Roman", Times, serif;
+}
+
+/* Apply Merriweather to blog editor content */
+.tiptap {
+  font-family: "Merriweather", Georgia, "Times New Roman", Times, serif;
+  letter-spacing: 0.025em;
+  line-height: 1.8;
+}
+
+.tiptap p.is-empty::before {
+  font-family: "Merriweather", Georgia, "Times New Roman", Times, serif;
+  letter-spacing: 0.025em;
+}
+
+/* Modal backdrop blur */
+.bg-black\/50 {
+  backdrop-filter: blur(4px);
+}
+
+/* Prose styling for blog content */
+.prose img {
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.prose blockquote {
+  border-left: 4px solid #f97316;
+  padding-left: 1rem;
+  font-style: italic;
+  color: #52525b;
+}
+
+.prose a {
+  color: #f97316;
+  text-decoration: underline;
+}
+
+.prose code {
+  background-color: #f4f4f5;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+/* List styling */
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.prose li {
+  margin: 0.5rem 0;
+}
+
+/* Paragraph spacing for line breaks */
+.prose p {
+  margin-bottom: 1rem;
+}
+
+/* TipTap list styling */
+.tiptap ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.tiptap li {
+  margin: 0.5rem 0;
+}
+
+.tiptap p {
+  margin-bottom: 0.75rem;
 }

@@ -85,7 +85,7 @@ const Blog = () => {
     <div className="min-h-screen m-0 py-8 px-2 sm:px-5 md:px-10 flex justify-center font-poppins mb-20">
       {blog && Object.keys(blog).length > 0 ? (
         <div className="flex flex-col gap-6 w-full max-w-3xl" key={blog._id}>
-          <h1 className="text-zinc-800 text-2xl sm:text-3xl md:text-4xl font-poppins font-bold mt-6">
+          <h1 className="text-zinc-800 text-2xl sm:text-3xl md:text-4xl font-merriweather font-bold mt-6 leading-relaxed tracking-wide">
             {blog.heading}
           </h1>
           <a
@@ -99,14 +99,18 @@ const Blog = () => {
 
           <div className="space-y-8 mb-12">
             {blog.img_url && (
-              <img
-                src={blog.img_url}
-                className="w-full h-48 sm:h-64 md:h-auto object-cover rounded-lg shadow-md"
-                alt="Blog cover"
-              />
+              <div className="flex justify-center">
+                <div className="w-4/5 aspect-video">
+                  <img
+                    src={blog.img_url}
+                    className="w-full h-full object-cover rounded-xl shadow-md"
+                    alt="Blog cover"
+                  />
+                </div>
+              </div>
             )}
             <div
-              className="prose max-w-none text-base sm:text-lg text-zinc-700 leading-relaxed font-poppins mb-10"
+              className="prose max-w-none text-base sm:text-lg text-zinc-700 font-merriweather mb-10 leading-loose tracking-wide"
               dangerouslySetInnerHTML={{ __html: blog.content }}
             />
             {isloggedin ? (
