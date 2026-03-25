@@ -1,23 +1,28 @@
 import { Link } from "react-router";
+import { ArrowRight } from "lucide-react";
+
 const Map = () => {
   return (
-    <div className="flex flex-col justify-center items-center bg-sky-600 py-5 px-4 sm:px-8 md:px-20 min-h-[400px] sm:min-h-[600px]">
-      <div className="flex flex-col items-center justify-center p-3 w-full max-w-md gap-6 sm:gap-10">
-        <h1 className="text-white font-poppins text-2xl sm:text-3xl font-bold text-center">
-          Connect and Share your Tidbits
-        </h1>
-        <p className="text-sm sm:text-md font-poppins font-semibold text-white text-center">
-          Blogging isn't just about sharing your thoughts—it's about connecting
-          with people who share your interests. With every post, you spark
-          conversations, inspire ideas, and build a community that engages with
-          your content. Whether through comments, shares, or collaborations,
-          your blog becomes a space where meaningful connections thrive.
+    <div className="py-16 sm:py-24 px-5 sm:px-6 bg-ed-surface transition-colors duration-300">
+      <div className="max-w-lg mx-auto text-center space-y-6">
+        <span className="text-[10px] tracking-[0.3em] uppercase text-ed-accent font-sans-ui font-medium">
+          Community
+        </span>
+        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-ed-text leading-tight tracking-tight">
+          Connect Through Words
+        </h2>
+        <p className="font-body text-ed-text-secondary text-[15px] sm:text-base leading-relaxed">
+          Every post sparks a conversation. Every story builds a bridge. Join a
+          community where meaningful ideas find their audience.
         </p>
-        <Link to={"create"}>
-          <button className="bg-pink-500 p-3 w-full sm:w-auto hover:scale-105 transition duration-150 font-poppins text-lg sm:text-2xl text-white font-bold hover:bg-pink-600 rounded-md cursor-pointer">
-            CREATE YOUR BLOG
-          </button>
-        </Link>
+        <div className="pt-2">
+          <Link to="/create">
+            <button className="group inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-ed-accent text-white text-[13px] tracking-wide font-sans-ui font-medium hover:bg-ed-accent-hover transition-colors duration-200 cursor-pointer">
+              Begin Your Story
+              <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );

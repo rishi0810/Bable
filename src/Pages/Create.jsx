@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -7,6 +7,7 @@ import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useAuth } from "../hooks/useAuth.js";
+import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import {
   ArrowLeft,
   Bold,
@@ -25,8 +26,7 @@ import {
 
 export default function Create() {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const [isChecking, setIsChecking] = useState(true);
+  const { isAuthenticated, loading } = useAuth();
   const [formData, setFormData] = useState({
     heading: "",
     content: "",
@@ -75,24 +75,23 @@ export default function Create() {
     return hasTitle && hasContent && hasImage;
   }, [formData.heading, formData.content, formData.imageUrl]);
 
-  const checkAuth = useCallback(async () => {
-    try {
-      setIsChecking(false);
-    } catch (error) {
-      console.error("Auth check failed:", error);
-      setIsChecking(false);
-    }
-  }, []);
-
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
-
-  useEffect(() => {
-    if (!isChecking && !isAuthenticated) {
+    if (!loading && !isAuthenticated) {
       navigate("/login");
     }
-  }, [isChecking, isAuthenticated, navigate]);
+  }, [loading, isAuthenticated, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-ed-bg flex items-center justify-center">
+        <LoadingSpinner message="Checking your session..." />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -160,10 +159,10 @@ export default function Create() {
         handleToolbarClick(e, onClick);
       }}
       className={`p-2 rounded-md transition-colors ${isDisabled
-        ? "text-zinc-300 cursor-not-allowed"
+        ? "text-ed-text-tertiary cursor-not-allowed"
         : isActive
-          ? "bg-zinc-200 text-zinc-900"
-          : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+          ? "bg-ed-surface-hover text-ed-text"
+          : "text-ed-text-secondary hover:bg-ed-surface-hover hover:text-ed-text"
         }`}
       title={title}
     >
@@ -172,22 +171,22 @@ export default function Create() {
   );
 
   const ToolbarDivider = () => (
-    <div className="w-px h-6 bg-zinc-200 mx-1" />
+    <div className="w-px h-6 bg-ed-border mx-1" />
   );
 
   return (
-    <div className="min-h-screen bg-white font-poppins">
+    <div className="min-h-screen bg-ed-surface font-poppins transition-colors duration-300">
       {/* Sticky Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-zinc-100 px-4 py-3">
+      <header className="sticky top-0 z-50 bg-ed-surface border-b border-ed-border px-4 py-3 transition-colors duration-300">
         <div className="flex items-center justify-between max-w-5xl mx-auto">
           {/* Left side - Back button */}
           <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="p-2 hover:bg-zinc-100 rounded-full transition-colors"
+              className="p-2 hover:bg-ed-surface-hover rounded-full transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-zinc-600" />
+              <ArrowLeft className="w-5 h-5 text-ed-text-secondary" />
             </button>
           </div>
 
@@ -196,7 +195,7 @@ export default function Create() {
             <button
               type="button"
               onClick={() => setShowPreview(true)}
-              className="px-4 py-2 text-sm font-medium text-zinc-700 bg-zinc-100 hover:bg-zinc-200 rounded-lg transition-colors"
+              className="px-4 py-2 text-sm font-medium text-ed-text-secondary bg-ed-surface-hover hover:bg-ed-border rounded-lg transition-colors"
             >
               Preview
             </button>
@@ -205,8 +204,8 @@ export default function Create() {
               onClick={handleSubmit}
               disabled={!isFormValid || isSubmitting}
               className={`px-5 py-2 text-sm font-medium text-white rounded-lg transition-colors ${isFormValid && !isSubmitting
-                ? "bg-orange-500 hover:bg-orange-600 cursor-pointer"
-                : "bg-zinc-300 cursor-not-allowed"
+                ? "bg-ed-accent hover:bg-ed-accent-hover cursor-pointer"
+                : "bg-ed-text-tertiary cursor-not-allowed"
                 }`}
             >
               {isSubmitting ? "Publishing..." : "Publish"}
@@ -217,7 +216,7 @@ export default function Create() {
 
       {/* Sticky Toolbar */}
       {editor && (
-        <div className="sticky top-[57px] z-40 bg-white border-b border-zinc-100 px-4 py-2">
+        <div className="sticky top-[57px] z-40 bg-ed-surface border-b border-ed-border px-4 py-2 transition-colors duration-300">
           <div className="flex items-center justify-center gap-1 flex-wrap max-w-5xl mx-auto">
             {/* Undo/Redo */}
             <ToolbarButton
@@ -327,7 +326,7 @@ export default function Create() {
             value={formData.heading}
             onChange={handleChange}
             placeholder="Title"
-            className="w-full text-4xl font-merriweather font-bold bg-transparent border-0 focus:ring-0 placeholder:text-zinc-300 mb-6 outline-none leading-relaxed tracking-wide"
+            className="w-full text-4xl font-merriweather font-bold bg-transparent border-0 focus:ring-0 text-ed-text placeholder:text-ed-text-tertiary mb-6 outline-none leading-relaxed tracking-wide"
             required
             autoComplete="off"
           />
@@ -339,7 +338,7 @@ export default function Create() {
             value={formData.imageUrl}
             onChange={handleChange}
             placeholder="Cover image URL (required)"
-            className="w-full text-sm text-zinc-600 bg-zinc-50 border border-zinc-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 placeholder:text-zinc-400 mb-6 outline-none"
+            className="w-full text-sm text-ed-text-secondary bg-ed-surface-hover border border-ed-border rounded-lg px-4 py-3 focus:ring-2 focus:ring-ed-accent focus:border-ed-accent placeholder:text-ed-text-tertiary mb-6 outline-none transition-colors"
             required
             autoComplete="off"
           />
@@ -351,7 +350,7 @@ export default function Create() {
                 <img
                   src={formData.imageUrl}
                   alt="Cover Preview"
-                  className="w-full h-full object-cover rounded-xl border border-zinc-200"
+                  className="w-full h-full object-cover rounded-xl border border-ed-border"
                   onError={handleImageError}
                   onLoad={handleImageLoad}
                 />
@@ -376,18 +375,18 @@ export default function Create() {
           onClick={() => setShowPreview(false)}
         >
           <div
-            className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl"
+            className="bg-ed-surface rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white border-b border-zinc-100 px-6 py-4 flex items-center justify-between rounded-t-2xl">
-              <h2 className="text-lg font-semibold text-zinc-800">Preview</h2>
+            <div className="sticky top-0 bg-ed-surface border-b border-ed-border px-6 py-4 flex items-center justify-between rounded-t-2xl">
+              <h2 className="text-lg font-semibold text-ed-text">Preview</h2>
               <button
                 type="button"
                 onClick={() => setShowPreview(false)}
-                className="p-2 hover:bg-zinc-100 rounded-full transition-colors"
+                className="p-2 hover:bg-ed-surface-hover rounded-full transition-colors"
               >
-                <X className="w-5 h-5 text-zinc-600" />
+                <X className="w-5 h-5 text-ed-text-secondary" />
               </button>
             </div>
 
@@ -409,9 +408,9 @@ export default function Create() {
               )}
 
               {/* Title */}
-              <h1 className="text-3xl md:text-4xl font-merriweather font-bold text-zinc-800 mb-6 leading-relaxed tracking-wide">
+              <h1 className="text-3xl md:text-4xl font-merriweather font-bold text-ed-text mb-6 leading-relaxed tracking-wide">
                 {formData.heading || (
-                  <span className="text-zinc-300">Title</span>
+                  <span className="text-ed-text-tertiary">Title</span>
                 )}
               </h1>
 
@@ -421,7 +420,7 @@ export default function Create() {
                 dangerouslySetInnerHTML={{
                   __html:
                     formData.content ||
-                    '<p class="text-zinc-300">Start writing...</p>',
+                    '<p class="text-ed-text-tertiary">Start writing...</p>',
                 }}
               />
             </div>

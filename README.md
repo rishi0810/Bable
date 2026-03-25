@@ -27,18 +27,28 @@ Bable is a feature-rich blogging platform built with **React.js** on the fronten
 1. **Clone the repository**  
    ```sh
    git clone https://github.com/rishi0810/Bable.git
-   cd bable
+   cd Bable
    ```
 
-2. **Install dependencies**  
+2. **Install Bun**  
+   Follow the official installation guide: https://bun.sh/docs/installation
+
+3. **Install dependencies**  
    ```sh
-   npm install
+   bun install
    ```
 
-3. **Run the development server**  
+4. **Run the development server**  
    ```sh
-   npm start
+   bun run dev
    ```
+
+5. **Create a production build**  
+   ```sh
+   bun run build
+   ```
+
+Vite remains the frontend bundler for this project. Bun is used for dependency installation and package script execution.
 
 ## Screenshots
 

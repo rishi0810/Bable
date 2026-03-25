@@ -5,16 +5,34 @@ import Hero from "../components/Hero.jsx";
 
 const Home = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-5 pt-15">
-      <section className="p-10 w-5/6 flex justify-center border-b border-zinc-600 mb-10">
+    <div className="min-h-screen">
+      <section>
         <Hero />
       </section>
-      <section className="w-full border-b border-zinc-600">
+
+      <div className="max-w-3xl mx-auto px-5 sm:px-6">
+        <div className="h-px bg-ed-border" />
+      </div>
+
+      <section>
         <Bloginfo />
+      </section>
+
+      <div className="max-w-3xl mx-auto px-5 sm:px-6">
+        <div className="h-px bg-ed-border" />
+      </div>
+
+      <section>
         <Techinfo />
+      </section>
+
+      <div className="max-w-3xl mx-auto px-5 sm:px-6">
+        <div className="h-px bg-ed-border" />
+      </div>
+
+      <section>
         <Map />
       </section>
-     
     </div>
   );
 };

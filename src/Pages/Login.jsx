@@ -8,7 +8,7 @@ const Login = () => {
   const [formdata, setformdata] = useState({ email: "", password: "" });
   const [isloading, setisloading] = useState(false);
   const [remember, setremember] = useState(false);
-  const { login, isAuthenticated } = useAuth();
+  const { login } = useAuth();
 
   const handlecheck = (e) => {
     setremember(e.target.checked);
@@ -35,14 +35,20 @@ const Login = () => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     setisloading(true);
-    
+
     if (remember) {
       const user = { email: formdata.email, password: formdata.password };
       localStorage.setItem("user", JSON.stringify(user));
     }
 
     try {
-      await login(formdata);
+      const authenticated = await login(formdata);
+
+      if (!authenticated) {
+        toast.error("Invalid credentials");
+        return;
+      }
+
       toast.success("Logged in successfully!", {
         duration: 1000,
       });
@@ -57,94 +63,96 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
-      <div className="flex flex-col justify-center items-center space-y-3 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
-        <div className="border border-zinc-200 rounded-xl shadow-xl w-full">
-          <div className="p-6 sm:p-7 md:p-8 lg:p-10">
-            <div className="text-center">
-              <h1 className="block text-2xl font-bold text-zinc-800">Log in</h1>
-              <p className="mt-2 text-sm text-gray-600">
-                Don't have an account yet?
-                <Link
-                  to={"/signup"}
-                  className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium ml-1 underline"
-                >
-                  Sign up here
-                </Link>
-              </p>
-            </div>
-
-            <div className="mt-5">
-              <form onSubmit={handlesubmit}>
-                <div className="grid gap-y-6">
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm mb-2 font-semibold"
-                    >
-                      Email
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="placeholder-zinc-700/60 py-3 px-4 block w-full border border-zinc-300 rounded-lg sm:text-sm focus:ring-2 focus:ring-zinc-500"
-                        required
-                        placeholder="Email"
-                        value={formdata.email}
-                        onChange={handlechange}
-                        autoComplete="email"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block text-sm mb-2 font-semibold"
-                    >
-                      Password
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        className="placeholder-zinc-700/60 py-3 px-4 block w-full border border-zinc-300 rounded-lg sm:text-sm focus:ring-1 focus:ring-zinc-500"
-                        placeholder="Password"
-                        value={formdata.password}
-                        minLength={6}
-                        onChange={handlechange}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center">
-                    <input
-                      id="remember-me"
-                      type="checkbox"
-                      className="size-4 border-gray-200 text-blue-600 focus:ring-blue-500"
-                      checked={remember}
-                      onChange={handlecheck}
-                    />
-                    <label htmlFor="remember-me" className="text-sm ms-2">
-                      Remember me
-                    </label>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isloading}
-                    className="hover:cursor-pointer w-full py-3 px-4 text-center text-sm font-medium rounded-lg bg-zinc-500 text-white hover:bg-zinc-600 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:pointer-events-none"
-                  >
-                    {isloading ? "Logging In..." : "Log in"}
-                  </button>
-                </div>
-              </form>
-            </div>
+    <div className="flex items-center justify-center min-h-screen px-5 py-16">
+      <div className="w-full max-w-sm">
+        {/* Header */}
+        <div className="text-center mb-10">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="h-px w-10 bg-ed-border" />
+            <span className="text-[11px] tracking-[0.3em] uppercase text-ed-text-tertiary font-sans-ui">
+              Welcome Back
+            </span>
+            <div className="h-px w-10 bg-ed-border" />
           </div>
+          <h1 className="font-display text-3xl sm:text-4xl text-ed-text tracking-tight">
+            Log In
+          </h1>
+          <p className="mt-3 text-sm text-ed-text-secondary font-body">
+            Don&apos;t have an account?{" "}
+            <Link
+              to="/signup"
+              className="text-ed-accent hover:text-ed-accent-hover underline underline-offset-4 transition-colors duration-200"
+            >
+              Sign up here
+            </Link>
+          </p>
         </div>
+
+        {/* Form */}
+        <form onSubmit={handlesubmit} className="space-y-6">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-[11px] tracking-[0.2em] uppercase text-ed-text-secondary font-sans-ui font-medium mb-2"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="w-full py-3 px-4 rounded-lg bg-ed-input-bg border border-ed-input-border text-ed-text font-body text-sm focus:outline-none focus:border-ed-accent transition-colors duration-200 placeholder:text-ed-text-tertiary"
+              required
+              placeholder="your@email.com"
+              value={formdata.email}
+              onChange={handlechange}
+              autoComplete="email"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-[11px] tracking-[0.2em] uppercase text-ed-text-secondary font-sans-ui font-medium mb-2"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              className="w-full py-3 px-4 rounded-lg bg-ed-input-bg border border-ed-input-border text-ed-text font-body text-sm focus:outline-none focus:border-ed-accent transition-colors duration-200 placeholder:text-ed-text-tertiary"
+              placeholder="Enter your password"
+              value={formdata.password}
+              minLength={6}
+              onChange={handlechange}
+            />
+          </div>
+
+          <div className="flex items-center gap-2.5">
+            <input
+              id="remember-me"
+              type="checkbox"
+              className="size-4 accent-ed-accent border-ed-input-border"
+              checked={remember}
+              onChange={handlecheck}
+            />
+            <label
+              htmlFor="remember-me"
+              className="text-sm text-ed-text-secondary font-body"
+            >
+              Remember me
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            disabled={isloading}
+            className="w-full py-3.5 px-4 rounded-lg text-[13px] tracking-[0.2em] uppercase font-sans-ui font-medium bg-ed-text text-ed-bg hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
+            {isloading ? "Signing In..." : "Log In"}
+          </button>
+        </form>
       </div>
     </div>
   );

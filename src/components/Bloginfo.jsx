@@ -1,27 +1,32 @@
 import img1 from "../assets/bloglaptop.avif";
+
 const Bloginfo = () => {
   return (
-    <div className="px-4 sm:px-8 md:px-14 flex flex-col md:flex-row justify-center md:space-x-20 space-y-8 md:space-y-0 overflow-hidden bg-orange-400 items-center">
-      <div className="p-2 flex flex-col justify-center space-y-4 max-w-xl">
-        <h1 className="text-white font-bold font-poppins text-3xl sm:text-4xl">
-          Blog
-        </h1>
-        <p className="font-semibold text-white text-sm sm:text-md font-poppins text-justify">
-          A <span className="bg-red-500 px-2 py-1 skew-6">blog</span> is an
-          online platform where individuals or organizations share thoughts,
-          information, or experiences on various topics. It typically consists
-          of regularly updated posts, often written in an informal or
-          conversational style. Blogs can cover anything from personal stories
-          to professional insights, helping engage audiences and share
-          knowledge.
-        </p>
+    <div className="px-5 sm:px-6 py-14 sm:py-20 max-w-3xl mx-auto">
+      <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+        <div className="space-y-5">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-ed-accent font-sans-ui font-medium">
+            The Craft
+          </span>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-ed-text leading-tight tracking-tight">
+            The Art of
+            <br />
+            Blogging
+          </h2>
+          <p className="font-body text-ed-text-secondary text-[15px] sm:text-base leading-relaxed">
+            A blog is more than words on a screen &mdash; it is a canvas for
+            thought. From personal reflections to professional insights, blogging
+            invites you to share your perspective with the world.
+          </p>
+        </div>
+        <div className="relative">
+          <img
+            src={img1}
+            alt="Blogging"
+            className="w-full aspect-[4/3] object-cover rounded-xl"
+          />
+        </div>
       </div>
-
-      <img
-        src={img1}
-        alt="blog"
-        className="w-4/5 sm:w-2/3 md:w-2/5 rotate-6 rounded-lg max-w-xs md:max-w-none"
-      />
     </div>
   );
 };

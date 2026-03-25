@@ -1,12 +1,12 @@
 import { useEffect, useState, useCallback, useMemo, memo } from "react";
 import { Link } from "react-router";
+import { Search as SearchIcon, FileText, ChevronRight } from "lucide-react";
 
 const Search = ({ results }) => {
   const [query, setquery] = useState("");
   const [filtereddata, setfiltereddata] = useState([]);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
 
   const debouncedSearch = useCallback((searchQuery, resultsArray) => {
     const timeoutId = setTimeout(() => {
@@ -31,13 +31,11 @@ const Search = ({ results }) => {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  
   const memoizedResults = useMemo(() => results || [], [results]);
 
   const handleevent = useCallback((e) => {
     const newData = e.target.value;
     setquery(newData);
-    
     if (newData.trim() !== "") {
       setIsLoading(true);
     }
@@ -63,18 +61,15 @@ const Search = ({ results }) => {
   }, [query, memoizedResults, debouncedSearch]);
 
   const ShimmerItem = memo(() => (
-    <li className="border-b border-gray-50 last:border-b-0">
+    <li className="border-b border-ed-border last:border-b-0">
       <div className="block px-4 py-3">
         <div className="flex items-start space-x-3 animate-pulse">
           <div className="flex-shrink-0 mt-1">
-            <div className="h-4 w-4 bg-gray-200 rounded"></div>
+            <div className="h-4 w-4 bg-ed-surface-hover rounded" />
           </div>
           <div className="flex-1 min-w-0 space-y-2">
-            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-            <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-          </div>
-          <div className="flex-shrink-0">
-            <div className="h-4 w-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-ed-surface-hover rounded w-3/4" />
+            <div className="h-3 bg-ed-surface-hover rounded w-1/2" />
           </div>
         </div>
       </div>
@@ -82,184 +77,142 @@ const Search = ({ results }) => {
   ));
 
   return (
-    <div>
-      <div className="max-w-[85rem] mx-auto px-2  sm:px-6 lg:px-8 py-10 sm:py-20">
-        <div className="relative mx-auto max-w-4xl grid space-y-5 sm:space-y-10">
-          <div className="relative ">
-            <div
-              className={`sm:flex sm:space-x-3 p-2 sm:p-3 bg-white border rounded-lg shadow-lg shadow-gray-100 transition-all duration-300 mx-auto ${
-                isSearchFocused
-                  ? "border-zinc-400 shadow-xl"
-                  : "border-gray-200"
-              }`}
-            >
-              <div className="w-full pb-2 sm:pb-0 relative">
-                <input
-                  id="search-input"
-                  type="text"
-                  className="py-2 sm:py-3 pl-10 pr-20 block w-full border-transparent rounded-lg sm:text-sm focus:border-zinc-500 focus:ring-zinc-500 placeholder-gray-500 transition-all duration-200 text-base"
-                  placeholder="Search for any topic..."
-                  value={query}
-                  onChange={handleevent}
-                  onFocus={() => setIsSearchFocused(true)}
-                  onBlur={() =>
-                    setTimeout(() => setIsSearchFocused(false), 200)
-                  }
-                />
-
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center space-x-2">
-                  <div className="hidden sm:flex items-center space-x-1">
-                    <kbd className="px-2 py-1 text-xs font-semibold text-gray-500 bg-gray-100 border border-gray-200 rounded">
-                      {navigator.platform.includes("Mac") ? "⌘" : "Ctrl"}
-                    </kbd>
-                    <kbd className="px-2 py-1 text-xs font-semibold text-gray-500 bg-gray-100 border border-gray-200 rounded">
-                      K
-                    </kbd>
-                  </div>
-                </div>
+    <div className="max-w-3xl mx-auto px-5 sm:px-6 pb-4">
+      <div className="relative">
+        {/* Search input */}
+        <div
+          className={`flex items-center bg-ed-surface border rounded-lg transition-all duration-300 ${
+            isSearchFocused ? "border-ed-accent" : "border-ed-input-border"
+          }`}
+        >
+          <div className="w-full relative">
+            <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-ed-text-tertiary pointer-events-none" strokeWidth={1.75} />
+            <input
+              id="search-input"
+              type="text"
+              className="py-3 pl-11 pr-20 block w-full bg-transparent text-ed-text font-body text-sm focus:outline-none placeholder:text-ed-text-tertiary"
+              placeholder="Search stories..."
+              value={query}
+              onChange={handleevent}
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() =>
+                setTimeout(() => setIsSearchFocused(false), 200)
+              }
+            />
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <div className="hidden sm:flex items-center gap-1">
+                <kbd className="px-1.5 py-0.5 text-[10px] font-medium text-ed-text-tertiary bg-ed-surface-hover border border-ed-border rounded font-sans-ui">
+                  {navigator.platform.includes("Mac") ? "⌘" : "Ctrl"}
+                </kbd>
+                <kbd className="px-1.5 py-0.5 text-[10px] font-medium text-ed-text-tertiary bg-ed-surface-hover border border-ed-border rounded font-sans-ui">
+                  K
+                </kbd>
               </div>
             </div>
-
-            {(isLoading || filtereddata.length > 0) && (
-              <div className="absolute left-0 right-0 top-full mt-2 z-50">
-                <div className="bg-white border border-gray-200 rounded-lg shadow-xl max-h-80 overflow-hidden">
-                  <div className="px-4 py-2 border-b border-gray-100 bg-gray-50">
-                    <p className="text-sm text-gray-600 font-medium">
-                      {isLoading ? (
-                        <span className="flex items-center space-x-2">
-                          <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
-                          <span>Searching...</span>
-                        </span>
-                      ) : (
-                        `${filtereddata.length} result${
-                          filtereddata.length !== 1 ? "s" : ""
-                        } found`
-                      )}
-                    </p>
-                  </div>
-
-                  <ul className="max-h-64 overflow-y-auto">
-                    {isLoading ? (
-                      
-                      <>
-                        <ShimmerItem />
-                        <ShimmerItem />
-                        <ShimmerItem />
-                      </>
-                    ) : (
-                      filtereddata.map((result, index) => (
-                        <li
-                          key={index}
-                          className="border-b border-gray-50 last:border-b-0"
-                        >
-                          <Link
-                            to={`/blog/${result._id}`}
-                            className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-150 group"
-                          >
-                            <div className="flex items-start space-x-3">
-                              <div className="flex-shrink-0 mt-1">
-                                <svg
-                                  className="h-4 w-4 text-gray-400 group-hover:text-gray-600"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                  />
-                                </svg>
-                              </div>
-
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-gray-900 group-hover:text-zinc-700 line-clamp-2">
-                                  {result.heading
-                                    .split(new RegExp(`(${query})`, "gi"))
-                                    .map((part, i) =>
-                                      part.toLowerCase() ===
-                                      query.toLowerCase() ? (
-                                        <mark
-                                          key={i}
-                                          className="bg-yellow-200 px-1 rounded"
-                                        >
-                                          {part}
-                                        </mark>
-                                      ) : (
-                                        part
-                                      )
-                                    )}
-                                </p>
-                                {result.excerpt && (
-                                  <p className="text-xs text-gray-500 mt-1 line-clamp-1">
-                                    {result.excerpt}
-                                  </p>
-                                )}
-                              </div>
-
-                              <div className="flex-shrink-0">
-                                <svg
-                                  className="h-4 w-4 text-gray-300 group-hover:text-gray-500 transition-colors"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 5l7 7-7 7"
-                                  />
-                                </svg>
-                              </div>
-                            </div>
-                          </Link>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-
-                  {!isLoading && filtereddata.length > 5 && (
-                    <div className="px-4 py-3 border-t border-gray-100 bg-gray-50">
-                      <p className="text-sm text-center text-gray-600">
-                        Showing top {Math.min(filtereddata.length, 10)} results
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* No results message */}
-            {query.trim() !== "" && filtereddata.length === 0 && !isLoading && (
-              <div className="absolute left-0 right-0 top-full mt-2 z-50">
-                <div className="bg-white border border-gray-200 rounded-lg shadow-xl p-6 text-center">
-                  <svg
-                    className="mx-auto h-12 w-12 text-gray-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                  <p className="mt-2 text-sm text-gray-600">
-                    No articles found for "
-                    <span className="font-medium">{query}</span>"
-                  </p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Try adjusting your search terms
-                  </p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
+
+        {/* Results dropdown */}
+        {(isLoading || filtereddata.length > 0) && (
+          <div className="absolute left-0 right-0 top-full mt-1.5 z-50">
+            <div className="bg-ed-surface border border-ed-border rounded-lg max-h-72 overflow-hidden shadow-lg">
+              <div className="px-4 py-2 border-b border-ed-border">
+                <p className="text-[10px] tracking-[0.12em] uppercase text-ed-text-tertiary font-sans-ui font-medium">
+                  {isLoading ? (
+                    <span className="flex items-center gap-2">
+                      <span className="w-3 h-3 border-[1.5px] border-ed-text-tertiary border-t-ed-accent rounded-full animate-spin" />
+                      <span>Searching...</span>
+                    </span>
+                  ) : (
+                    `${filtereddata.length} result${
+                      filtereddata.length !== 1 ? "s" : ""
+                    } found`
+                  )}
+                </p>
+              </div>
+
+              <ul className="max-h-56 overflow-y-auto">
+                {isLoading ? (
+                  <>
+                    <ShimmerItem />
+                    <ShimmerItem />
+                    <ShimmerItem />
+                  </>
+                ) : (
+                  filtereddata.map((result, index) => (
+                    <li
+                      key={index}
+                      className="border-b border-ed-border last:border-b-0"
+                    >
+                      <Link
+                        to={`/blog/${result._id}`}
+                        className="block px-4 py-3 hover:bg-ed-surface-hover transition-colors duration-150 group"
+                      >
+                        <div className="flex items-start gap-3">
+                          <FileText
+                            className="size-4 text-ed-text-tertiary group-hover:text-ed-accent flex-shrink-0 mt-0.5"
+                            strokeWidth={1.5}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-body text-ed-text group-hover:text-ed-accent line-clamp-2 transition-colors">
+                              {result.heading
+                                .split(new RegExp(`(${query})`, "gi"))
+                                .map((part, i) =>
+                                  part.toLowerCase() ===
+                                  query.toLowerCase() ? (
+                                    <mark
+                                      key={i}
+                                      className="bg-ed-accent/20 text-ed-accent px-0.5 rounded-sm"
+                                    >
+                                      {part}
+                                    </mark>
+                                  ) : (
+                                    part
+                                  )
+                                )}
+                            </p>
+                          </div>
+                          <ChevronRight
+                            className="size-4 text-ed-text-tertiary group-hover:text-ed-accent flex-shrink-0 transition-colors"
+                            strokeWidth={1.5}
+                          />
+                        </div>
+                      </Link>
+                    </li>
+                  ))
+                )}
+              </ul>
+
+              {!isLoading && filtereddata.length > 5 && (
+                <div className="px-4 py-2 border-t border-ed-border">
+                  <p className="text-[10px] tracking-[0.1em] uppercase text-center text-ed-text-tertiary font-sans-ui">
+                    Showing top {Math.min(filtereddata.length, 10)} results
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* No results */}
+        {query.trim() !== "" && filtereddata.length === 0 && !isLoading && (
+          <div className="absolute left-0 right-0 top-full mt-1.5 z-50">
+            <div className="bg-ed-surface border border-ed-border rounded-lg p-6 text-center">
+              <FileText
+                className="mx-auto size-8 text-ed-text-tertiary mb-2"
+                strokeWidth={1}
+              />
+              <p className="text-sm text-ed-text-secondary font-body">
+                No stories found for &ldquo;
+                <span className="font-medium text-ed-text">{query}</span>
+                &rdquo;
+              </p>
+              <p className="text-[10px] text-ed-text-tertiary font-sans-ui mt-1 tracking-wide uppercase">
+                Try different search terms
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

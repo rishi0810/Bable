@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth.js";
+import { ArrowRight } from "lucide-react";
+
+const TYPING_WORDS = ["Write", "Share", "Inspire"];
 
 const TypingEffect = () => {
   const [index, setIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const words = ["Write", "Share", "Inspire"];
-
   useEffect(() => {
-    const currentWord = words[index];
+    const currentWord = TYPING_WORDS[index];
     let timeout;
 
     if (isDeleting) {
@@ -28,7 +30,7 @@ const TypingEffect = () => {
 
     if (isDeleting && displayText === "") {
       setIsDeleting(false);
-      setIndex((prev) => (prev + 1) % words.length);
+      setIndex((prev) => (prev + 1) % TYPING_WORDS.length);
     }
 
     return () => clearTimeout(timeout);
@@ -36,62 +38,51 @@ const TypingEffect = () => {
 
   return (
     <span
-      className="text-zinc-700 font-semibold inline-block text-center"
-      style={{ display: "inline-block", minWidth: "7ch" }}
+      className="text-ed-accent inline-block font-display italic"
+      style={{ minWidth: "7ch" }}
     >
       {displayText}
-      <span className="animate-pulse">|</span>
+      <span className="animate-pulse text-ed-text-tertiary not-italic">|</span>
     </span>
   );
 };
 
 const Hero = () => {
-  const [isloggedin, setisloggedin] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const response = await fetch(
-        "https://bable-backend.vercel.app/user/authcheck",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-      setisloggedin(data.Authenticated);
-    };
-    checkAuth();
-  }, []);
+  const { isAuthenticated, loading } = useAuth();
 
   const handleCreateClick = () => {
-    navigate(isloggedin ? "/create" : "/login");
+    if (loading) return;
+    navigate(isAuthenticated ? "/create" : "/login");
   };
 
   return (
-    <div className="text-center px-4 sm:px-8 md:px-20 pt-10 pb-6 font-poppins bg-white">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-800 inline-flex flex-wrap justify-center items-center">
-        <span className="whitespace-nowrap">
-          Bable -<TypingEffect />
-        </span>
+    <div className="text-center px-5 sm:px-6 py-16 sm:py-24 md:py-32 max-w-2xl mx-auto">
+      <h1 className="font-display text-4xl sm:text-5xl md:text-6xl text-ed-text leading-[0.95] tracking-tight">
+        Bable
       </h1>
 
-      <p className="text-base sm:text-lg text-zinc-600 mt-4 max-w-2xl mx-auto">
-        Unleash your thoughts with Bable – the blogging platform where ideas
-        flow freely. Share your stories, engage with a like-minded community,
-        and make your voice heard.
+      <div className="mt-5 font-display text-xl sm:text-2xl md:text-3xl text-ed-text-secondary">
+        <TypingEffect />
+      </div>
+
+      <p className="text-[15px] sm:text-base text-ed-text-secondary mt-8 max-w-sm mx-auto font-body leading-relaxed">
+        A sanctuary for the written word. Share your stories, engage with
+        thoughtful minds, and let your voice resonate.
       </p>
 
-      <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
         <button
           onClick={handleCreateClick}
-          className="px-6 py-3 bg-zinc-800 text-white text-base sm:text-lg font-semibold rounded-lg shadow hover:bg-zinc-900 hover:scale-105 transition duration-200 w-full sm:w-auto"
+          disabled={loading}
+          className="group inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-ed-text text-ed-bg text-[13px] tracking-wide font-sans-ui font-medium hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto justify-center"
         >
-          CREATE YOUR BLOG
+          Start Writing
+          <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform duration-200" />
         </button>
-        <Link to="/blogs">
-          <button className="px-6 py-3 bg-zinc-100 text-zinc-800 text-base sm:text-lg font-semibold rounded-lg shadow hover:bg-zinc-200 hover:scale-105 transition duration-200 w-full sm:w-auto">
-            EXPLORE BLOGS
+        <Link to="/blogs" className="w-full sm:w-auto">
+          <button className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-[13px] tracking-wide font-sans-ui font-medium text-ed-text border border-ed-border hover:border-ed-text transition-all duration-200 cursor-pointer w-full justify-center">
+            Read Stories
           </button>
         </Link>
       </div>

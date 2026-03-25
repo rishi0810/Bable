@@ -1,19 +1,87 @@
 @import "tailwindcss";
 
+/* ========================================
+   EDITORIAL THEME SYSTEM
+   Warm neutral palette for reading comfort
+   ======================================== */
+
+:root {
+  --ed-bg: #f8f5f0;
+  --ed-surface: #ffffff;
+  --ed-text: #2c2825;
+  --ed-text-secondary: #6e6560;
+  --ed-text-tertiary: #9e9590;
+  --ed-accent: #b85c38;
+  --ed-accent-hover: #9a4d2e;
+  --ed-border: #eae5de;
+  --ed-divider: #ddd6cc;
+  --ed-surface-hover: #f2ede7;
+  --ed-input-bg: #ffffff;
+  --ed-input-border: #ddd6cc;
+}
+
+[data-theme="dark"] {
+  --ed-bg: #1a1816;
+  --ed-surface: #242120;
+  --ed-text: #e5e0d8;
+  --ed-text-secondary: #9e9590;
+  --ed-text-tertiary: #6e6560;
+  --ed-accent: #d4885a;
+  --ed-accent-hover: #e09a6c;
+  --ed-border: #3a3530;
+  --ed-divider: #302c28;
+  --ed-surface-hover: #302c28;
+  --ed-input-bg: #242120;
+  --ed-input-border: #3a3530;
+}
+
+/* ========================================
+   TAILWIND THEME TOKENS
+   ======================================== */
+
 @theme {
+  /* Backward-compatible fonts (Blog/Create pages) */
   --font-poppins: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+  /* Editorial fonts — Literata (content) + DM Sans (UI) */
+  --font-display: "Literata", Georgia, "Times New Roman", serif;
+  --font-body: "Literata", Georgia, "Times New Roman", serif;
+  --font-sans-ui: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+
+  /* Theme-aware colors */
+  --color-ed-bg: var(--ed-bg);
+  --color-ed-surface: var(--ed-surface);
+  --color-ed-text: var(--ed-text);
+  --color-ed-text-secondary: var(--ed-text-secondary);
+  --color-ed-text-tertiary: var(--ed-text-tertiary);
+  --color-ed-accent: var(--ed-accent);
+  --color-ed-accent-hover: var(--ed-accent-hover);
+  --color-ed-border: var(--ed-border);
+  --color-ed-divider: var(--ed-divider);
+  --color-ed-surface-hover: var(--ed-surface-hover);
+  --color-ed-input-bg: var(--ed-input-bg);
+  --color-ed-input-border: var(--ed-input-border);
 }
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
 
 html {
   scroll-behavior: smooth;
-
   font-display: swap;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, sans-serif;
+  background-color: var(--ed-bg);
+  color: var(--ed-text);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .fonts-loaded body {
@@ -30,21 +98,25 @@ body {
   font-family: var(--font-poppins);
 }
 
+/* ========================================
+   SCROLLBAR (theme-aware)
+   ======================================== */
+
 ::-webkit-scrollbar {
   width: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: var(--ed-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #706f6f;
+  background: var(--ed-text-tertiary);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #000000;
+  background: var(--ed-text-secondary);
 }
 
 ::-webkit-slider-thumb {
@@ -53,6 +125,10 @@ body {
   width: 0;
   height: 0;
 }
+
+/* ========================================
+   TIPTAP EDITOR STYLES (Blog/Create pages)
+   ======================================== */
 
 .tiptap p.is-empty::before {
   content: attr(data-placeholder);
@@ -75,26 +151,11 @@ body {
   display: none;
 }
 
-@keyframes font-fade-in {
-  from {
-    opacity: 0.8;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-.fonts-loaded .font-poppins {
-  animation: font-fade-in 0.2s ease-in;
-}
-
 /* Blog Editor Styles */
 .font-merriweather {
   font-family: "Merriweather", Georgia, "Times New Roman", Times, serif;
 }
 
-/* Apply Merriweather to blog editor content */
 .tiptap {
   font-family: "Merriweather", Georgia, "Times New Roman", Times, serif;
   letter-spacing: 0.025em;
@@ -111,32 +172,34 @@ body {
   backdrop-filter: blur(4px);
 }
 
-/* Prose styling for blog content */
+/* ========================================
+   PROSE STYLES (Blog content rendering)
+   ======================================== */
+
 .prose img {
   border-radius: 0.75rem;
   margin: 1.5rem 0;
 }
 
 .prose blockquote {
-  border-left: 4px solid #f97316;
+  border-left: 4px solid var(--ed-accent);
   padding-left: 1rem;
   font-style: italic;
-  color: #52525b;
+  color: var(--ed-text-secondary);
 }
 
 .prose a {
-  color: #f97316;
+  color: var(--ed-accent);
   text-decoration: underline;
 }
 
 .prose code {
-  background-color: #f4f4f5;
+  background-color: var(--ed-surface-hover);
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.875em;
 }
 
-/* List styling */
 .prose ul {
   list-style-type: disc;
   padding-left: 1.5rem;
@@ -153,12 +216,14 @@ body {
   margin: 0.5rem 0;
 }
 
-/* Paragraph spacing for line breaks */
 .prose p {
   margin-bottom: 1rem;
 }
 
-/* TipTap list styling */
+/* ========================================
+   TIPTAP LIST STYLES
+   ======================================== */
+
 .tiptap ul {
   list-style-type: disc;
   padding-left: 1.5rem;
@@ -177,4 +242,21 @@ body {
 
 .tiptap p {
   margin-bottom: 0.75rem;
+}
+
+/* ========================================
+   FONT LOADING ANIMATION
+   ======================================== */
+
+@keyframes font-fade-in {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fonts-loaded .font-poppins {
+  animation: font-fade-in 0.2s ease-in;
 }

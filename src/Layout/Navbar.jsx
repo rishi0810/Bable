@@ -1,13 +1,26 @@
 import { useState } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
-import image from "../assets/logo.avif";
-import { HiMenu, HiX, HiUser, HiLogout } from "react-icons/hi";
+import image from "../assets/logo.webp";
+import {
+  Home,
+  BookOpen,
+  PenLine,
+  Info,
+  User,
+  LogOut,
+  Sun,
+  Moon,
+  AlignRight,
+  X,
+} from "lucide-react";
 import { useAuth } from "../hooks/useAuth.js";
+import { useTheme } from "../contexts/ThemeContext.jsx";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const { isAuthenticated, userId, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
     try {
@@ -19,69 +32,66 @@ const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo Section */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative">
-              <img 
-                src={image} 
-                alt="Bable Logo" 
-                className="size-8 rounded-full ring-2 ring-transparent group-hover:ring-gray-300 transition-all duration-300" 
-              />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-gray-500/10 to-gray-700/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </div>
-            <h3 className="font-bold text-xl sm:text-2xl bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+    <header className="sticky top-0 w-full bg-ed-bg z-50 transition-colors duration-300">
+      <nav className="max-w-4xl mx-auto px-5 sm:px-6">
+        <div className="flex items-center justify-between h-14">
+          {/* Wordmark */}
+          <Link to="/" className="flex items-center gap-2 group">
+            <img
+              src={image}
+              alt="Bable"
+              className="size-6 rounded-full opacity-85 group-hover:opacity-100 transition-opacity duration-200 translate-y-[0.5px]"
+            />
+            <span className="font-display text-xl tracking-tight text-ed-text">
               Bable
-            </h3>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center gap-6">
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? "text-gray-900 bg-gray-100" 
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                `text-[13px] font-sans-ui font-medium transition-colors duration-200 ${
+                  isActive
+                    ? "text-ed-text"
+                    : "text-ed-text-tertiary hover:text-ed-text"
                 }`
               }
             >
               Home
             </NavLink>
             <NavLink
-              to={isAuthenticated ? "/create" : "/login"}
-              className={({ isActive }) =>
-                `relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? "text-gray-900 bg-gray-100" 
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`
-              }
-            >
-              Create
-            </NavLink>
-            <NavLink
               to="/blogs"
               className={({ isActive }) =>
-                `relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? "text-gray-900 bg-gray-100" 
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                `text-[13px] font-sans-ui font-medium transition-colors duration-200 ${
+                  isActive
+                    ? "text-ed-text"
+                    : "text-ed-text-tertiary hover:text-ed-text"
                 }`
               }
             >
               Blogs
             </NavLink>
             <NavLink
+              to={isAuthenticated ? "/create" : "/login"}
+              className={({ isActive }) =>
+                `text-[13px] font-sans-ui font-medium transition-colors duration-200 ${
+                  isActive
+                    ? "text-ed-text"
+                    : "text-ed-text-tertiary hover:text-ed-text"
+                }`
+              }
+            >
+              Write
+            </NavLink>
+            <NavLink
               to="/about"
               className={({ isActive }) =>
-                `relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? "text-gray-900 bg-gray-100" 
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                `text-[13px] font-sans-ui font-medium transition-colors duration-200 ${
+                  isActive
+                    ? "text-ed-text"
+                    : "text-ed-text-tertiary hover:text-ed-text"
                 }`
               }
             >
@@ -89,169 +99,185 @@ const Navbar = () => {
             </NavLink>
           </div>
 
-          {/* Auth Section */}
-          <div className="hidden md:flex items-center space-x-3">
-            {isAuthenticated ? (
-              <div className="flex items-center space-x-3">
-                <NavLink
-                  to={`/profile/${userId || ''}`}
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                      isActive 
-                        ? "text-gray-900 bg-gray-100" 
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                    }`
-                  }
-                >
-                  <HiUser className="size-4" />
-                  Profile
-                </NavLink>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-all duration-200"
-                >
-                  <HiLogout className="size-4" />
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <Link to="/signup">
-                  <button className="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:text-gray-900 transition-all duration-200">
-                    Sign up
-                  </button>
-                </Link>
-                <Link to="/login">
-                  <button className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg hover:from-gray-900 hover:to-black transition-all duration-200 shadow-sm hover:shadow-md">
-                    Log in
-                  </button>
-                </Link>
-              </div>
-            )}
-          </div>
+          {/* Right controls */}
+          <div className="flex items-center gap-1">
+            {/* Theme toggle pill */}
+            <button
+              onClick={toggleTheme}
+              className="relative flex items-center justify-center w-8 h-8 rounded-full text-ed-text-tertiary hover:text-ed-accent hover:bg-ed-surface-hover transition-all duration-200"
+              aria-label={`Switch to ${
+                theme === "light" ? "dark" : "light"
+              } mode`}
+            >
+              <Sun
+                className={`size-[16px] absolute transition-all duration-300 ${
+                  theme === "light"
+                    ? "opacity-0 rotate-90 scale-0"
+                    : "opacity-100 rotate-0 scale-100"
+                }`}
+                strokeWidth={1.75}
+              />
+              <Moon
+                className={`size-[16px] absolute transition-all duration-300 ${
+                  theme === "light"
+                    ? "opacity-100 rotate-0 scale-100"
+                    : "opacity-0 -rotate-90 scale-0"
+                }`}
+                strokeWidth={1.75}
+              />
+            </button>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-200"
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <HiX className="size-6" /> : <HiMenu className="size-6" />}
-          </button>
-        </div>
-
-        {/* Mobile Navigation Menu */}
-        <div
-          className={`md:hidden transition-all duration-300 ease-in-out ${
-            menuOpen
-              ? "max-h-screen opacity-100 visible"
-              : "max-h-0 opacity-0 invisible"
-          } overflow-hidden`}
-        >
-          <div className="py-4 space-y-2 border-t border-gray-100">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? "text-gray-900 bg-gray-100" 
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`
-              }
-              onClick={() => setMenuOpen(false)}
-            >
-              Home
-            </NavLink>
-            <NavLink
-              to={isAuthenticated ? "/create" : "/login"}
-              className={({ isActive }) =>
-                `block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? "text-gray-900 bg-gray-100" 
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`
-              }
-              onClick={() => setMenuOpen(false)}
-            >
-              Create
-            </NavLink>
-            <NavLink
-              to="/blogs"
-              className={({ isActive }) =>
-                `block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? "text-gray-900 bg-gray-100" 
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`
-              }
-              onClick={() => setMenuOpen(false)}
-            >
-              Blogs
-            </NavLink>
-            <NavLink
-              to="/about"
-              className={({ isActive }) =>
-                `block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? "text-gray-900 bg-gray-100" 
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`
-              }
-              onClick={() => setMenuOpen(false)}
-            >
-              About
-            </NavLink>
-
-            {isAuthenticated ? (
-              <div className="pt-4 border-t border-gray-100 space-y-2">
-                <NavLink
-                  to={`/profile/${userId || ''}`}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                      isActive 
-                        ? "text-gray-900 bg-gray-100" 
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                    }`
-                  }
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <HiUser className="size-4" />
-                  Profile
-                </NavLink>
-                <button
-                  onClick={() => {
-                    setMenuOpen(false);
-                    handleLogout();
-                  }}
-                  className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-all duration-200"
-                >
-                  <HiLogout className="size-4" />
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="pt-4 border-t border-gray-100 space-y-2">
-                <Link to="/signup" className="block">
-                  <button 
-                    onClick={() => setMenuOpen(false)}
-                    className="w-full px-4 py-3 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:text-gray-900 transition-all duration-200"
+            {/* Desktop auth */}
+            <div className="hidden md:flex items-center gap-1">
+              {isAuthenticated ? (
+                <>
+                  <NavLink
+                    to={`/profile/${userId || ""}`}
+                    className={({ isActive }) =>
+                      `flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200 ${
+                        isActive
+                          ? "text-ed-text bg-ed-surface-hover"
+                          : "text-ed-text-tertiary hover:text-ed-text hover:bg-ed-surface-hover"
+                      }`
+                    }
+                    aria-label="Profile"
                   >
-                    Sign up
-                  </button>
-                </Link>
-                <Link to="/login" className="block">
-                  <button 
-                    onClick={() => setMenuOpen(false)}
-                    className="w-full px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg hover:from-gray-900 hover:to-black transition-all duration-200"
+                    <User className="size-[16px]" strokeWidth={1.75} />
+                  </NavLink>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center justify-center w-8 h-8 rounded-full text-ed-text-tertiary hover:text-ed-text hover:bg-ed-surface-hover transition-all duration-200"
+                    aria-label="Log out"
                   >
-                    Log in
+                    <LogOut className="size-[16px]" strokeWidth={1.75} />
                   </button>
-                </Link>
-              </div>
-            )}
+                </>
+              ) : (
+                <div className="flex items-center gap-2 ml-2">
+                  <Link to="/login">
+                    <button className="px-4 py-1.5 rounded-full text-[12px] font-sans-ui font-medium text-ed-text-secondary hover:text-ed-text transition-colors duration-200">
+                      Log in
+                    </button>
+                  </Link>
+                  <Link to="/signup">
+                    <button className="px-4 py-1.5 rounded-full text-[12px] font-sans-ui font-medium bg-ed-text text-ed-bg hover:opacity-90 transition-all duration-200">
+                      Sign up
+                    </button>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden flex items-center justify-center w-8 h-8 rounded-full text-ed-text-tertiary hover:text-ed-text hover:bg-ed-surface-hover transition-all duration-200"
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? (
+                <X className="size-[18px]" strokeWidth={1.75} />
+              ) : (
+                <AlignRight className="size-[18px]" strokeWidth={1.75} />
+              )}
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Thin rule */}
+      <div className="max-w-4xl mx-auto px-5 sm:px-6">
+        <div className="h-px bg-ed-border" />
+      </div>
+
+      {/* Mobile Navigation */}
+      <div
+        className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
+          menuOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="max-w-4xl mx-auto px-5 sm:px-6 py-4">
+          <div className="space-y-0.5">
+            {[
+              { to: "/", label: "Home", icon: Home },
+              { to: "/blogs", label: "Blogs", icon: BookOpen },
+              {
+                to: isAuthenticated ? "/create" : "/login",
+                label: "Write",
+                icon: PenLine,
+              },
+              { to: "/about", label: "About", icon: Info },
+            ].map(({ to, label, icon: Icon }) => (
+              <NavLink
+                key={label}
+                to={to}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-lg font-sans-ui text-[14px] font-medium transition-all duration-200 ${
+                    isActive
+                      ? "text-ed-text bg-ed-surface-hover"
+                      : "text-ed-text-secondary hover:text-ed-text hover:bg-ed-surface-hover"
+                  }`
+                }
+                onClick={() => setMenuOpen(false)}
+              >
+                <Icon className="size-[16px]" strokeWidth={1.75} />
+                {label}
+              </NavLink>
+            ))}
+          </div>
+
+          <div className="h-px bg-ed-border my-3" />
+
+          {isAuthenticated ? (
+            <div className="space-y-0.5">
+              <NavLink
+                to={`/profile/${userId || ""}`}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-lg font-sans-ui text-[14px] font-medium transition-all duration-200 ${
+                    isActive
+                      ? "text-ed-text bg-ed-surface-hover"
+                      : "text-ed-text-secondary hover:text-ed-text hover:bg-ed-surface-hover"
+                  }`
+                }
+                onClick={() => setMenuOpen(false)}
+              >
+                <User className="size-[16px]" strokeWidth={1.75} />
+                Profile
+              </NavLink>
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  handleLogout();
+                }}
+                className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg font-sans-ui text-[14px] font-medium text-ed-text-secondary hover:text-ed-text hover:bg-ed-surface-hover transition-all duration-200"
+              >
+                <LogOut className="size-[16px]" strokeWidth={1.75} />
+                Log out
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-2.5 pt-1">
+              <Link
+                to="/login"
+                className="flex-1"
+                onClick={() => setMenuOpen(false)}
+              >
+                <button className="w-full py-2.5 rounded-lg text-[13px] font-sans-ui font-medium text-ed-text-secondary border border-ed-border hover:border-ed-text hover:text-ed-text transition-all duration-200">
+                  Log in
+                </button>
+              </Link>
+              <Link
+                to="/signup"
+                className="flex-1"
+                onClick={() => setMenuOpen(false)}
+              >
+                <button className="w-full py-2.5 rounded-lg text-[13px] font-sans-ui font-medium bg-ed-text text-ed-bg hover:opacity-90 transition-all duration-200">
+                  Sign up
+                </button>
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
     </header>
   );
 };

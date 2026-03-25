@@ -3,9 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta -->
+    <title>Bable — A Sanctuary for the Written Word</title>
+    <meta
+      name="description"
+      content="Bable is a blogging platform where ideas flow freely. Write, share, and inspire."
+    />
+    <meta
+      name="keywords"
+      content="blog, blogging platform, writing, stories, creative writing, community, articles"
+    />
+    <meta name="author" content="Rishi Raj" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://bable.vercel.app/" />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Bable — A Sanctuary for the Written Word" />
+    <meta
+      property="og:description"
+      content="Write, share, and inspire. Bable is a blogging platform where ideas flow freely and thoughtful voices are heard."
+    />
+    <meta property="og:url" content="https://bable.vercel.app/" />
+    <meta property="og:site_name" content="Bable" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://bable.vercel.app/logo.webp" />
+    <meta property="og:image:type" content="image/webp" />
+    <meta property="og:image:alt" content="Bable — A Sanctuary for the Written Word" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content="https://bable.vercel.app/logo.webp" />
+    <meta name="twitter:title" content="Bable — A Sanctuary for the Written Word" />
+    <meta
+      name="twitter:description"
+      content="Write, share, and inspire. A blogging platform where ideas flow freely."
+    />
+
+    <!-- Theme Color (matches editorial warm background) -->
+    <meta name="theme-color" content="#f8f5f0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1a1816" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- Performance: preconnect to API -->
+    <link rel="dns-prefetch" href="//bable-backend.vercel.app" />
+    <link rel="preconnect" href="https://bable-backend.vercel.app" />
+
+    <!-- Fonts: preconnect -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Two editorial fonts: Literata (content) + DM Sans (UI) -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Literata:ital,opsz,wght@0,7..72,400..900;1,7..72,400..900&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Literata:ital,opsz,wght@0,7..72,400..900;1,7..72,400..900&display=swap"
+      />
+    </noscript>
+
+    <!-- Keep Poppins + Merriweather for Blog/Create pages -->
     <link
       rel="preload"
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
@@ -18,47 +82,65 @@
       as="style"
       onload="this.onload=null;this.rel='stylesheet'"
     />
-    <noscript
-      ><link
+    <noscript>
+      <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-    /></noscript>
-    <noscript
-      ><link
+      />
+    </noscript>
+    <noscript>
+      <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap"
-    /></noscript>
+      />
+    </noscript>
+
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           Oxygen, Ubuntu, Cantarell, sans-serif;
       }
-
       .font-poppins {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           Oxygen, Ubuntu, Cantarell, sans-serif;
       }
-
       .fonts-loaded .font-poppins {
         font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
           Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       }
     </style>
+
     <script>
+      // Apply saved theme immediately to prevent FOUC
+      (function () {
+        var saved = localStorage.getItem("bable-theme");
+        if (saved) {
+          document.documentElement.setAttribute("data-theme", saved);
+        } else if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+
+      // Font loading detection
       if ("fonts" in document) {
-        document.fonts.ready.then(() => {
+        document.fonts.ready.then(function () {
           document.documentElement.classList.add("fonts-loaded");
         });
       } else {
-        setTimeout(() => {
+        setTimeout(function () {
           document.documentElement.classList.add("fonts-loaded");
         }, 100);
       }
     </script>
 
-    <link rel="icon" href="/src/assets/logo.avif" style="border-radius: 50%" />
+    <!-- Favicon -->
+    <link rel="icon" href="/src/assets/logo.webp" style="border-radius: 50%" />
     <link rel="shortcut icon" href="#" />
-    <title>Bable</title>
   </head>
   <body>
     <div id="root"></div>

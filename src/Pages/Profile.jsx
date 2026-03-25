@@ -3,16 +3,15 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
 const BlogListItem = ({ blog, onDelete, buttonText }) => (
-  <li className="flex items-center gap-4 bg-gray-100 p-3 sm:p-4 rounded-lg shadow-sm animate-fade-in">
+  <li className="flex items-center gap-4 py-4 border-b border-ed-border last:border-b-0">
     <Link to={`/blog/${blog._id}`} className="flex-1 min-w-0">
-      <p className="text-blue-600 hover:underline text-base truncate sm:text-clip">
+      <p className="font-body text-ed-text hover:text-ed-accent transition-colors duration-200 truncate sm:text-clip">
         {blog.heading}
       </p>
     </Link>
-
     <button
       onClick={onDelete}
-      className="flex-shrink-0 bg-red-500 text-white font-medium text-sm px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+      className="flex-shrink-0 text-[11px] tracking-[0.15em] uppercase font-sans-ui font-medium px-4 py-2 rounded-lg text-ed-accent border border-ed-accent hover:bg-ed-accent hover:text-white transition-colors duration-200 cursor-pointer"
     >
       {buttonText}
     </button>
@@ -20,20 +19,19 @@ const BlogListItem = ({ blog, onDelete, buttonText }) => (
 );
 
 const Skeleton = () => (
-  <div className="w-11/12 max-w-4xl mx-auto py-8 sm:py-12 font-poppins animate-pulse">
-    <div className="text-center mb-10">
-      <div className="h-8 w-48 bg-gray-300 rounded mx-auto mb-2" />
-      <div className="h-4 w-32 bg-gray-200 rounded mx-auto" />
-      <div className="h-3 w-28 bg-gray-200 rounded mx-auto mt-2" />
+  <div className="max-w-3xl mx-auto px-5 sm:px-6 py-10 sm:py-16 animate-pulse">
+    <div className="text-center mb-12">
+      <div className="h-8 w-48 bg-ed-surface-hover rounded mx-auto mb-3" />
+      <div className="h-4 w-32 bg-ed-surface-hover rounded mx-auto" />
+      <div className="h-3 w-28 bg-ed-surface-hover rounded mx-auto mt-2" />
     </div>
-
-    <div className="space-y-10">
+    <div className="space-y-12">
       {[1, 2].map((section) => (
         <div key={section}>
-          <div className="h-6 w-40 bg-gray-300 rounded mb-4" />
+          <div className="h-6 w-40 bg-ed-surface-hover rounded mb-6" />
           <ul className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <li key={i} className="bg-gray-200 h-12 rounded-lg" />
+              <li key={i} className="h-14 bg-ed-surface-hover rounded" />
             ))}
           </ul>
         </div>
@@ -43,10 +41,14 @@ const Skeleton = () => (
 );
 
 const ErrorScreen = () => (
-  <div className="flex flex-col justify-center items-center text-center px-4 py-16">
-    <div className="bg-red-100 text-red-700 border border-red-300 px-6 py-4 rounded-lg shadow">
-      <h2 className="text-xl font-bold mb-2">Failed to load profile</h2>
-      <p className="text-sm">Something went wrong while fetching user data.</p>
+  <div className="flex flex-col justify-center items-center text-center px-4 py-20">
+    <div className="bg-ed-surface text-ed-text border border-ed-border px-8 py-6">
+      <h2 className="font-display text-xl text-ed-text mb-2">
+        Unable to Load Profile
+      </h2>
+      <p className="text-sm text-ed-text-secondary font-body">
+        Something went wrong while fetching user data.
+      </p>
     </div>
   </div>
 );
@@ -136,24 +138,32 @@ const Profile = () => {
   if (error || !user) return <ErrorScreen />;
 
   return (
-    <div className="w-11/12 max-w-4xl mx-auto py-8 sm:py-12 font-poppins">
-      <div className="mb-10 text-center">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">
+    <div className="max-w-3xl mx-auto px-5 sm:px-6 py-10 sm:py-16">
+      {/* User info */}
+      <div className="text-center mb-14">
+        <h1 className="font-display text-3xl sm:text-4xl text-ed-text tracking-tight">
           {user.name}
         </h1>
-        <p className="text-gray-600 mt-1">{user.email}</p>
+        <p className="text-ed-text-secondary font-body mt-2">{user.email}</p>
         {user.createdAt && (
-          <p className="text-gray-500 text-sm mt-2">{`Joined on ${formatDate(
-            user.createdAt
-          )}`}</p>
+          <p className="text-[12px] tracking-[0.15em] uppercase text-ed-text-tertiary font-sans-ui mt-2">
+            Joined {formatDate(user.createdAt)}
+          </p>
         )}
       </div>
 
-      <div className="space-y-12">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Saved Blogs</h2>
+      {/* Sections */}
+      <div className="space-y-14">
+        {/* Saved Stories */}
+        <section>
+          <div className="flex items-center gap-4 mb-6">
+            <h2 className="font-display text-xl sm:text-2xl text-ed-text whitespace-nowrap">
+              Saved Stories
+            </h2>
+            <div className="flex-1 h-px bg-ed-border" />
+          </div>
           {user.storedBlogs && user.storedBlogs.length > 0 ? (
-            <ul className="space-y-3">
+            <ul>
               {user.storedBlogs.map((blog) => (
                 <BlogListItem
                   key={blog._id}
@@ -164,18 +174,22 @@ const Profile = () => {
               ))}
             </ul>
           ) : (
-            <p className="text-gray-500 bg-gray-100 p-4 rounded-lg text-center">
-              No saved blogs found.
+            <p className="text-ed-text-tertiary font-body text-center py-10 border border-ed-border bg-ed-surface">
+              No saved stories yet.
             </p>
           )}
-        </div>
+        </section>
 
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            Written Blogs
-          </h2>
+        {/* Written Stories */}
+        <section>
+          <div className="flex items-center gap-4 mb-6">
+            <h2 className="font-display text-xl sm:text-2xl text-ed-text whitespace-nowrap">
+              Written Stories
+            </h2>
+            <div className="flex-1 h-px bg-ed-border" />
+          </div>
           {user.writtenBlogs && user.writtenBlogs.length > 0 ? (
-            <ul className="space-y-3">
+            <ul>
               {user.writtenBlogs.map((blog) => (
                 <BlogListItem
                   key={blog._id}
@@ -186,11 +200,11 @@ const Profile = () => {
               ))}
             </ul>
           ) : (
-            <p className="text-gray-500 bg-gray-100 p-4 rounded-lg text-center">
-              You haven't written any blogs yet.
+            <p className="text-ed-text-tertiary font-body text-center py-10 border border-ed-border bg-ed-surface">
+              You haven&apos;t written any stories yet.
             </p>
           )}
-        </div>
+        </section>
       </div>
     </div>
   );
