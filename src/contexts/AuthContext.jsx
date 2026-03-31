@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useCallback, useRef } from "react";
+import { buildApiUrl } from "../lib/api.js";
 
 const AuthContext = createContext();
 const AUTH_SESSION_KEY = "bable.auth-session";
@@ -118,7 +119,7 @@ export const AuthProvider = ({ children }) => {
 
       try {
         const response = await fetch(
-          "https://bable-backend.vercel.app/user/authcheck",
+          buildApiUrl("/user/authcheck"),
           {
             method: "GET",
             credentials: "include",
@@ -163,7 +164,7 @@ export const AuthProvider = ({ children }) => {
       setAuthState((prev) => ({ ...prev, loading: true, error: null }));
 
       const response = await fetch(
-        "https://bable-backend.vercel.app/user/login",
+        buildApiUrl("/user/login"),
         {
           method: "POST",
           credentials: "include",
@@ -208,7 +209,7 @@ export const AuthProvider = ({ children }) => {
       setAuthState((prev) => ({ ...prev, loading: true, error: null }));
 
       const response = await fetch(
-        "https://bable-backend.vercel.app/user/logout",
+        buildApiUrl("/user/logout"),
         {
           method: "POST",
           credentials: "include",

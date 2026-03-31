@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { buildApiUrl } from "../lib/api.js";
 
 const BlogListItem = ({ blog, onDelete, buttonText }) => (
   <li className="flex items-center gap-4 py-4 border-b border-ed-border last:border-b-0">
@@ -69,16 +70,16 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchUser = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          `https://bable-backend.vercel.app/user/details/${userID}`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
+        const response = await fetch(buildApiUrl(`/user/details/${userID}`), {
+          method: "GET",
+          credentials: "include",
+          signal: controller.signal,
+        });
 
         if (!response.ok) throw new Error("Failed to fetch user data");
 
@@ -86,6 +87,10 @@ const Profile = () => {
         setUser(data);
         setError(false);
       } catch (error) {
+        if (error.name === "AbortError") {
+          return;
+        }
+
         console.error("Error fetching user:", error);
         setError(true);
       } finally {
@@ -94,12 +99,16 @@ const Profile = () => {
     };
 
     fetchUser();
+
+    return () => {
+      controller.abort();
+    };
   }, [userID]);
 
   const handledeletefromwritten = async (blogid) => {
     try {
       const response = await fetch(
-        `https://bable-backend.vercel.app/blog/delete/${blogid}`,
+        buildApiUrl(`/blog/delete/${blogid}`),
         { method: "POST", credentials: "include" }
       );
 
@@ -118,7 +127,7 @@ const Profile = () => {
   const handledeletefromsaved = async (blogid) => {
     try {
       const response = await fetch(
-        `https://bable-backend.vercel.app/blog/remove/${blogid}`,
+        buildApiUrl(`/blog/remove/${blogid}`),
         { method: "POST", credentials: "include" }
       );
 

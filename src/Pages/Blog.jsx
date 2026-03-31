@@ -3,32 +3,43 @@ import { useParams } from "react-router";
 import { Save, Share } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "../hooks/useAuth.js";
+import OptimizedImage from "../components/OptimizedImage.jsx";
+import { buildApiUrl } from "../lib/api.js";
 
 const Blog = () => {
   const { id } = useParams();
-  const blogid = id;
   const { isAuthenticated } = useAuth();
   const [blog, setBlog] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
+    if (!id) {
+      console.error("No id");
+      return undefined;
+    }
+
+    const controller = new AbortController();
+    setBlog(null);
 
     const fetchBlog = async () => {
-      if (!blogid) {
-        console.error("No id");
-        return;
-      }
-
       try {
-        const response = await fetch(
-          `https://bable-backend.vercel.app/blog/${blogid}`
-        );
+        const response = await fetch(buildApiUrl(`/blog/${id}`), {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch blog: ${response.status}`);
+        }
+
         const data = await response.json();
 
-        if (isMounted && data) {
+        if (data) {
           setBlog(data);
         }
       } catch (error) {
+        if (error.name === "AbortError") {
+          return;
+        }
+
         console.error("Error fetching blog:", error);
       }
     };
@@ -36,9 +47,9 @@ const Blog = () => {
     fetchBlog();
 
     return () => {
-      isMounted = false;
+      controller.abort();
     };
-  }, [blogid]);
+  }, [id]);
 
   const copyCurrentUrl = async () => {
     try {
@@ -52,7 +63,7 @@ const Blog = () => {
   const saveblog = async (blogid) => {
     try {
       const response = await fetch(
-        `https://bable-backend.vercel.app/blog/save/${blogid}`,
+        buildApiUrl(`/blog/save/${blogid}`),
         {
           method: "POST",
           credentials: "include",
@@ -87,10 +98,19 @@ const Blog = () => {
             {blog.img_url && (
               <div className="flex justify-center">
                 <div className="w-4/5 aspect-video">
-                  <img
+                  <OptimizedImage
                     src={blog.img_url}
                     className="w-full h-full object-cover rounded-xl shadow-md"
                     alt="Blog cover"
+                    loading="eager"
+                    fetchPriority="high"
+                    sizes="(min-width: 1024px) 720px, 80vw"
+                    widths={[480, 720, 960, 1280]}
+                    transformOptions={{
+                      height: 405,
+                      crop: "fill",
+                      gravity: "auto",
+                    }}
                   />
                 </div>
               </div>

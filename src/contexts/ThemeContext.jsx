@@ -1,10 +1,18 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    return document.documentElement.getAttribute("data-theme") || "light";
+    if (typeof window === "undefined") {
+      return "light";
+    }
+
+    return (
+      window.localStorage.getItem("bable-theme") ||
+      document.documentElement.getAttribute("data-theme") ||
+      "light"
+    );
   });
 
   useEffect(() => {
@@ -23,8 +31,4 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) throw new Error("useTheme must be used within ThemeProvider");
-  return context;
-};
+export default ThemeContext;

@@ -14,7 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth.js";
-import { useTheme } from "../contexts/ThemeContext.jsx";
+import { useTheme } from "../hooks/useTheme.js";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -206,23 +206,27 @@ const Navbar = () => {
                 icon: PenLine,
               },
               { to: "/about", label: "About", icon: Info },
-            ].map(({ to, label, icon: Icon }) => (
-              <NavLink
-                key={label}
-                to={to}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2.5 rounded-lg font-sans-ui text-[14px] font-medium transition-all duration-200 ${
-                    isActive
-                      ? "text-ed-text bg-ed-surface-hover"
-                      : "text-ed-text-secondary hover:text-ed-text hover:bg-ed-surface-hover"
-                  }`
-                }
-                onClick={() => setMenuOpen(false)}
-              >
-                <Icon className="size-[16px]" strokeWidth={1.75} />
-                {label}
-              </NavLink>
-            ))}
+            ].map((item) => {
+              const IconComponent = item.icon;
+
+              return (
+                <NavLink
+                  key={item.label}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2.5 rounded-lg font-sans-ui text-[14px] font-medium transition-all duration-200 ${
+                      isActive
+                        ? "text-ed-text bg-ed-surface-hover"
+                        : "text-ed-text-secondary hover:text-ed-text hover:bg-ed-surface-hover"
+                    }`
+                  }
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <IconComponent className="size-[16px]" strokeWidth={1.75} />
+                  {item.label}
+                </NavLink>
+              );
+            })}
           </div>
 
           <div className="h-px bg-ed-border my-3" />

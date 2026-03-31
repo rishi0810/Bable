@@ -1,53 +1,77 @@
 import TopResults from "../components/TopResults.jsx";
 import Search from "../components/Search.jsx";
 import { useState, useEffect } from "react";
+import { buildApiUrl } from "../lib/api.js";
+
+const CACHE_KEY = "blogs";
+const CACHE_TIME_KEY = "blogs_timestamp";
+
+const readCachedBlogs = () => {
+  if (typeof window === "undefined") {
+    return [];
+  }
+
+  try {
+    const cachedValue = window.localStorage.getItem(CACHE_KEY);
+    return cachedValue ? JSON.parse(cachedValue) : [];
+  } catch (error) {
+    console.error("Failed to read cached blogs:", error);
+    window.localStorage.removeItem(CACHE_KEY);
+    return [];
+  }
+};
 
 const Blogs = () => {
-  const [results, setresults] = useState([]);
+  const [results, setResults] = useState(readCachedBlogs);
 
   useEffect(() => {
-    const CACHE_KEY = "blogs";
-    const CACHE_TIME_KEY = "blogs_timestamp";
-
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached) {
-      const parsed = JSON.parse(cached);
-      setresults(parsed);
-    }
+    const controller = new AbortController();
 
     const fetchAndUpdate = async () => {
       try {
-        const response = await fetch("https://bable-backend.vercel.app/blog");
+        const response = await fetch(buildApiUrl("/blog"), {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch blogs: ${response.status}`);
+        }
+
         const data = await response.json();
 
-        if (data) {
-          const reversed = data.reverse();
-          const currentCache = localStorage.getItem(CACHE_KEY);
-          const isDifferent =
-            !currentCache ||
-            JSON.stringify(reversed) !==
-              JSON.stringify(JSON.parse(currentCache));
-
-          if (isDifferent) {
-            console.log("New blog data detected, updating...");
-            localStorage.setItem(CACHE_KEY, JSON.stringify(reversed));
-            localStorage.setItem(
-              CACHE_TIME_KEY,
-              new Date().getTime().toString()
-            );
-            setresults(reversed);
-          } else {
-            console.log("No change in blog data.");
-          }
-        } else {
+        if (!Array.isArray(data)) {
           console.error("Unable to fetch blogs");
+          return;
         }
+
+        const reversedBlogs = [...data].reverse();
+        const serializedBlogs = JSON.stringify(reversedBlogs);
+        const currentCache = window.localStorage.getItem(CACHE_KEY);
+
+        if (serializedBlogs === currentCache) {
+          return;
+        }
+
+        window.localStorage.setItem(CACHE_KEY, serializedBlogs);
+        window.localStorage.setItem(
+          CACHE_TIME_KEY,
+          Date.now().toString()
+        );
+        setResults(reversedBlogs);
       } catch (error) {
+        if (error.name === "AbortError") {
+          return;
+        }
+
         console.error("Fetch error:", error);
       }
     };
 
     fetchAndUpdate();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (

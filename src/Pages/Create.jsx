@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router";
+import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -8,6 +8,8 @@ import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useAuth } from "../hooks/useAuth.js";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
+import OptimizedImage from "../components/OptimizedImage.jsx";
+import { buildApiUrl } from "../lib/api.js";
 import {
   ArrowLeft,
   Bold,
@@ -64,22 +66,13 @@ export default function Create() {
     },
   });
 
-  // Check if form is valid for publishing (title, content, and image are required)
-  const isFormValid = useMemo(() => {
-    const hasTitle = formData.heading.trim().length > 0;
-    const hasContent =
-      formData.content.trim().length > 0 &&
-      formData.content !== "<p></p>" &&
-      formData.content !== "<p><br></p>";
-    const hasImage = formData.imageUrl.trim().length > 0;
-    return hasTitle && hasContent && hasImage;
-  }, [formData.heading, formData.content, formData.imageUrl]);
-
-  useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      navigate("/login");
-    }
-  }, [loading, isAuthenticated, navigate]);
+  const isFormValid =
+    formData.heading.trim().length > 0 &&
+    formData.content.trim().length > 0 &&
+    formData.content !== "<p></p>" &&
+    formData.content !== "<p><br></p>" &&
+    formData.imageUrl.trim().length > 0;
+  const previewImageUrl = formData.imageUrl.trim();
 
   if (loading) {
     return (
@@ -90,7 +83,7 @@ export default function Create() {
   }
 
   if (!isAuthenticated) {
-    return null;
+    return <Navigate to="/login" replace />;
   }
 
   const handleChange = (e) => {
@@ -112,7 +105,7 @@ export default function Create() {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        "https://bable-backend.vercel.app/blog/create",
+        buildApiUrl("/blog/create"),
         {
           method: "POST",
           credentials: "include",
@@ -344,15 +337,24 @@ export default function Create() {
           />
 
           {/* Image Preview - 16:9 aspect ratio, centered, smaller */}
-          {formData.imageUrl && !imageError && (
+          {previewImageUrl && !imageError && (
             <div className="mb-8 flex justify-center">
               <div className="w-4/5 aspect-video">
-                <img
-                  src={formData.imageUrl}
+                <OptimizedImage
+                  src={previewImageUrl}
                   alt="Cover Preview"
                   className="w-full h-full object-cover rounded-xl border border-ed-border"
                   onError={handleImageError}
                   onLoad={handleImageLoad}
+                  loading="eager"
+                  fetchPriority="high"
+                  sizes="(min-width: 1024px) 720px, 80vw"
+                  widths={[480, 720, 960, 1280]}
+                  transformOptions={{
+                    height: 405,
+                    crop: "fill",
+                    gravity: "auto",
+                  }}
                 />
               </div>
             </div>
@@ -393,15 +395,24 @@ export default function Create() {
             {/* Modal Content - Blog Preview */}
             <div className="p-6 md:p-10">
               {/* Cover Image - 16:9 aspect ratio, centered, smaller */}
-              {formData.imageUrl && !imageError && (
+              {previewImageUrl && !imageError && (
                 <div className="mb-8 flex justify-center">
                   <div className="w-4/5 aspect-video">
-                    <img
-                      src={formData.imageUrl}
+                    <OptimizedImage
+                      src={previewImageUrl}
                       alt="Blog Cover Preview"
                       className="w-full h-full object-cover rounded-xl"
                       onError={handleImageError}
                       onLoad={handleImageLoad}
+                      loading="eager"
+                      fetchPriority="high"
+                      sizes="(min-width: 1024px) 720px, 80vw"
+                      widths={[480, 720, 960, 1280]}
+                      transformOptions={{
+                        height: 405,
+                        crop: "fill",
+                        gravity: "auto",
+                      }}
                     />
                   </div>
                 </div>

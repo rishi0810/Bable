@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import { buildApiUrl } from "../lib/api.js";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function Signup() {
 
     try {
       const response = await fetch(
-        "https://bable-backend.vercel.app/user/signup",
+        buildApiUrl("/user/signup"),
         {
           method: "POST",
           headers: {

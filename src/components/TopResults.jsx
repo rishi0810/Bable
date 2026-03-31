@@ -1,31 +1,29 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { Link } from "react-router";
+import OptimizedImage from "./OptimizedImage.jsx";
 
 const TopResults = ({ results }) => {
-  const [sortedlist, setsortedlist] = useState([]);
-
-  useEffect(() => {
-    const newArray = [...results].slice(0, 8);
-    if (newArray) setsortedlist(newArray);
-    else console.error("Unable to fetch");
-  }, [results]);
+  const sortedlist = useMemo(() => results.slice(0, 8), [results]);
 
   return (
     <>
       {sortedlist.length > 0 ? (
         <div className="max-w-3xl mx-auto px-5 sm:px-6">
-          {sortedlist.map((item) => (
+          {sortedlist.map((item, index) => (
             <Link to={`/blog/${item._id}`} key={item._id}>
               <article className="group py-6 sm:py-8 border-b border-ed-border last:border-b-0">
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
                   {/* Image */}
                   <div className="w-full sm:w-36 md:w-44 flex-shrink-0">
                     <div className="relative overflow-hidden rounded-lg">
-                      <img
+                      <OptimizedImage
                         className="w-full aspect-[16/10] sm:aspect-[4/3] object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
                         src={item.img_url}
                         alt={item.heading}
-                        loading="lazy"
+                        loading={index === 0 ? "eager" : "lazy"}
+                        fetchPriority={index === 0 ? "high" : "auto"}
+                        sizes="(min-width: 1024px) 176px, (min-width: 640px) 144px, calc(100vw - 40px)"
+                        widths={[240, 320, 480, 640]}
                       />
                     </div>
                   </div>

@@ -1,29 +1,38 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../hooks/useAuth.js";
 
+const getRememberedUser = () => {
+  if (typeof window === "undefined") {
+    return { email: "", password: "" };
+  }
+
+  try {
+    return JSON.parse(window.localStorage.getItem("user")) || {
+      email: "",
+      password: "",
+    };
+  } catch (error) {
+    console.error("Failed to read remembered user:", error);
+    window.localStorage.removeItem("user");
+    return { email: "", password: "" };
+  }
+};
+
 const Login = () => {
   const navigate = useNavigate();
-  const [formdata, setformdata] = useState({ email: "", password: "" });
+  const [formdata, setformdata] = useState(getRememberedUser);
   const [isloading, setisloading] = useState(false);
-  const [remember, setremember] = useState(false);
+  const [remember, setremember] = useState(() => {
+    const user = getRememberedUser();
+    return Boolean(user.email || user.password);
+  });
   const { login } = useAuth();
 
   const handlecheck = (e) => {
     setremember(e.target.checked);
   };
-
-  useEffect(() => {
-    const existinguser = JSON.parse(localStorage.getItem("user"));
-    if (existinguser) {
-      setformdata((prv) => ({
-        ...prv,
-        email: existinguser.email,
-        password: existinguser.password,
-      }));
-    }
-  }, []);
 
   const handlechange = (e) => {
     setformdata((prev_data) => ({
@@ -39,6 +48,8 @@ const Login = () => {
     if (remember) {
       const user = { email: formdata.email, password: formdata.password };
       localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
     }
 
     try {
