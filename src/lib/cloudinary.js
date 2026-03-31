@@ -1,6 +1,26 @@
 const CLOUDINARY_HOST = "res.cloudinary.com";
 const CLOUDINARY_UPLOAD_MARKER = "/upload/";
 
+const normalizeTransformDimensions = (options = {}) => {
+  const { width, height, aspectRatio, ...rest } = options;
+  let nextHeight = height;
+
+  if (
+    Number.isFinite(width) &&
+    !Number.isFinite(height) &&
+    Number.isFinite(aspectRatio) &&
+    aspectRatio > 0
+  ) {
+    nextHeight = width / aspectRatio;
+  }
+
+  return {
+    ...rest,
+    width,
+    height: nextHeight,
+  };
+};
+
 export const isCloudinaryUrl = (url) => {
   if (!url) {
     return false;
@@ -48,7 +68,9 @@ export const optimizeCloudinaryUrl = (url, options = {}) => {
     return url;
   }
 
-  const transformationString = buildTransformationString(options);
+  const transformationString = buildTransformationString(
+    normalizeTransformDimensions(options)
+  );
 
   if (!transformationString) {
     return url;

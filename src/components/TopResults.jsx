@@ -1,15 +1,54 @@
-import { useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import OptimizedImage from "./OptimizedImage.jsx";
 
+const PAGE_SIZE = 8;
+
 const TopResults = ({ results }) => {
-  const sortedlist = useMemo(() => results.slice(0, 8), [results]);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const loadMoreRef = useRef(null);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [results]);
+
+  useEffect(() => {
+    const node = loadMoreRef.current;
+
+    if (!node || visibleCount >= results.length) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+
+        if (entry?.isIntersecting) {
+          setVisibleCount((current) =>
+            Math.min(current + PAGE_SIZE, results.length)
+          );
+        }
+      },
+      {
+        rootMargin: "160px 0px",
+      }
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [results.length, visibleCount]);
+
+  const visibleResults = results.slice(0, visibleCount);
+  const hasMore = visibleCount < results.length;
 
   return (
     <>
-      {sortedlist.length > 0 ? (
+      {visibleResults.length > 0 ? (
         <div className="max-w-3xl mx-auto px-5 sm:px-6">
-          {sortedlist.map((item, index) => (
+          {visibleResults.map((item, index) => (
             <Link to={`/blog/${item._id}`} key={item._id}>
               <article className="group py-6 sm:py-8 border-b border-ed-border last:border-b-0">
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
@@ -17,13 +56,18 @@ const TopResults = ({ results }) => {
                   <div className="w-full sm:w-36 md:w-44 flex-shrink-0">
                     <div className="relative overflow-hidden rounded-lg">
                       <OptimizedImage
-                        className="w-full aspect-[16/10] sm:aspect-[4/3] object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
+                        className="w-full aspect-video object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
                         src={item.img_url}
                         alt={item.heading}
                         loading={index === 0 ? "eager" : "lazy"}
                         fetchPriority={index === 0 ? "high" : "auto"}
                         sizes="(min-width: 1024px) 176px, (min-width: 640px) 144px, calc(100vw - 40px)"
-                        widths={[240, 320, 480, 640]}
+                        widths={[288, 352, 440]}
+                        transformOptions={{
+                          aspectRatio: 16 / 9,
+                          crop: "fill",
+                          gravity: "auto",
+                        }}
                       />
                     </div>
                   </div>
@@ -43,6 +87,14 @@ const TopResults = ({ results }) => {
               </article>
             </Link>
           ))}
+          {hasMore && (
+            <div
+              ref={loadMoreRef}
+              className="py-6 text-center text-xs tracking-[0.18em] uppercase text-ed-text-tertiary font-sans-ui"
+            >
+              Scroll to load more
+            </div>
+          )}
         </div>
       ) : (
         <div className="max-w-3xl mx-auto px-5 sm:px-6">
@@ -53,7 +105,7 @@ const TopResults = ({ results }) => {
             >
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
                 <div className="w-full sm:w-36 md:w-44 flex-shrink-0">
-                  <div className="w-full aspect-[16/10] sm:aspect-[4/3] bg-ed-surface-hover rounded-lg" />
+                  <div className="w-full aspect-video bg-ed-surface-hover rounded-lg" />
                 </div>
                 <div className="flex-1 space-y-3 w-full">
                   <div className="h-5 bg-ed-surface-hover rounded w-4/5" />
