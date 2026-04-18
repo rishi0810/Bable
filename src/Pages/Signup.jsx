@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
-import { buildApiUrl } from "../lib/api.js";
+import { buildApiUrl, readResponseBody } from "../lib/api.js";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function Signup() {
 
     try {
       const response = await fetch(
-        buildApiUrl("/user/signup"),
+        buildApiUrl("/user/create-user"),
         {
           method: "POST",
           headers: {
@@ -36,7 +36,7 @@ export default function Signup() {
         }
       );
 
-      const data = await response.json();
+      const data = await readResponseBody(response);
       if (response.ok) {
         console.log("User Registered Successfully:", data);
         toast.success("Signed up successfully", { duration: 1000 });
@@ -44,8 +44,13 @@ export default function Signup() {
           navigate("/login");
         }, 1200);
       } else {
-        console.error("Error:", data.error);
-        toast.error(data.error || "Signup failed");
+        const errorMessage =
+          (typeof data === "string" && data) ||
+          data?.error ||
+          data?.message ||
+          "Signup failed";
+        console.error("Error:", errorMessage);
+        toast.error(errorMessage);
       }
     } catch (error) {
       console.error("Error during signup:", error);

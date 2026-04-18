@@ -9,7 +9,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { useAuth } from "../hooks/useAuth.js";
 import LoadingSpinner from "../components/LoadingSpinner.jsx";
 import OptimizedImage from "../components/OptimizedImage.jsx";
-import { buildApiUrl } from "../lib/api.js";
+import { buildApiUrl, getAuthHeaders, readResponseBody } from "../lib/api.js";
 import {
   ArrowLeft,
   Bold,
@@ -105,12 +105,12 @@ export default function Create() {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        buildApiUrl("/blog/create"),
+        buildApiUrl("/blog/create-blog"),
         {
           method: "POST",
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           body: JSON.stringify({
             heading: formData.heading,
@@ -120,12 +120,17 @@ export default function Create() {
         }
       );
 
-      const data = await response.json();
+      const data = await readResponseBody(response);
       if (response.ok) {
         console.log("Blog Submitted Successfully:", data);
         navigate("/blogs");
       } else {
-        console.error("Error:", data.error);
+        const errorMessage =
+          (typeof data === "string" && data) ||
+          data?.error ||
+          data?.message ||
+          "Failed to publish";
+        console.error("Error:", errorMessage);
       }
     } catch (error) {
       console.error("Error submitting blog:", error);

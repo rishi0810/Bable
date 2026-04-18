@@ -9,10 +9,6 @@ const TopResults = ({ results }) => {
   const loadMoreRef = useRef(null);
 
   useEffect(() => {
-    setVisibleCount(PAGE_SIZE);
-  }, [results]);
-
-  useEffect(() => {
     const node = loadMoreRef.current;
 
     if (!node || visibleCount >= results.length) {
@@ -49,7 +45,7 @@ const TopResults = ({ results }) => {
       {visibleResults.length > 0 ? (
         <div className="max-w-3xl mx-auto px-5 sm:px-6">
           {visibleResults.map((item, index) => (
-            <Link to={`/blog/${item._id}`} key={item._id}>
+            <Link to={`/blog/${item.id || item._id}`} key={item.id || item._id}>
               <article className="group py-6 sm:py-8 border-b border-ed-border last:border-b-0">
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
                   {/* Image */}

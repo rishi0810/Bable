@@ -147,11 +147,11 @@ const Search = ({ results }) => {
                 ) : (
                   filteredData.map((result) => (
                     <li
-                      key={result._id}
+                      key={result.id || result._id}
                       className="border-b border-ed-border last:border-b-0"
                     >
                       <Link
-                        to={`/blog/${result._id}`}
+                        to={`/blog/${result.id || result._id}`}
                         className="block px-4 py-3 hover:bg-ed-surface-hover transition-colors duration-150 group"
                       >
                         <div className="flex items-start gap-3">

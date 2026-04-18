@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { buildApiUrl } from "../lib/api.js";
+import { buildApiUrl, getAuthHeaders, readResponseBody } from "../lib/api.js";
 
 const BlogListItem = ({ blog, onDelete, buttonText }) => (
   <li className="flex items-center gap-4 py-4 border-b border-ed-border last:border-b-0">
-    <Link to={`/blog/${blog._id}`} className="flex-1 min-w-0">
+    <Link to={`/blog/${blog.id || blog._id}`} className="flex-1 min-w-0">
       <p className="font-body text-ed-text hover:text-ed-accent transition-colors duration-200 truncate sm:text-clip">
         {blog.heading}
       </p>
@@ -75,9 +75,8 @@ const Profile = () => {
     const fetchUser = async () => {
       try {
         setLoading(true);
-        const response = await fetch(buildApiUrl(`/user/details/${userID}`), {
+        const response = await fetch(buildApiUrl(`/user/details-user?id=${encodeURIComponent(userID)}`), {
           method: "GET",
-          credentials: "include",
           signal: controller.signal,
         });
 
@@ -108,15 +107,27 @@ const Profile = () => {
   const handledeletefromwritten = async (blogid) => {
     try {
       const response = await fetch(
-        buildApiUrl(`/blog/delete/${blogid}`),
-        { method: "POST", credentials: "include" }
+        buildApiUrl(`/blog/delete-blog?id=${encodeURIComponent(blogid)}`),
+        {
+          method: "DELETE",
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
 
-      if (!response.ok) throw new Error("Failed to delete");
+      if (!response.ok) {
+        const data = await readResponseBody(response);
+        throw new Error(
+          (typeof data === "string" && data) || "Failed to delete"
+        );
+      }
 
       setUser((prev) => ({
         ...prev,
-        writtenBlogs: prev.writtenBlogs.filter((blog) => blog._id !== blogid),
+        writtenBlogs: prev.writtenBlogs.filter(
+          (blog) => (blog.id || blog._id) !== blogid
+        ),
       }));
       alert("Blog Deleted!");
     } catch (err) {
@@ -127,15 +138,27 @@ const Profile = () => {
   const handledeletefromsaved = async (blogid) => {
     try {
       const response = await fetch(
-        buildApiUrl(`/blog/remove/${blogid}`),
-        { method: "POST", credentials: "include" }
+        buildApiUrl(`/blog/delete-save?id=${encodeURIComponent(blogid)}`),
+        {
+          method: "GET",
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
 
-      if (!response.ok) throw new Error("Failed to delete");
+      if (!response.ok) {
+        const data = await readResponseBody(response);
+        throw new Error(
+          (typeof data === "string" && data) || "Failed to remove saved blog"
+        );
+      }
 
       setUser((prev) => ({
         ...prev,
-        storedBlogs: prev.storedBlogs.filter((blog) => blog._id !== blogid),
+        storedBlogs: prev.storedBlogs.filter(
+          (blog) => (blog.id || blog._id) !== blogid
+        ),
       }));
       alert("Blog Removed!");
     } catch (err) {
@@ -175,9 +198,9 @@ const Profile = () => {
             <ul>
               {user.storedBlogs.map((blog) => (
                 <BlogListItem
-                  key={blog._id}
+                  key={blog.id || blog._id}
                   blog={blog}
-                  onDelete={() => handledeletefromsaved(blog._id)}
+                  onDelete={() => handledeletefromsaved(blog.id || blog._id)}
                   buttonText="Remove"
                 />
               ))}
@@ -201,9 +224,9 @@ const Profile = () => {
             <ul>
               {user.writtenBlogs.map((blog) => (
                 <BlogListItem
-                  key={blog._id}
+                  key={blog.id || blog._id}
                   blog={blog}
-                  onDelete={() => handledeletefromwritten(blog._id)}
+                  onDelete={() => handledeletefromwritten(blog.id || blog._id)}
                   buttonText="Delete"
                 />
               ))}

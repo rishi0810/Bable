@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Literata";
+  src: url("/literata.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ========================================
    EDITORIAL THEME SYSTEM
    Warm neutral palette for reading comfort
@@ -40,15 +48,11 @@
    ======================================== */
 
 @theme {
-  /* Backward-compatible fonts (Blog/Create pages) */
-  --font-poppins: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-
-  /* Editorial fonts — Literata (content) + DM Sans (UI) */
+  /* Single app font */
+  --font-poppins: "Literata", Georgia, "Times New Roman", serif;
   --font-display: "Literata", Georgia, "Times New Roman", serif;
   --font-body: "Literata", Georgia, "Times New Roman", serif;
-  --font-sans-ui: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
+  --font-sans-ui: "Literata", Georgia, "Times New Roman", serif;
 
   /* Theme-aware colors */
   --color-ed-bg: var(--ed-bg);
@@ -75,8 +79,7 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
+  font-family: var(--font-body);
   background-color: var(--ed-bg);
   color: var(--ed-text);
   transition:
@@ -85,17 +88,16 @@ body {
 }
 
 .fonts-loaded body {
-  font-family: var(--font-poppins);
+  font-family: var(--font-body);
 }
 
 .font-poppins {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
+  font-family: var(--font-body);
   font-display: swap;
 }
 
 .fonts-loaded .font-poppins {
-  font-family: var(--font-poppins);
+  font-family: var(--font-body);
 }
 
 /* ========================================
@@ -153,17 +155,17 @@ body {
 
 /* Blog Editor Styles */
 .font-merriweather {
-  font-family: "Merriweather", Georgia, "Times New Roman", Times, serif;
+  font-family: var(--font-body);
 }
 
 .tiptap {
-  font-family: "Merriweather", Georgia, "Times New Roman", Times, serif;
+  font-family: var(--font-body);
   letter-spacing: 0.025em;
   line-height: 1.8;
 }
 
 .tiptap p.is-empty::before {
-  font-family: "Merriweather", Georgia, "Times New Roman", Times, serif;
+  font-family: var(--font-body);
   letter-spacing: 0.025em;
 }
 

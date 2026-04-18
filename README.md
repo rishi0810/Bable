@@ -1,14 +1,18 @@
-# Bable: A Blogging Website  
+# Bable: Frontend  
 
-Bable is a feature-rich blogging platform built with **React.js** on the frontend and **Node.js** on the backend. It allows users to create, save, and manage blogs seamlessly.  
+Bable is a React frontend for the Bable blogging platform.
+The backend is now the Spring Boot service at:
+
+- `https://api.rishiapps.com/bable-sb-app/`
 
 ## Features  
 
-### Currently Implemented:  
-- User authentication with **JWT**, **HTTPOnly cookies**, and **Argon2** for secure password hashing  
-- **Sign up, Log in, and Log out** functionalities  
-- Create new blog posts and save them  
-- Personal collection of saved blogs  
+### Currently Implemented:
+- JWT-based authentication (`Authorization: Bearer <token>`)
+- Sign up and login flows
+- Create blog posts
+- Save/remove saved blogs
+- User profile with written/saved stories
 
 ### Upcoming Features:  
 - **Comment section** for interactive discussions  
@@ -16,11 +20,10 @@ Bable is a feature-rich blogging platform built with **React.js** on the fronten
 - **Sorting based on popularity**  
 - **Profile picture upload and management**  
 
-## Tech Stack  
-- **Frontend:** React.js  
-- **Backend:** Node.js  
-- **Database:** MongoDB  
-- **Authentication:** JWT, HTTPOnly Cookies, Argon2  
+## Tech Stack
+- **Frontend:** React + Vite
+- **Backend:** Spring Boot
+- **Authentication:** JWT (Bearer token)
 
 ## Installation and Setup  
 
@@ -38,12 +41,18 @@ Bable is a feature-rich blogging platform built with **React.js** on the fronten
    bun install
    ```
 
-4. **Run the development server**  
+4. **Set API URL (optional; defaults to production API)**  
+   ```sh
+   # .env
+   VITE_API_BASE_URL=https://api.rishiapps.com/bable-sb-app/
+   ```
+
+5. **Run the development server**  
    ```sh
    bun run dev
    ```
 
-5. **Create a production build**  
+6. **Create a production build**  
    ```sh
    bun run build
    ```

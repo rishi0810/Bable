@@ -3,19 +3,63 @@ import { Link, useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../hooks/useAuth.js";
 
+const REMEMBERED_USER_KEY = "bable.remembered-user";
+
+const encodeRememberedUser = (value) => {
+  if (typeof window === "undefined") {
+    return "";
+  }
+
+  try {
+    return window.btoa(JSON.stringify(value));
+  } catch (error) {
+    console.error("Failed to encode remembered user:", error);
+    return "";
+  }
+};
+
+const decodeRememberedUser = (value) => {
+  if (!value || typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    return JSON.parse(window.atob(value));
+  } catch {
+    return null;
+  }
+};
+
 const getRememberedUser = () => {
   if (typeof window === "undefined") {
     return { email: "", password: "" };
   }
 
   try {
-    return JSON.parse(window.localStorage.getItem("user")) || {
-      email: "",
-      password: "",
-    };
+    const storedValue = window.localStorage.getItem(REMEMBERED_USER_KEY);
+    if (!storedValue) {
+      return { email: "", password: "" };
+    }
+
+    const decoded = decodeRememberedUser(storedValue);
+    if (decoded?.email || decoded?.password) {
+      return decoded;
+    }
+
+    // Backward compatibility for previously stored plain JSON value.
+    const legacyParsed = JSON.parse(storedValue);
+    if (legacyParsed?.email || legacyParsed?.password) {
+      const encoded = encodeRememberedUser(legacyParsed);
+      if (encoded) {
+        window.localStorage.setItem(REMEMBERED_USER_KEY, encoded);
+      }
+      return legacyParsed;
+    }
+
+    return { email: "", password: "" };
   } catch (error) {
     console.error("Failed to read remembered user:", error);
-    window.localStorage.removeItem("user");
+    window.localStorage.removeItem(REMEMBERED_USER_KEY);
     return { email: "", password: "" };
   }
 };
@@ -47,9 +91,12 @@ const Login = () => {
 
     if (remember) {
       const user = { email: formdata.email, password: formdata.password };
-      localStorage.setItem("user", JSON.stringify(user));
+      const encodedUser = encodeRememberedUser(user);
+      if (encodedUser) {
+        localStorage.setItem(REMEMBERED_USER_KEY, encodedUser);
+      }
     } else {
-      localStorage.removeItem("user");
+      localStorage.removeItem(REMEMBERED_USER_KEY);
     }
 
     try {

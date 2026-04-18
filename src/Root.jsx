@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import App from "./App.jsx";
 import LoadingSpinner from "./components/LoadingSpinner.jsx";
 import PageSkeleton from "./components/PageSkeleton.jsx";
+import Blog from "./Pages/Blog.jsx";
 
 import {
   createBrowserRouter,
@@ -17,7 +18,6 @@ const Login = lazy(() => import("./Pages/Login.jsx"));
 const Blogs = lazy(() => import("./Pages/Blogs.jsx"));
 const Profile = lazy(() => import("./Pages/Profile.jsx"));
 const About = lazy(() => import("./Pages/About.jsx"));
-const Blog = lazy(() => import("./Pages/Blog.jsx"));
 const Policy = lazy(() => import("./misc/Policy.jsx"));
 const PrPolicy = lazy(() => import("./misc/PrPolicy.jsx"));
 
@@ -40,9 +40,7 @@ const Root = () => {
         <Route 
           path="blog/:id" 
           element={
-            <SuspenseWrapper fallback={<PageSkeleton type="blog" />}>
-              <Blog />
-            </SuspenseWrapper>
+            <Blog />
           } 
         />
         <Route 
@@ -72,7 +70,7 @@ const Root = () => {
         <Route 
           path="blogs" 
           element={
-            <SuspenseWrapper fallback={<PageSkeleton type="default" />}>
+            <SuspenseWrapper fallback={<PageSkeleton type="blogs" />}>
               <Blogs />
             </SuspenseWrapper>
           } 

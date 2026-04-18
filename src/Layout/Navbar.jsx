@@ -132,7 +132,7 @@ const Navbar = () => {
               {isAuthenticated ? (
                 <>
                   <NavLink
-                    to={`/profile/${userId || ""}`}
+                    to={userId ? `/profile/${userId}` : "/blogs"}
                     className={({ isActive }) =>
                       `flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200 ${
                         isActive
@@ -234,7 +234,7 @@ const Navbar = () => {
           {isAuthenticated ? (
             <div className="space-y-0.5">
               <NavLink
-                to={`/profile/${userId || ""}`}
+                to={userId ? `/profile/${userId}` : "/blogs"}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3 py-2.5 rounded-lg font-sans-ui text-[14px] font-medium transition-all duration-200 ${
                     isActive

@@ -1,12 +1,12 @@
-import { useContext } from "react";
-import ThemeContext from "../contexts/ThemeContext.jsx";
+import { useShallow } from "zustand/react/shallow";
+import { useThemeStore } from "../stores/themeStore.js";
 
 export const useTheme = () => {
-  const context = useContext(ThemeContext);
-
-  if (!context) {
-    throw new Error("useTheme must be used within ThemeProvider");
-  }
-
-  return context;
+  return useThemeStore(
+    useShallow((state) => ({
+      theme: state.theme,
+      setTheme: state.setTheme,
+      toggleTheme: state.toggleTheme,
+    }))
+  );
 };

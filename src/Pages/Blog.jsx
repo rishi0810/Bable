@@ -1,56 +1,54 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 import { Save, Share, X } from "lucide-react";
 import toast from "react-hot-toast";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { useShallow } from "zustand/react/shallow";
 import { useAuth } from "../hooks/useAuth.js";
 import OptimizedImage from "../components/OptimizedImage.jsx";
-import { buildApiUrl } from "../lib/api.js";
+import { buildApiUrl, getAuthHeaders, readResponseBody } from "../lib/api.js";
+import { useBlogStore } from "../stores/blogStore.js";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Blog = () => {
   const { id } = useParams();
   const { isAuthenticated } = useAuth();
-  const [blog, setBlog] = useState(null);
-  const [isImageExpanded, setIsImageExpanded] = useState(false);
+  const {
+    blog,
+    loading,
+    error,
+    isImageExpanded,
+    setImageExpanded,
+    resetForNextBlog,
+    fetchBlog,
+  } = useBlogStore(
+    useShallow((state) => ({
+      blog: state.blog,
+      loading: state.loading,
+      error: state.error,
+      isImageExpanded: state.isImageExpanded,
+      setImageExpanded: state.setImageExpanded,
+      resetForNextBlog: state.resetForNextBlog,
+      fetchBlog: state.fetchBlog,
+    }))
+  );
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     if (!id) {
       console.error("No id");
       return undefined;
     }
 
     const controller = new AbortController();
-    setBlog(null);
-
-    const fetchBlog = async () => {
-      try {
-        const response = await fetch(buildApiUrl(`/blog/${id}`), {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch blog: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data) {
-          setBlog(data);
-        }
-      } catch (error) {
-        if (error.name === "AbortError") {
-          return;
-        }
-
-        console.error("Error fetching blog:", error);
-      }
-    };
-
-    fetchBlog();
+    resetForNextBlog();
+    fetchBlog(id, controller.signal);
 
     return () => {
       controller.abort();
     };
-  }, [id]);
+  }, [id, fetchBlog, resetForNextBlog]);
 
   useEffect(() => {
     if (!isImageExpanded) {
@@ -59,7 +57,7 @@ const Blog = () => {
 
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
-        setIsImageExpanded(false);
+        setImageExpanded(false);
       }
     };
 
@@ -70,11 +68,7 @@ const Blog = () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isImageExpanded]);
-
-  useEffect(() => {
-    setIsImageExpanded(false);
-  }, [id]);
+  }, [isImageExpanded, setImageExpanded]);
 
   const copyCurrentUrl = async () => {
     try {
@@ -88,45 +82,65 @@ const Blog = () => {
   const saveblog = async (blogid) => {
     try {
       const response = await fetch(
-        buildApiUrl(`/blog/save/${blogid}`),
+        buildApiUrl(`/blog/save-blog?id=${encodeURIComponent(blogid)}`),
         {
-          method: "POST",
-          credentials: "include",
+          method: "GET",
+          headers: {
+            ...getAuthHeaders(),
+          },
         }
       );
-      const data = await response.json();
-      toast.success(`${data.message}`, { duration: 1000 });
+      const data = await readResponseBody(response);
+
+      if (!response.ok) {
+        throw new Error(
+          (typeof data === "string" && data) || "Failed to save blog"
+        );
+      }
+
+      toast.success(
+        (typeof data === "string" && data) || "Blog saved",
+        { duration: 1200 }
+      );
     } catch (error) {
       console.error("Error occured : " + error);
+      toast.error(error.message || "Could not save blog");
     }
   };
 
-  const authorId = blog?.author?._id || "";
+  const authorId = blog?.author?.id || blog?.author?._id || "";
+  const blogId = blog?.id || blog?._id;
 
   return (
-    <div className="min-h-screen m-0 py-8 px-2 sm:px-5 md:px-10 flex justify-center font-poppins mb-20">
-      {blog && Object.keys(blog).length > 0 ? (
+    <SkeletonTheme baseColor="#ececec" highlightColor="#f6f6f6">
+      <div className="min-h-screen m-0 py-8 px-2 sm:px-5 md:px-10 flex justify-center font-poppins mb-20">
         <>
-          <div className="flex flex-col gap-2 w-full max-w-3xl" key={blog._id}>
+          <div className="flex flex-col gap-2 w-full max-w-3xl" key={blogId}>
             <h1 className="text-ed-text text-2xl sm:text-3xl md:text-4xl font-merriweather font-bold mt-6 leading-relaxed tracking-wide">
-              {blog.heading}
+              {blog?.heading || <Skeleton />}
             </h1>
-            <a
-              href={`/profile/${authorId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-ed-text text-base sm:text-lg md:text-xl font-poppins font-semibold hover:underline"
-            >
-              {blog.author.name}
-            </a>
+            {blog ? (
+              <a
+                href={`/profile/${authorId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-ed-text text-base sm:text-lg md:text-xl font-poppins font-semibold hover:underline"
+              >
+                {blog.author.name}
+              </a>
+            ) : (
+              <div className="w-40">
+                <Skeleton />
+              </div>
+            )}
 
-            <div className="space-y-14 mb-12">
-              {blog.img_url && (
+            <div className="mt-8 sm:mt-10 space-y-14 mb-12">
+              {blog?.img_url && (
                 <div className="flex justify-center">
                   <button
                     type="button"
-                    onClick={() => setIsImageExpanded(true)}
-                    className="w-full sm:w-4/5 rounded-xl overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-ed-accent"
+                    onClick={() => setImageExpanded(true)}
+                    className="w-full sm:w-4/5 lg:w-3/4 rounded-xl overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-ed-accent"
                     aria-label="Expand blog cover image"
                   >
                     <OptimizedImage
@@ -146,16 +160,32 @@ const Blog = () => {
                   </button>
                 </div>
               )}
-              <div
-                className="prose max-w-none text-base sm:text-lg text-ed-text-secondary font-merriweather mb-10 leading-loose tracking-wide"
-                dangerouslySetInnerHTML={{ __html: blog.content }}
-              />
-              {isAuthenticated ? (
+              {!blog && loading ? (
+                <div className="flex justify-center">
+                  <div className="w-full sm:w-4/5 lg:w-3/4">
+                    <Skeleton className="w-full aspect-video rounded-xl" />
+                  </div>
+                </div>
+              ) : null}
+              {blog ? (
+                <div
+                  className="prose max-w-none text-base sm:text-lg text-ed-text-secondary font-merriweather mb-10 leading-loose tracking-wide"
+                  dangerouslySetInnerHTML={{ __html: blog.content }}
+                />
+              ) : (
+                <div className="space-y-3">
+                  <Skeleton count={7} />
+                </div>
+              )}
+              {error ? (
+                <p className="text-sm text-red-600">{error}</p>
+              ) : null}
+              {blog && isAuthenticated ? (
                 <div className="flex space-x-6 sm:space-x-8">
                   <div className="relative group">
                     <button
                       className="p-2 pl-0 rounded-md transition-all hover:cursor-pointer"
-                      onClick={() => saveblog(blog._id)}
+                      onClick={() => saveblog(blogId)}
                     >
                       <Save className="w-5 h-5 sm:w-6 sm:h-6 text-ed-text-secondary hover:text-ed-text" />
                     </button>
@@ -184,7 +214,8 @@ const Blog = () => {
                     </div>
                   </div>
                 </div>
-              ) : (
+              ) : null}
+              {blog && !isAuthenticated ? (
                 <div className="relative group w-6">
                   <button
                     className="p-2 pl-0 rounded-md transition-all hover:cursor-pointer"
@@ -200,13 +231,18 @@ const Blog = () => {
                     <div className="w-2 h-2 bg-ed-text rotate-45 -mt-1"></div>
                   </div>
                 </div>
-              )}
+              ) : null}
+              {loading && !error ? (
+                <div className="w-24">
+                  <Skeleton />
+                </div>
+              ) : null}
             </div>
           </div>
-          {isImageExpanded && blog.img_url && (
+          {isImageExpanded && blog?.img_url && (
             <div
               className="fixed inset-0 z-[100] bg-black/85 px-4 py-6 sm:p-8 flex items-center justify-center"
-              onClick={() => setIsImageExpanded(false)}
+              onClick={() => setImageExpanded(false)}
             >
               <div
                 className="relative w-full max-w-6xl max-h-full flex items-center justify-center"
@@ -214,7 +250,7 @@ const Blog = () => {
               >
                 <button
                   type="button"
-                  onClick={() => setIsImageExpanded(false)}
+                  onClick={() => setImageExpanded(false)}
                   className="absolute top-0 right-0 -translate-y-12 sm:-translate-y-14 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
                   aria-label="Close expanded image"
                 >
@@ -238,25 +274,8 @@ const Blog = () => {
             </div>
           )}
         </>
-      ) : (
-        <div
-          className="flex flex-col gap-6 w-full max-w-3xl animate-pulse"
-          key="skeleton"
-        >
-          <div className="h-10 bg-ed-surface-hover rounded w-3/4 mt-6"></div>
-          <div className="h-6 bg-ed-surface-hover rounded w-1/4"></div>
-          <div className="w-full h-48 sm:h-64 bg-ed-surface-hover rounded-lg shadow-md"></div>
-          <div className="space-y-3">
-            <div className="h-4 bg-ed-surface-hover rounded w-full"></div>
-            <div className="h-4 bg-ed-surface-hover rounded w-11/12"></div>
-            <div className="h-4 bg-ed-surface-hover rounded w-4/5"></div>
-            <div className="h-4 bg-ed-surface-hover rounded w-3/4"></div>
-            <div className="h-4 bg-ed-surface-hover rounded w-2/3"></div>
-          </div>
-          <div className="h-10 bg-ed-surface-hover rounded w-28 mt-8"></div>
-        </div>
-      )}
-    </div>
+      </div>
+    </SkeletonTheme>
   );
 };
 

@@ -23,13 +23,18 @@ const readCachedBlogs = () => {
 
 const Blogs = () => {
   const [results, setResults] = useState(readCachedBlogs);
+  const resultsKey = results.map((blog) => blog.id || blog._id || "").join("|");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
 
     const fetchAndUpdate = async () => {
       try {
-        const response = await fetch(buildApiUrl("/blog"), {
+        const response = await fetch(buildApiUrl("/blog/main-feed"), {
           signal: controller.signal,
         });
 
@@ -96,7 +101,7 @@ const Blogs = () => {
       </section>
 
       <section className="pb-16">
-        <TopResults results={results} />
+        <TopResults key={resultsKey} results={results} />
       </section>
     </div>
   );

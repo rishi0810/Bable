@@ -1,0 +1,15 @@
+.git
+.gitignore
+.DS_Store
+node_modules
+dist
+.vscode
+.idea
+coverage
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+README.md
+vercel.json
